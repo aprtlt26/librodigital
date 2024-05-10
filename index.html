@@ -281,6 +281,7 @@ function setup() {
 
     // Panorámica se modifica basada en la posición x para dar sensación de movimiento lateral
     let pan = map(this.position.x, 0, width, -1, 1);
+    pan = constrain(pan, -1, 1); // Asegura que el pan está dentro del rango permitido
     this.osc.pan(pan);
 }
 
