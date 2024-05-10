@@ -1,79 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Asegura responsividad -->
-        <title>Estorninos: Mantarraya y Cara de Gato</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
-        <style>
-            body, html {
-                margin: 0;
-                padding: 0;
-                overflow: hidden; /* Evita barras de desplazamiento */
-            }
-            #buttonContainer {
-                position: absolute;
-                top: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                text-align: center;
-                padding: 10px 0;
-                background-color: #bdedf1;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Asegura responsividad -->
+    <title>Estorninos: Mantarraya y Cara de Gato</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Evita barras de desplazamiento */
+        }
+        #buttonContainer {
+            position: absolute;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #bdedf1;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #93f2ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #13e0eb;
+        }
+        @media (max-width: 768px) {
             button {
-                margin: 5px;
-                padding: 10px 20px;
-                font-size: 16px;
-                cursor: pointer;
-                background-color: #93f2ff;
-                color: white;
-                border: none;
-                border-radius: 5px;
+                padding: 8px 10px; /* Botones más pequeños para pantallas pequeñas */
+                font-size: 14px;
             }
-            button:hover {
-                background-color: #13e0eb;
-            }
-            #subtitles {
-                display: none;
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                text-align: center;
-                color: white;
-                background: rgba(0,0,0,0.5);
-                padding: 10px;
-            }
-        </style>
-    </head>
-    
+        }
+        #subtitles {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+        }
+    </style>
+</head>
 <body>
-    <body>
-        <div id="buttonContainer">
-            <button id="prevButton">Anterior</button>
-            <button id="nextButton">Siguiente</button>
-            <button id="restartButton" style="display:none;">Reiniciar Juego</button>
-            <button id="newGameButton" style="display:none;">Collage</button>
-            <button id="subtitleButton" style="display:none;">Subtítulos</button>
-        </div>
-    </body>
-    
-    <div id="subtitles" style="display:none; position: absolute; bottom: 10px; width: 100%; text-align: center; color: white; background: rgba(0,0,0,0.5); padding: 10px;">
+    <div id="buttonContainer">
+        <button id="prevButton">Anterior</button>
+        <button id="nextButton">Siguiente</button>
+        <button id="restartButton">Reiniciar Juego</button>
+        <button id="newGameButton">Collage</button>
+        <button id="subtitleButton">Subtítulos</button>
+
+        <button id="collageButton" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: url('path_to_your_button_image.jpg') no-repeat center; border: none; width: 50px; height: 100px; cursor: pointer; margin-top: 100px;">
+            <img src="insects.png" alt="" >
+        </button>
+
+        
+        
+    </div>
+    <div id="subtitles" style="display:none;">
         Aquí aparecerán los subtítulos.
     </div>
-    
     <script>
         let flock = [];
-        let backgroundImage, cityImage, finalImage, fourthImage, fifthImage,  panalImage, boidImage;
+        let backgroundImage, cityImage, finalImage, fourthImage, fifthImage, sixthImage, panalImage, boidImage;
         let panalPositions = [];
         let stage = 0;
         let backgroundTracks = [];
         let narrationTracks = [];
         let currentBackgroundSound, currentNarration;
         let panalDisappearSound;
-        let video;
 
         function preload() {
             backgroundImage = loadImage('paisaje.png');
@@ -81,121 +88,15 @@
             finalImage = loadImage('africa.png');
             fourthImage = loadImage('campomorado.png');
             fifthImage = loadImage('centro.png');
+            sixthImage = loadImage('azul.png');
             panalImage = loadImage('panal.png');
             boidImage = loadImage('abeja.png');
             panalDisappearSound = loadSound('panal.mp3');
-
-              video = createVideo(['abejas.mp4']);
-    video.hide();  // Importante para asegurar que no se muestre fuera del canvas
-
-            // Carga de tracks de fondo y narraciones
             for (let i = 1; i <= 6; i++) {
                 backgroundTracks.push(loadSound(`background${i}.mp3`));
-                if (i <= 6) {
-                    narrationTracks.push(loadSound(`narration${i}.mp3`));
-                }
+                narrationTracks.push(loadSound(`narration${i}.mp3`));
             }
         }
-        function setupButtons() {
-    let prevButton = document.getElementById('prevButton');
-    let nextButton = document.getElementById('nextButton');
-    let restartButton = document.getElementById('restartButton');
-    let newGameButton = document.getElementById('newGameButton');
-    let subtitleButton = document.getElementById('subtitleButton');
-
-    // Hacer que los botones "Nuevo Juego" y "Mostrar Subtítulos" siempre sean visibles
-    newGameButton.style.display = 'block';
-    subtitleButton.style.display = 'block';
-    restartButton.style.display = 'block'; // Muestra el botón Nuevo Juego
-
-
-    prevButton.onclick = function() {
-        if (stage > 0) {
-            stage--;
-            changeStage(stage);
-        }
-    };
-
-    nextButton.onclick = function() {
-        if (stage < 5) {
-            stage++;
-            changeStage(stage);
-        }
-    };
-
-    restartButton.onclick = function() {
-        stage = 0;
-        flock = []; // Reinicia la lista de boids
-        initFlock(); // Inicializa de nuevo los boids
-        setupPanales(3); // Configura los paneles inicialmente
-        changeStage(stage); // Cambia a la primera etapa con todos los ajustes reiniciados
-        // Estos botones permanecen siempre visibles, por lo tanto no se ajustan aquí.
-    };
-
-    newGameButton.onclick = function() {
-        window.location.href = 'newGame.html'; // Cambia esto por la URL de tu nuevo juego
-    };
-
-    subtitleButton.onclick = function() {
-        let subtitleDiv = document.getElementById('subtitles');
-        if (subtitleDiv.style.display === 'none') {
-            subtitleDiv.style.display = 'block';
-        } else {
-            subtitleDiv.style.display = 'none';
-        }
-    };
-}
-
-   
-        
-
-        function setup() {
-    createCanvas(windowWidth, windowHeight);
-    let cw = min(windowWidth);
-    let ch = min(windowHeight);
-    createCanvas(cw, ch);
-    initFlock();
-    setupAudioProcessing();
-    setupPanales(3);
-    setupButtons();
-    changeStage(0);
-
-    // Ajusta la posición del botón Collage al centro del canvas
-}
-
-function windowResized() {
-    function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-}
-    // Re-posiciona elementos si es necesario
-}
-
-
-
-        function initFlock() {
-    for (let i = 0; i < 80; i++) {
-        flock.push(new Boid());
-    }
-    console.log('Boids reinicializados:', flock.length);
-}
-
-function setupPanales(count) {
-    panalPositions = [];
-    let margin = 70;  // Margen para evitar que los paneles aparezcan en los bordes
-    for (let i = 0; i < count; i++) {
-        let placed = false, attempts = 0;
-        while (!placed && attempts < 100) {
-            let candidatePosition = createVector(random(margin, width - margin), random(margin, height - margin));
-            let tooClose = panalPositions.some(panal => p5.Vector.dist(candidatePosition, panal) < 80); // Aumenta la distancia mínima para evitar superposición
-            if (!tooClose) {
-                panalPositions.push(candidatePosition);
-                placed = true;
-            }
-            attempts++;
-        }
-    }
-    console.log('Paneles configurados:', panalPositions.length);
-}
 
         function setupAudioProcessing() {
             let compressor = new p5.Compressor();
@@ -207,7 +108,76 @@ function setupPanales(count) {
             reverb.process(compressor, 3, 3);
             flock.forEach(boid => boid.osc.connect(reverb));
         }
-        
+
+        function setupPanales(count) {
+            panalPositions = [];
+            let margin = 70;
+            for (let i = 0; i < count; i++) {
+                let placed = false, attempts = 0;
+                while (!placed && attempts < 100) {
+                    let candidatePosition = createVector(random(margin, width - margin), random(margin, height - margin));
+                    let tooClose = panalPositions.some(panal => p5.Vector.dist(candidatePosition, panal) < 80);
+                    if (!tooClose) {
+                        panalPositions.push(candidatePosition);
+                        placed = true;
+                    }
+                    attempts++;
+                }
+            }
+        }
+
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            initFlock();
+            setupAudioProcessing();
+            setupPanales(3);
+            setupButtons();
+            changeStage(0);
+        }
+
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+        }
+
+        function initFlock() {
+            for (let i = 0; i < 80; i++) {
+                flock.push(new Boid());
+            }
+        }
+
+        function setupButtons() {
+            let buttons = document.querySelectorAll('#buttonContainer button');
+            buttons.forEach(button => button.style.display = 'block');
+            document.getElementById('prevButton').onclick = function() {
+                if (stage > 0) {
+                    stage--;
+                    changeStage(stage);
+                }
+            };
+            document.getElementById('nextButton').onclick = function() {
+                if (stage < 5) {
+                    stage++;
+                    changeStage(stage);
+                }
+            };
+            document.getElementById('restartButton').onclick = function() {
+                stage = 0;
+                changeStage(stage);
+            };
+            document.getElementById('newGameButton').onclick = function() {
+                window.location.href = 'newGame.html';
+            };
+            document.getElementById('subtitleButton').onclick = function() {
+                let subtitles = document.getElementById('subtitles');
+                subtitles.style.display = subtitles.style.display === 'none' ? 'block' : 'none';
+            };
+
+            document.getElementById('collageButton').onclick = function() {
+        window.location.href = 'collage.html'; // Cambia esto por la URL de tu página de collage
+    };
+        }
+
         function changeStage(newStage) {
     if (currentBackgroundSound) {
         currentBackgroundSound.stop();
@@ -217,73 +187,53 @@ function setupPanales(count) {
     }
 
     stage = newStage;
+    let backgrounds = [backgroundImage, cityImage, finalImage, fourthImage, fifthImage, sixthImage];
+    background(backgrounds[stage]);
 
-    let restartButton = document.getElementById('restartButton');
-    let newGameButton = document.getElementById('newGameButton');
-    let subtitleButton = document.getElementById('subtitleButton');
-
-    if (stage === 6) { 
-        video.loop();
-        video.show();
-        subtitleButton.style.display = 'block'; // Muestra el botón de Subtítulos
-        newGameButton.style.display = 'block'; // Muestra el botón Nuevo Juego
-
-    } else {
-        video.loop();
-        subtitleButton.style.display = 'block'; // Oculta el botón de Subtítulos fuera de la etapa del video
-    }
-
-    if (stage === 6) { // Final del juego
-    } else {
-        let backgrounds = [backgroundImage, cityImage, finalImage, fourthImage, fifthImage, backgroundImage, ];
-        background(backgrounds[stage]);
-        currentBackgroundSound = backgroundTracks[stage];
+    // Verifica si hay sonido de fondo y narración que reproducir
+    currentBackgroundSound = backgroundTracks[stage];
+    if (currentBackgroundSound) {
         currentBackgroundSound.loop();
-        if (narrationTracks[stage]) {
-            currentNarration = narrationTracks[stage];
-            currentNarration.play();
-        }
+    }
+    if (narrationTracks[stage]) {
+        currentNarration = narrationTracks[stage];
+        currentNarration.play();
     }
 
-    
+    // Configurar panales solo si no estamos en la última etapa
+    setupPanales(stage < 5 ? 3 + stage : 0);
 
-    // Ajusta paneles o cualquier configuración específica de la etapa
-    if (stage < 6) {
-        setupPanales(stage < 6 ? 3 + stage : 0);
+    // Mostrar el botón de collage solo en la última etapa
+    if (stage === 5) {
+        document.getElementById('collageButton').style.display = 'block';
+    } else {
+        document.getElementById('collageButton').style.display = 'none';
     }
 }
 
 
 
-
-
-
-
-
         function draw() {
-            if (stage === 5) {
-                image(video, 0, 0, width, height);  // Muestra el video en el canvas
-            } else {
-                let currentBackground = [backgroundImage, cityImage, finalImage, fourthImage, fifthImage, ][stage];
-                background(currentBackground);
-                    panalPositions.forEach(panal => {
-                        image(panalImage, panal.x, panal.y, 50, 50);
-                    });
-         
-            flock.forEach(boid => {
-                boid.edges();
-                boid.flock(flock);
-                boid.update();
-                boid.show();
-            });
+    let currentBackground = [backgroundImage, cityImage, finalImage, fourthImage, fifthImage, sixthImage][stage];
+    background(currentBackground);
 
-            // Comprobar si se deben avanzar a la siguiente etapa
-            if (panalPositions.length === 0 && stage < 3) {
-                stage++;
-                setupPanales(stage === 1 ? 4 : (stage === 2 ? 5 : 0));
-            }
-        }
- }
+    // Dibuja panales y boids sólo si la etapa no es la 6
+    if (stage !== 5) {
+        panalPositions.forEach(panal => {
+            image(panalImage, panal.x, panal.y, 50, 50);
+        });
+        
+        flock.forEach(boid => {
+            boid.edges();
+            boid.flock(flock);
+            boid.update();
+            boid.show();
+        });
+    }
+
+ 
+}
+
 
         function mousePressed() {
             for (let i = panalPositions.length - 1; i >= 0; i--) {
