@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Asegura responsividad -->
-    <title>Estorninos: Mantarraya y Cara de Gato</title>
+    <title>Libro Digital Interactivo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
     <style>
@@ -56,22 +56,40 @@
 </head>
 <body>
     <div id="buttonContainer">
+        <button id="startButton">Iniciar</button>
+
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
         <button id="restartButton">Reiniciar Juego</button>
         <button id="newGameButton">Collage</button>
-        <button id="subtitleButton">Subtítulos</button>
+        <button id="subtitleButton">Misión</button>
+    </div>
 
-        <button id="collageButton" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: url('path_to_your_button_image.jpg') no-repeat center; border: none; width: 50px; height: 100px; cursor: pointer; margin-top: 170px;">
+        <button id="collageButton" style="display: none; position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background: url('path_to_your_button_image.jpg') no-repeat center; border: none; width: 50px; height: 100px; cursor: pointer;">
             <img src="insects.png" alt="" >
         </button>
 
 
         
-    </div>
+   
     <div id="subtitles" style="display:none;">
-        Aquí aparecerán los subtítulos.
+       Tu misión es recolectar lso panales para auidar a la abjeas a migrar a sus destinos
     </div>
+
+    <script>
+        document.getElementById('startButton').addEventListener('click', function() {
+            initAudio();
+        });
+
+        function initAudio() {
+            userStartAudio().then(() => {
+                console.log('Audio Activado');
+                // Aquí puedes iniciar tus osciladores o cualquier otra cosa relacionada con el audio
+            }).catch(err => {
+                console.error('Error al activar el audio:', err);
+            });
+        }
+    </script>
     <script>
         let flock = [];
         let backgroundImage, cityImage, finalImage, fourthImage, fifthImage, sixthImage, panalImage, boidImage;
