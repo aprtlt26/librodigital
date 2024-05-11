@@ -83,7 +83,26 @@
    
     <script>
 
+document.addEventListener('DOMContentLoaded', function() {
+    let startButton = document.getElementById('startButton');
+    startButton.addEventListener('click', function() {
+        // Asegúrate de que el contexto de audio se reanude
+        if (getAudioContext().state !== 'running') {
+            getAudioContext().resume().then(() => {
+                console.log('Audio activado');
+                startGame();
+            }).catch(err => {
+                console.error('Error al activar el audio:', err);
+            });
+        }
+    });
+});
 
+function startGame() {
+    console.log("El juego ha comenzado");
+    initFlock(); // Asegúrate de que esta función configura los boids correctamente
+    changeStage(0); // Inicia la primera etapa del juego
+}
     // Espera hasta que todo el contenido del DOM esté listo.
     
 
