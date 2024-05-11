@@ -241,7 +241,7 @@ function initAudio() {
     this.osc.freq(freq);
 
     // Amplitud se modifica en base a la posición y
-    let amp = map(this.position.y, 0, height, 0.00, 0.01);
+    let amp = map(this.position.y, 0, height, -0.01, 0.00);
     this.osc.amp(amp);
 
     // Panorámica se modifica basada en la posición x para dar sensación de movimiento lateral
@@ -589,15 +589,6 @@ function draw() {
     initAudio();
 });
 
-        function touchStarted() {
-    console.log("Touch iniciado"); // Verifica que esta línea se imprime cuando tocas la pantalla
-    getAudioContext().resume().then(() => {
-        console.log("Audio activado");
-    }).catch(err => {
-        console.error("Error al activar el audio:", err);
-    });
-    return false; // Previene comportamientos por defecto como el desplazamiento de la página
-}
 
     </script>
 </body>
