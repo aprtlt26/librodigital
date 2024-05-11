@@ -511,9 +511,11 @@ function startGame() {
 
 
 function setup() {
-    pixelDensity(1); // Asegura que p5.js maneje correctamente la densidad de píxeles del dispositivo
+    pixelDensity(1); // Puedes intentar remover esto para usar la densidad por defecto del dispositivo
+    createCanvas(windowWidth, windowHeight);
     let canvas = createCanvas(windowWidth, windowHeight);
     canvas.style('display', 'block');
+ 
 
     // Eliminar inicialización de Quadtree aquí ya que se reiniciará en draw
     initFlock(); // Inicializa los boids
@@ -588,4 +590,5 @@ function draw() {
 
     </script>
 </body>
+</html>
 </html>
