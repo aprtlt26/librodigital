@@ -238,6 +238,7 @@ function startGame() {
                 this.osc.amp(0.01);
                 this.osc.start();
             }
+       
 
             updateOscillator() {
     // Frecuencia se modifica en base a la posición x
@@ -354,15 +355,17 @@ function startGame() {
             
 
       
-            show() {
-                push();
-                imageMode(CENTER);
-                translate(this.position.x, this.position.y);
-                rotate(this.velocity.heading() + radians(90));
-                image(boidImage, 0, 0, 20, 20);
-                pop();
-            }
-        }
+
+
+    show() {
+        push();
+        translate(this.position.x, this.position.y);
+        rotate(this.velocity.heading());
+        image(boidImage, 0, 0, 20, 20); // Confirma que las dimensiones de la imagen son correctas
+        pop();
+    }
+}
+
 
 
         let flock = [];
@@ -379,6 +382,11 @@ function startGame() {
             cityImage = loadImage('ciudad.png');
             finalImage = loadImage('africa.png');
             fifthImage = loadImage('centro.png');
+
+            
+    boidImage = loadImage('abeja.png', () => console.log('Boid image loaded'), e => console.error('Failed to load boid image', e));
+    // Carga otras imágenes de la misma manera y verifica cada una
+
 
             fourthImage = loadImage('campomorado.png');
             sixthImage = loadImage('azul.png');
@@ -529,18 +537,21 @@ function windowResized() {
 }
 
 
-function draw() {
-    background(0); // Fondo negro para alta visibilidad
-    fill(255, 0, 0); // Color rojo
-    ellipse(width / 2, height / 2, 50, 50); // Dibuja un círculo en el centro
 
-    // Intenta dibujar los boids si el círculo se muestra
-    if (flock.length > 0) {
-        flock.forEach(boid => {
-            boid.show();
-        });
-    }
+function draw() {
+    background(0); // Fondo negro
+    fill(255, 0, 0); // Rojo
+    ellipse(width / 2, height / 2, 50, 50); // Círculo central para confirmar renderizado
+
+    // Dibuja cada boid
+    flock.forEach(boid => {
+        boid.show();
+        console.log(`Boid at ${boid.position.x}, ${boid.position.y}`); // Verifica la posición de los boids
+    });
 }
+
+
+
 
 
 
