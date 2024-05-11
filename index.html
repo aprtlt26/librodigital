@@ -56,33 +56,7 @@
 </head>
 <body>
 
-    <script>window.onload = function() {
-        alert("Haz clic en 'Iniciar' para habilitar el sonido y comenzar a jugar!");
-    };
-    
-
-    
-    function initAudio() {
-        if (typeof getAudioContext === 'function') {
-            let audioContext = getAudioContext();
-            if (audioContext && audioContext.state !== 'running') {
-                audioContext.resume().then(() => {
-                    console.log('Audio activado');
-                    startGame();  // Inicia el juego aquí si es necesario
-                }).catch(err => {
-                    console.error('Error al activar el audio:', err);
-                });
-            }
-        } else {
-            console.log('Función getAudioContext no definida');
-        }
-    }
-    
-    function startGame() {
-        console.log("El juego ha comenzado");
-        // Aquí inicia la lógica principal de tu juego
-    }
-    </script>
+   
 
 
     <div id="buttonContainer">
