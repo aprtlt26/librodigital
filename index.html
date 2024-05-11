@@ -257,12 +257,14 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    pixelDensity(1);  // Esto asegura que p5.js no intente renderizar a una densidad de píxeles mayor de la necesaria
+    let canvas = createCanvas(windowWidth, windowHeight);
+    canvas.style('display', 'block');
+
     initFlock();
     setupAudioProcessing();
-    // No configurar panales inicialmente aquí, lo haremos después de la narración
     setupButtons();
-    changeStage(0); // Esto comenzará la primera etapa sin panales hasta que termine la narración
+    changeStage(0);
 }
 
 
@@ -346,7 +348,7 @@ function startGame() {
     this.osc.freq(freq);
 
     // Amplitud se modifica en base a la posición y
-    let amp = map(this.position.y, 0, height, 0.01, 0.01);
+    let amp = map(this.position.y, 0, height, 0.00, 0.01);
     this.osc.amp(amp);
 
     // Panorámica se modifica basada en la posición x para dar sensación de movimiento lateral
@@ -376,6 +378,7 @@ function startGame() {
                         total++;
                     }
                 }
+
                 if (total > 0) {
                     steering.div(total);
                     steering.setMag(this.maxSpeed);
