@@ -170,10 +170,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-
-
 window.onload = function() {
-    // Ocultar la pantalla de carga
+    // Ocultar la pantalla de carga una vez que todo esté completamente cargado
     var loadingScreen = document.getElementById('loadingScreen');
     if (loadingScreen) {
         loadingScreen.style.display = 'none';
@@ -184,7 +182,6 @@ window.onload = function() {
     if (window.innerWidth <= 768) {
         if (startButton) {
             startButton.style.display = 'block'; // Mostrar el botón en dispositivos móviles
-
             startButton.addEventListener('click', function() {
                 this.style.display = 'none'; // Ocultar el botón después de ser presionado
                 startGame(); // Función que inicia el juego y la narración
@@ -196,6 +193,7 @@ window.onload = function() {
         }
     }
 };
+
 
 </script>
 <script src="abejas.js"></script>
