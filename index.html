@@ -566,6 +566,15 @@ function draw() {
 }
 
 
+function touchStarted() {
+    console.log("Touch iniciado"); // Verifica que esta línea se imprime cuando tocas la pantalla
+    getAudioContext().resume().then(() => {
+        console.log("Audio activado");
+    }).catch(err => {
+        console.error("Error al activar el audio:", err);
+    });
+    return false; // Previene comportamientos por defecto como el desplazamiento de la página
+}
 
 
         function mousePressed() {
