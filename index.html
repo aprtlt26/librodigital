@@ -529,34 +529,14 @@ function windowResized() {
 }
 
 
-
 function draw() {
-    let currentBackground = [backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage][stage];
-    background(currentBackground);
+    background(0); // Fondo negro para alta visibilidad
+    fill(255, 0, 0); // Color rojo
+    ellipse(width / 2, height / 2, 50, 50); // Dibuja un círculo en el centro
 
-    // Reinicia el Quadtree cada frame para mantenerlo actualizado con las posiciones de los boids
-    quadtree = new Quadtree(new Rectangle(0, 0, width, height), 4);
-
-    // Dibuja panales y boids sólo si la etapa no es la 6
-    if (stage !== 5) {
-        panalPositions.forEach(panal => {
-            image(panalImage, panal.x, panal.y, 50, 50);
-        });
-
-        // Insertar cada boid en el Quadtree
+    // Intenta dibujar los boids si el círculo se muestra
+    if (flock.length > 0) {
         flock.forEach(boid => {
-            quadtree.insert(boid);
-        });
-
-        flock.forEach(boid => {
-            boid.edges();
-
-            // Consulta al Quadtree para obtener boids cercanos
-            let range = new Rectangle(boid.position.x - 50, boid.position.y - 50, 100, 300);
-            let nearbyBoids = quadtree.query(range);
-
-            boid.flock(nearbyBoids);
-            boid.update();
             boid.show();
         });
     }
