@@ -138,14 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
     startButton.addEventListener('click', initGame);
 });
 
-function initFlock() {
-    console.log(`Inicializando boids en canvas de tamaño: ${width}x${height}`);
-    flock = [];
-    for (let i = 0; i < 180; i++) {
-        let boid = new Boid(random(width), random(height));
-        flock.push(boid);
-    }
-}
+
 
 // Resto del código...
     
