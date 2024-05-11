@@ -6,7 +6,8 @@
     <title>Libro Digital Interactivo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
-    <style>
+
+   <style>
         body, html {
             margin: 0;
             padding: 0;
@@ -34,9 +35,13 @@
             border-radius: 5px;
         }
         button:hover {
-            background-color: #13e0eb;
+            background-color: #1ccad3;
         }
-
+        @media (max-width: 768px) {
+    #buttonContainer {
+        flex-direction: column; /* Alinea los botones verticalmente */
+        padding: 10px 0; /* Aumenta el padding para mejor accesibilidad */
+    }}
         #subtitles {
             display: none;
             position: absolute;
@@ -84,11 +89,11 @@
         }
     </style>
     
-    
+    <div id="loadingScreen">Cargando...</div>
+
 </head>
 <body>
 
-    <div id="loadingScreen">Cargando...</div>
 
 
 
@@ -117,57 +122,10 @@
    
 
 
+    
+
 <script>
 
-
-let audioInitialized = false;
-
-function initGame() {
-    if (!audioInitialized) {
-        getAudioContext().resume().then(() => {
-            console.log('Audio activado');
-            audioInitialized = true;
-            startNarration();
-            document.getElementById('startButton').style.display = 'none'; // Oculta el botón de inicio después de activar el audio
-        }).catch(err => {
-            console.error('Error al activar el audio:', err);
-        });
-    } else {
-        startNarration();
-    }
-}
-
-window.onload = function() {
-    // Mostrar el botón 'Iniciar' solo después de que la página haya cargado completamente
-    var startButton = document.getElementById('startButton');
-    if (startButton) {
-        startButton.style.display = 'block'; // Asegúrate de que este estilo sobrescriba cualquier otro que pueda ocultarlo inicialmente
-        startButton.addEventListener('click', function() {
-            this.style.display = 'none'; // Ocultar el botón después de ser presionado
-            startGame(); // Función que inicia el juego y la narración
-        });
-    }
-};
-
-
-function startNarration() {
-    console.log("Narración iniciada");
-    if (narrationTracks && narrationTracks[0]) {
-        currentNarration = narrationTracks[0];
-        currentNarration.play(); // Inicia la narración para la primera etapa
-    }
-    startGame(); // Inicia el juego, como la configuración de los boids
-}
-
-function startGame() {
-    console.log("El juego ha comenzado");
-    initFlock();  // Inicia la configuración de los boids
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    var startButton = document.getElementById('startButton');
-    startButton.addEventListener('click', initGame);
-});
 
 window.onload = function() {
     // Ocultar la pantalla de carga una vez que todo esté completamente cargado
@@ -192,6 +150,49 @@ window.onload = function() {
         }
     }
 };
+
+let audioInitialized = false;
+
+function initGame() {
+    if (!audioInitialized) {
+        getAudioContext().resume().then(() => {
+            console.log('Audio activado');
+            audioInitialized = true;
+            startNarration();
+            document.getElementById('startButton').style.display = 'none'; // Oculta el botón de inicio después de activar el audio
+        }).catch(err => {
+            console.error('Error al activar el audio:', err);
+        });
+    } else {
+        startNarration();
+    }
+}
+
+
+
+
+function startNarration() {
+    console.log("Narración iniciada");
+    if (narrationTracks && narrationTracks[0]) {
+        currentNarration = narrationTracks[0];
+        currentNarration.play(); // Inicia la narración para la primera etapa
+    }
+    startGame(); // Inicia el juego, como la configuración de los boids
+}
+
+function startGame() {
+    console.log("El juego ha comenzado");
+    initFlock();  // Inicia la configuración de los boids
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var startButton = document.getElementById('startButton');
+    startButton.addEventListener('click', initGame);
+});
+
+
+
+
 
 
 </script>
