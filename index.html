@@ -238,11 +238,10 @@ function startGame() {
                 this.osc.amp(0.01);
                 this.osc.start();
             }
-       
 
             updateOscillator() {
     // Frecuencia se modifica en base a la posición x
-    let freq = map(this.position.x, 0, width, 100, 500);
+    let freq = map(this.position.x, 0, width, 100, 800);
     this.osc.freq(freq);
 
     // Amplitud se modifica en base a la posición y
@@ -255,7 +254,7 @@ function startGame() {
     this.osc.pan(pan);
 }
 
-
+        
 
 
 
@@ -355,17 +354,15 @@ function startGame() {
             
 
       
-
-
-    show() {
-        push();
-        translate(this.position.x, this.position.y);
-        rotate(this.velocity.heading());
-        image(boidImage, 0, 0, 20, 20); // Confirma que las dimensiones de la imagen son correctas
-        pop();
-    }
-}
-
+            show() {
+                push();
+                imageMode(CENTER);
+                translate(this.position.x, this.position.y);
+                rotate(this.velocity.heading() + radians(90));
+                image(boidImage, 0, 0, 20, 20);
+                pop();
+            }
+        }
 
 
         let flock = [];
@@ -382,11 +379,6 @@ function startGame() {
             cityImage = loadImage('ciudad.png');
             finalImage = loadImage('africa.png');
             fifthImage = loadImage('centro.png');
-
-            
-    boidImage = loadImage('abeja.png', () => console.log('Boid image loaded'), e => console.error('Failed to load boid image', e));
-    // Carga otras imágenes de la misma manera y verifica cada una
-
 
             fourthImage = loadImage('campomorado.png');
             sixthImage = loadImage('azul.png');
@@ -437,7 +429,7 @@ function startGame() {
         function initFlock() {
     console.log(`Inicializando boids en canvas de tamaño: ${width}x${height}`);
     flock = [];
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 180; i++) {
         let boid = new Boid(random(width), random(height));
         flock.push(boid);
         console.log(`Boid creado en posición: ${boid.position.x}, ${boid.position.y}`);
@@ -517,18 +509,18 @@ function startGame() {
 }
 
 
-function setup() {
-    pixelDensity(1); // Optimiza la densidad de píxeles para móviles
-    let canvas = createCanvas(windowWidth, windowHeight);
-    canvas.style('display', 'block'); // Asegura que el canvas se muestre
-    console.log(`Canvas size: ${width} x ${height}`); // Comprueba el tamaño del canvas
-    initFlock();
-    // Resto de la inicialización
-}
 
-document.getElementById('startButton').addEventListener('touchstart', function() {
-    initAudio();
-});
+function setup() {
+    pixelDensity(1); // Asegura que p5.js maneje correctamente la densidad de píxeles del dispositivo
+    let canvas = createCanvas(windowWidth, windowHeight);
+    canvas.style('display', 'block');
+
+    // Eliminar inicialización de Quadtree aquí ya que se reiniciará en draw
+    initFlock(); // Inicializa los boids
+    setupAudioProcessing(); // Configura el procesamiento de audio
+    setupButtons(); // Configura los botones
+    changeStage(0); // Establece la etapa inicial del juego
+}
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
@@ -539,19 +531,36 @@ function windowResized() {
 
 
 function draw() {
-    background(0); // Fondo negro
-    fill(255, 0, 0); // Rojo
-    ellipse(width / 2, height / 2, 50, 50); // Círculo central para confirmar renderizado
+    let currentBackground = [backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage][stage];
+    background(currentBackground);
 
-    // Dibuja cada boid
-    flock.forEach(boid => {
-        boid.show();
-        console.log(`Boid at ${boid.position.x}, ${boid.position.y}`); // Verifica la posición de los boids
-    });
+    // Reinicia el Quadtree cada frame para mantenerlo actualizado con las posiciones de los boids
+    quadtree = new Quadtree(new Rectangle(0, 0, width, height), 4);
+
+    // Dibuja panales y boids sólo si la etapa no es la 6
+    if (stage !== 5) {
+        panalPositions.forEach(panal => {
+            image(panalImage, panal.x, panal.y, 50, 50);
+        });
+
+        // Insertar cada boid en el Quadtree
+        flock.forEach(boid => {
+            quadtree.insert(boid);
+        });
+
+        flock.forEach(boid => {
+            boid.edges();
+
+            // Consulta al Quadtree para obtener boids cercanos
+            let range = new Rectangle(boid.position.x - 50, boid.position.y - 50, 100, 300);
+            let nearbyBoids = quadtree.query(range);
+
+            boid.flock(nearbyBoids);
+            boid.update();
+            boid.show();
+        });
+    }
 }
-
-
-
 
 
 
