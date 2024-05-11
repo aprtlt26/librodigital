@@ -53,13 +53,19 @@
             padding: 10px;
         }
 
+@media (min-width: 769px) {
         #startButton {
+            display: none; /* Oculta el botón de inicio en dispositivos no móviles */
+        }
+    }
+
+    #startButton {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        display: block; /* Asegúrate de que el botón esté visible inicialmente */
         z-index: 10;
+        display: none; /* Asegúrate de que el botón esté visible inicialmente en móviles */
     }
 
     </style>
