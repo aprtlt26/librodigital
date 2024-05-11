@@ -84,7 +84,8 @@
         </button>
 
 
-        
+            <button id="startButton">Iniciar</button>
+
    
     <div id="subtitles" style="display:none;">
        Tu misión es recolectar la miel para ayudar a la abejas a migrar a sus destinos
@@ -94,8 +95,10 @@
     <script>
 
 
-    // Espera hasta que todo el contenido del DOM esté listo.
-    
+document.addEventListener('DOMContentLoaded', function() {
+    var startButton = document.getElementById('startButton');
+    startButton.addEventListener('click', initAudio);
+});    
 
 // Clase para definir un rectángulo
 class Rectangle {
