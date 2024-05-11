@@ -468,6 +468,8 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     let canvas = createCanvas(windowWidth, windowHeight);
     canvas.style('display', 'block');
+    canvas.touchStarted(touchStarted);
+
  
 
     // Eliminar inicialización de Quadtree aquí ya que se reiniciará en draw
@@ -490,6 +492,8 @@ function draw() {
     // Establece el fondo actual basado en la etapa del juego
     let currentBackground = [backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage][stage];
     background(currentBackground);
+    drawPanales();
+    updateBoids(scaleFactor);
 
     // Dibuja panales sólo si la etapa no es la 6
     if (stage !== 5) {
@@ -545,6 +549,12 @@ function touchStarted() {
             }
         }
 
+   
+
+
+    </script>
+</body>
+</html>
    
 
 
