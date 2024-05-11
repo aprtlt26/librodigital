@@ -109,17 +109,38 @@
    
     <script>
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Todo tu código JavaScript aquí
-    var startButton = document.getElementById('startButton');
-    startButton.addEventListener('click', function() {
-        initAudio();
+
+    // Espera hasta que todo el contenido del DOM esté listo.
+    document.addEventListener('DOMContentLoaded', function() {
+        var startButton = document.getElementById('startButton');
+        if (startButton) {
+            startButton.addEventListener('click', function() {
+                initAudio();
+            });
+        } else {
+            console.error('El botón de inicio no está presente en el DOM al cargar la página.');
+        }
     });
 
     function initAudio() {
-        // Tu función de inicialización de audio aquí
+        // Asumiendo que usas p5.js y que getAudioContext() es parte de p5.sound
+        let audioCtx = getAudioContext();
+        if (audioCtx && audioCtx.state !== 'running') {
+            audioCtx.resume().then(() => {
+                console.log('Audio Activado');
+                startGame(); // Llamar a iniciar el juego después de activar el audio
+            }).catch(err => {
+                console.error('Error al activar el audio:', err);
+            });
+        }
     }
-});
+
+    function startGame() {
+        console.log("El juego ha comenzado");
+        // Implementa aquí la lógica para iniciar el juego
+    }
+
+
 
         let flock = [];
         let backgroundImage, cityImage, finalImage, fourthImage, fifthImage, sixthImage, panalImage, boidImage;
