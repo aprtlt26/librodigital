@@ -381,7 +381,7 @@ class Boid {
         function initFlock() {
     console.log(`Inicializando boids en canvas de tamaño: ${width}x${height}`);
     flock = [];
-    for (let i = 0; i < 180; i++) {
+    for (let i = 0; i < 100; i++) {
         let boid = new Boid(random(width), random(height));
         flock.push(boid);
         console.log(`Boid creado en posición: ${boid.position.x}, ${boid.position.y}`);
