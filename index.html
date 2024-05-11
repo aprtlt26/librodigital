@@ -224,142 +224,145 @@ function startGame() {
 }
 
 
-class Boid {
-    constructor() {
-        this.position = createVector(random(0, windowWidth), random(0, windowHeight));
-        this.velocity = p5.Vector.random2D();
-        this.velocity.setMag(random(2, 8));
-        this.acceleration = createVector();
-        this.maxForce = 0.35;  // Máxima fuerza de aceleración
-        this.maxSpeed = 8;     // Velocidad máxima
-        this.perceptionRadius = 370;  // Radio de percepción para interactuar con otros boids
-        this.osc = new p5.Oscillator('sine');
-        
-        this.osc.freq(map(this.position.x, 0, width, 100, 800)); // Frecuencia inicial basada en la posición
-        this.osc.amp(0.01); // Amplitud inicial baja
-        this.osc.start();  // Inicia el oscilador
-    }
-
-    updateOscillator() {
-        // Actualiza la frecuencia basada en la posición horizontal del boid
-        let freq = map(this.position.x, 0, width, 100, 800);
-        this.osc.freq(freq);
-
-        // Actualiza la amplitud basada en la posición vertical del boid
-        let amp = map(this.position.y, 0, height, 0.00, 0.01);
-        this.osc.amp(amp);
-
-        // Panorámica basada en la posición x para efecto de movimiento
-        let pan = map(this.position.x, 0, width, -1, 1);
-        this.osc.pan(constrain(pan, -1, 1));  // Asegura que el pan está dentro de los límites permitidos
-    }
-
-    edges() {
-        // Permite que los boids "envuelvan" los bordes del canvas
-        if (this.position.x > width) this.position.x = 0;
-        if (this.position.x < 0) this.position.x = width;
-        if (this.position.y > height) this.position.y = 0;
-        if (this.position.y < 0) this.position.y = height;
-    }
-
-    align(boids) {
-        let steering = createVector();
-        let total = 0;
-        for (let other of boids) {
-            let d = p5.Vector.dist(this.position, other.position);
-            if (other !== this && d < this.perceptionRadius) {
-                steering.add(other.velocity);
-                total++;
+        class Boid {
+            constructor() {
+                this.position = createVector(random(width), random(height));
+                this.velocity = p5.Vector.random2D();
+                this.velocity.setMag(random(2, 8));
+                this.acceleration = createVector();
+                this.maxForce = 0.35;
+                this.maxSpeed = 8;
+                this.perceptionRadius = 370;
+                this.osc = new p5.Oscillator('sine');
+                
+                this.osc.amp(0.01);
+                this.osc.start();
             }
-        }
-        if (total > 0) {
-            steering.div(total);
-            steering.setMag(this.maxSpeed);
-            steering.sub(this.velocity);
-            steering.limit(this.maxForce);
-        }
-        return steering;
-    }
 
-    cohesion(boids) {
-        let steering = createVector();
-        let total = 0;
-        for (let other of boids) {
-            let d = p5.Vector.dist(this.position, other.position);
-            if (other !== this && d < this.perceptionRadius) {
-                steering.add(other.position);
-                total++;
-            }
-        }
-        if (total > 0) {
-            steering.div(total);
-            steering.sub(this.position);
-            steering.setMag(this.maxSpeed);
-            steering.limit(this.maxForce);
-        }
-        return steering;
-    }
+            updateOscillator() {
+    // Frecuencia se modifica en base a la posición x
+    let freq = map(this.position.x, 0, width, 100, 800);
+    this.osc.freq(freq);
 
-    separation(boids) {
-        let steering = createVector();
-        let total = 0;
-        for (let other of boids) {
-            let d = p5.Vector.dist(this.position, other.position);
-            if (other !== this && d < this.perceptionRadius / 2) {
-                let diff = p5.Vector.sub(this.position, other.position);
-                diff.div(d);  // Escala inversamente con la distancia
-                steering.add(diff);
-                total++;
-            }
-        }
-        if (total > 0) {
-            steering.div(total);
-            steering.setMag(this.maxSpeed);
-            steering.limit(this.maxForce);
-        }
-        return steering;
-    }
+    // Amplitud se modifica en base a la posición y
+    let amp = map(this.position.y, 0, height, 0.00, 0.01);
+    this.osc.amp(amp);
 
-    followMouse() {
-        // Atrae a los boids hacia el cursor del ratón
-        let mouse = createVector(mouseX, mouseY);
-        let steer = p5.Vector.sub(mouse, this.position);
-        steer.setMag(this.maxSpeed);
-        steer.sub(this.velocity);
-        steer.limit(this.maxForce);
-        this.acceleration.add(steer);
-    }
-
-    flock(boids) {
-        // Aplica las reglas de alineación, cohesión y separación
-        let alignment = this.align(boids);
-        let cohesion = this.cohesion(boids);
-        let separation = this.separation(boids);
-        this.acceleration.add(alignment);
-        this.acceleration.add(cohesion);
-        this.acceleration.add(separation);
-    }
-
-    update() {
-        // Actualiza la posición y la velocidad del boid
-        this.position.add(this.velocity);
-        this.velocity.add(this.acceleration);
-        this.velocity.limit(this.maxSpeed);
-        this.acceleration.mult(0);
-        this.updateOscillator();
-    }
-
-    show(scaleFactor) {
-        // Dibuja el boid en el canvas
-        push();
-        imageMode(CENTER);
-        translate(this.position.x * scaleFactor, this.position.y * scaleFactor);
-        rotate(this.velocity.heading() + radians(90));
-        image(boidImage, 0, 0, 20 * scaleFactor, 20 * scaleFactor);  // Ajusta el tamaño del boid según scaleFactor
-        pop();
-    }
+    // Panorámica se modifica basada en la posición x para dar sensación de movimiento lateral
+    let pan = map(this.position.x, 0, width, -1, 1);
+    pan = constrain(pan, -1, 1); // Asegura que el pan está dentro del rango permitido
+    this.osc.pan(pan);
 }
 
+        
+
+
+
+            edges() {
+                if (this.position.x > width) this.position.x = 0;
+                if (this.position.x < 0) this.position.x = width;
+                if (this.position.y > height) this.position.y = 0;
+                if (this.position.y < 0) this.position.y = height;
+            }
+
+            align(boids) {
+                let steering = createVector();
+                let total = 0;
+                for (let other of boids) {
+                    let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
+                    if (other !== this && d < this.perceptionRadius) {
+                        steering.add(other.velocity);
+                        total++;
+                    }
+                }
+
+                if (total > 0) {
+                    steering.div(total);
+                    steering.setMag(this.maxSpeed);
+                    steering.sub(this.velocity);
+                    steering.limit(this.maxForce);
+                }
+                return steering;
+            }
+
+            cohesion(boids) {
+                let steering = createVector();
+                let total = 0;
+                for (let other of boids) {
+                    let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
+                    if (other !== this && d < this.perceptionRadius) {
+                        steering.add(other.position);
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.div(total);
+                    steering.sub(this.position);
+                    steering.setMag(this.maxSpeed);
+                    steering.limit(this.maxForce);
+                }
+                return steering;
+            }
+
+            separation(boids) {
+                let steering = createVector();
+                let total = 0;
+                for (let other of boids) {
+                    let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
+                    if (other !== this && d < this.perceptionRadius / 2) {
+                        let diff = p5.Vector.sub(this.position, other.position);
+                        diff.div(d);
+                        steering.add(diff);
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.div(total);
+                    steering.setMag(this.maxSpeed);
+                    steering.limit(this.maxForce);
+                }
+                return steering;
+            }
+
+            followMouse() {
+                let mouse = createVector(mouseX, mouseY);
+                let steer = p5.Vector.sub(mouse, this.position);
+                steer.setMag(this.maxSpeed);
+                steer.sub(this.velocity);
+                steer.limit(this.maxForce);
+                this.acceleration.add(steer);
+            }
+
+            flock(boids) {
+                let alignment = this.align(boids);
+                let cohesion = this.cohesion(boids);
+                let separation = this.separation(boids);
+                let mouseForce = this.followMouse();
+                this.acceleration.add(alignment);
+                this.acceleration.add(cohesion);
+                this.acceleration.add(separation);
+                this.acceleration.add(mouseForce);
+            }
+
+        update() {
+    this.position.add(this.velocity);
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxSpeed);
+    this.acceleration.mult(0);
+    this.updateOscillator(); // Asegúrate de llamar a esta función aquí para actualizar continuamente
+}
+            
+
+      
+            show() {
+                push();
+                imageMode(CENTER);
+                translate(this.position.x, this.position.y);
+                rotate(this.velocity.heading() + radians(90));
+                image(boidImage, 0, 0, 20, 20);
+                pop();
+            }
+        }
 
 
         let flock = [];
