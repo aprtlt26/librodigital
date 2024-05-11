@@ -466,7 +466,6 @@ function windowResized() {
 
 function draw() {
     clear();  
-    let scaleFactor = window.devicePixelRatio; // Obtiene la densidad de píxeles del dispositivo
     
     // Establece el fondo actual basado en la etapa del juego
     let currentBackground = [backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage][stage];
@@ -497,7 +496,7 @@ function draw() {
         boid.update();
 
         // Ajusta la visualización de los boids basado en la escala del dispositivo
-        boid.show(scaleFactor);
+        boid.show();
     });
 }
 
