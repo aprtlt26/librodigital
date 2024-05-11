@@ -54,6 +54,10 @@
         }
     </style>
 </head>
+
+
+    // Configura e inicia los boids aquí o cualquier otra lógica de inicio del juego
+
 <body>
     <div id="buttonContainer">
         <button id="startButton">Iniciar</button>
@@ -73,24 +77,23 @@
         
    
     <div id="subtitles" style="display:none;">
-       Tu misión es recolectar lso panales para auidar a la abjeas a migrar a sus destinos
+       Tu misión es recolectar la miel para ayudar a la abejas a migrar a sus destinos
     </div>
 
+   
     <script>
-        document.getElementById('startButton').addEventListener('click', function() {
-            initAudio();
-        });
 
-        function initAudio() {
-            userStartAudio().then(() => {
-                console.log('Audio Activado');
-                // Aquí puedes iniciar tus osciladores o cualquier otra cosa relacionada con el audio
-            }).catch(err => {
-                console.error('Error al activar el audio:', err);
-            });
-        }
-    </script>
-    <script>
+function initAudio() {
+    if (getAudioContext().state !== 'running') {
+        getAudioContext().resume().then(() => {
+            console.log('Audio Activado');
+            startGame(); // Inicia tu juego aquí
+        }).catch(err => {
+            console.error('Error al activar el audio:', err);
+        });
+    }
+}
+
         let flock = [];
         let backgroundImage, cityImage, finalImage, fourthImage, fifthImage, sixthImage, panalImage, boidImage;
         let panalPositions = [];
@@ -273,6 +276,15 @@ function setup() {
                 }
             }
         }
+
+
+        document.getElementById('startButton').addEventListener('click', function() {
+    initAudio();
+});
+
+
+
+
         class Boid {
             constructor() {
                 this.position = createVector(random(width), random(height));
@@ -411,6 +423,7 @@ function setup() {
                 pop();
             }
         }
+
     </script>
 </body>
 </html>
