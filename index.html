@@ -60,11 +60,10 @@
 
 
     <div id="buttonContainer">
-        <button id="startButton">Iniciar</button>
 
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
-        <button id="restartButton">Reiniciar Juego</button>
+        <button id="restartButton">Iniciar Juego</button>
         <button id="newGameButton">Collage</button>
         <button id="subtitleButton">Misión</button>
     </div>
@@ -589,6 +588,16 @@ function draw() {
         document.getElementById('startButton').addEventListener('click', function() {
     initAudio();
 });
+
+        function touchStarted() {
+    console.log("Touch iniciado"); // Verifica que esta línea se imprime cuando tocas la pantalla
+    getAudioContext().resume().then(() => {
+        console.log("Audio activado");
+    }).catch(err => {
+        console.error("Error al activar el audio:", err);
+    });
+    return false; // Previene comportamientos por defecto como el desplazamiento de la página
+}
 
     </script>
 </body>
