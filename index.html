@@ -52,6 +52,17 @@
             background: rgba(0,0,0,0.5);
             padding: 10px;
         }
+    
+    
+    #startButton {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: block; /* Asegúrate de que el botón esté visible inicialmente */
+        z-index: 10;
+    }
+
     </style>
 </head>
 <body>
@@ -60,13 +71,13 @@
 
 
     <div id="buttonContainer">
-        <button id="startButton">Iniciar</button>
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
         <button id="restartButton">Reiniciar Juego</button>
         <button id="newGameButton">Collage</button>
         <button id="subtitleButton">Misión</button>
     </div>
+    <button id="startButton">Iniciar</button>
 
         <button id="collageButton" style="display: none; position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background: url('path_to_your_button_image.jpg') no-repeat center; border: none; width: 50px; height: 100px; cursor: pointer;">
             <img src="insects.png" alt="" >
@@ -84,22 +95,6 @@
 
 
     // Espera hasta que todo el contenido del DOM esté listo.
-    document.addEventListener('DOMContentLoaded', function() {
-    var startButton = document.getElementById('startButton');
-    startButton.addEventListener('click', function() {
-        getAudioContext().resume().then(() => {
-            console.log('Audio activado');
-            startGame();
-        }).catch(err => {
-            console.error('Error al activar el audio:', err);
-        });
-    });
-});
-
-function startGame() {
-    console.log("El juego ha comenzado");
-    initFlock();  // Asegúrate de que esta función configura los boids correctamente
-}
 // Clase para definir un rectángulo
 class Rectangle {
     constructor(x, y, w, h) {
@@ -207,6 +202,41 @@ class Quadtree {
 
 
 
+// Variables globales para controlar el estado del audio y el botón
+let audioInitialized = false;
+
+function initAudio() {
+    if (!audioInitialized) {
+        getAudioContext().resume().then(() => {
+            console.log('Audio activado');
+            startGame();
+            audioInitialized = true;
+            document.getElementById('startButton').style.display = 'none'; // Oculta el botón de inicio
+        }).catch(err => {
+            console.error('Error al activar el audio:', err);
+        });
+    }
+}
+
+function startGame() {
+    console.log("El juego ha comenzado");
+    initFlock(); // Asegúrate de que esta función configura los boids correctamente
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var startButton = document.getElementById('startButton');
+    startButton.addEventListener('click', initAudio);
+});
+
+function initFlock() {
+    console.log(`Inicializando boids en canvas de tamaño: ${width}x${height}`);
+    flock = [];
+    for (let i = 0; i < 180; i++) {
+        let boid = new Boid(random(width), random(height));
+        flock.push(boid);
+        console.log(`Boid creado en posición: ${boid.position.x}, ${boid.position.y}`);
+    }
+}
 
 
 
@@ -413,15 +443,7 @@ class Quadtree {
             resizeCanvas(windowWidth, windowHeight);
         }
 
-        function initFlock() {
-    console.log(`Inicializando boids en canvas de tamaño: ${width}x${height}`);
-    flock = [];
-    for (let i = 0; i < 100; i++) {
-        let boid = new Boid(random(width), random(height));
-        flock.push(boid);
-        console.log(`Boid creado en posición: ${boid.position.x}, ${boid.position.y}`);
-    }
-}
+ 
 
 
 
