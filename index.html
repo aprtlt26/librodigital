@@ -36,12 +36,6 @@
         button:hover {
             background-color: #13e0eb;
         }
-        @media (max-width: 768px) {
-            button {
-                padding: 8px 10px; /* Botones más pequeños para pantallas pequeñas */
-                font-size: 11px;
-            }
-        }
         #subtitles {
             display: none;
             position: absolute;
@@ -52,23 +46,28 @@
             background: rgba(0,0,0,0.5);
             padding: 10px;
         }
-
-@media (min-width: 769px) {
+    
+        /* Ocultar el botón 'Iniciar' en pantallas grandes */
         #startButton {
-            display: none; /* Oculta el botón de inicio en dispositivos no móviles */
+            display: none; /* Oculta por defecto el botón */
         }
-    }
-
-    #startButton {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 10;
-        display: none; /* Asegúrate de que el botón esté visible inicialmente en móviles */
-    }
-
+    
+        /* Mostrar el botón 'Iniciar' solo en dispositivos móviles (pantallas pequeñas) */
+        @media (max-width: 768px) {
+            #startButton {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: block; /* Mostrar solo en pantallas pequeñas */
+                z-index: 10;
+                padding: 15px 30px; /* Tamaño más grande para facilitar la interacción */
+                font-size: 20px; /* Fuente más grande para mejor visibilidad en móviles */
+            }
+        }
     </style>
+    
+    
 </head>
 <body>
 
@@ -137,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var startButton = document.getElementById('startButton');
     startButton.addEventListener('click', initGame);
 });
-
 
 
 // Resto del código...
@@ -418,7 +416,7 @@ class Boid {
         function initFlock() {
     console.log(`Inicializando boids en canvas de tamaño: ${width}x${height}`);
     flock = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 70; i++) {
         let boid = new Boid(random(width), random(height));
         flock.push(boid);
         console.log(`Boid creado en posición: ${boid.position.x}, ${boid.position.y}`);
