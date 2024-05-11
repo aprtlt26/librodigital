@@ -359,9 +359,8 @@ function startGame() {
                 imageMode(CENTER);
                 translate(this.position.x, this.position.y);
                 rotate(this.velocity.heading() + radians(90));
-                let size = max(20, 20 * window.devicePixelRatio);
-    image(boidImage, 0, 0, size, size);
-    pop();
+                image(boidImage, 0, 0, 20, 20);
+                pop();
             }
         }
 
@@ -512,7 +511,6 @@ function startGame() {
 
 
 function setup() {
-    noSmooth();
     pixelDensity(1); // Puedes intentar remover esto para usar la densidad por defecto del dispositivo
     createCanvas(windowWidth, windowHeight);
     let canvas = createCanvas(windowWidth, windowHeight);
@@ -535,9 +533,8 @@ function windowResized() {
 
 
 function draw() {
-    clear();  
     let scaleFactor = window.devicePixelRatio; // Obtiene la densidad de píxeles del dispositivo
-    
+    clear();
 
     // Establece el fondo actual basado en la etapa del juego
     let currentBackground = [backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage][stage];
