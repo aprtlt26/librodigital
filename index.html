@@ -302,16 +302,15 @@ function setup() {
         document.getElementById('startButton').addEventListener('click', function() {
     initAudio();
 });
-
 function initAudio() {
-    if (getAudioContext().state !== 'running') {
-        getAudioContext().resume().then(() => {
-            console.log('Audio Activado');
-            startGame(); // Inicia tu juego aquí
-        }).catch(err => {
-            console.error('Error al activar el audio:', err);
-        });
-    }
+    userStartAudio().then(() => {
+        console.log('Audio Activado');
+        // Aquí puedes iniciar tus osciladores o cualquier otra cosa relacionada con el audio
+        // Por ejemplo, si tienes una función para iniciar boids o algo similar
+        setupBoids();
+    }).catch(err => {
+        console.error('Error al activar el audio:', err);
+    });
 }
 
 function startGame() {
