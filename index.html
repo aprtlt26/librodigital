@@ -25,8 +25,8 @@
         }
         button {
             margin: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 10px 15px;
+            font-size: 11px;
             cursor: pointer;
             background-color: #93f2ff;
             color: white;
@@ -36,6 +36,11 @@
         button:hover {
             background-color: #13e0eb;
         }
+        @media (max-width: 768px) {
+    #buttonContainer {
+        flex-direction: column; /* Alinea los botones verticalmente */
+        padding: 20px 0; /* Aumenta el padding para mejor accesibilidad */
+    }}
         #subtitles {
             display: none;
             position: absolute;
@@ -65,13 +70,30 @@
                 font-size: 20px; /* Fuente más grande para mejor visibilidad en móviles */
             }
         }
+
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('destino.png') center center no-repeat;
+            background-size: 30%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            z-index: 100;
+        }
     </style>
     
     
 </head>
 <body>
 
-   
+    <div id="loadingScreen">Cargando...</div>
+
 
 
     <div id="buttonContainer">
@@ -152,22 +174,33 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-</script>
-<script>
-
 
 
 window.onload = function() {
-    // Mostrar el botón 'Iniciar' solo después de que la página haya cargado completamente
+    // Ocultar la pantalla de carga
+    var loadingScreen = document.getElementById('loadingScreen');
+    if (loadingScreen) {
+        loadingScreen.style.display = 'none';
+    }
+
+    // Mostrar el botón 'Iniciar' solo en dispositivos móviles
     var startButton = document.getElementById('startButton');
-    if (startButton) {
-        startButton.style.display = 'block'; // Asegúrate de que este estilo sobrescriba cualquier otro que pueda ocultarlo inicialmente
-        startButton.addEventListener('click', function() {
-            this.style.display = 'none'; // Ocultar el botón después de ser presionado
-            startGame(); // Función que inicia el juego y la narración
-        });
+    if (window.innerWidth <= 768) {
+        if (startButton) {
+            startButton.style.display = 'block'; // Mostrar el botón en dispositivos móviles
+
+            startButton.addEventListener('click', function() {
+                this.style.display = 'none'; // Ocultar el botón después de ser presionado
+                startGame(); // Función que inicia el juego y la narración
+            });
+        }
+    } else {
+        if (startButton) {
+            startButton.style.display = 'none'; // Asegúrate de que el botón no se muestre en dispositivos de escritorio
+        }
     }
 };
+
 </script>
 <script src="abejas.js"></script>
 
