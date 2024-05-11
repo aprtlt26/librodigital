@@ -38,7 +38,7 @@
         }
         @media (max-width: 768px) {
             button {
-                padding: 8px 9px; /* Botones más pequeños para pantallas pequeñas */
+                padding: 8px 10px; /* Botones más pequeños para pantallas pequeñas */
                 font-size: 11px;
             }
         }
@@ -52,62 +52,41 @@
             background: rgba(0,0,0,0.5);
             padding: 10px;
         }
-
-        .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 10; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-.modal-content {
-    background-color: #bdedf1;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%; /* Could be more or less, depending on screen size */
-    border-radius: 5px;
-}
-
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.modal-start-button {
-    background-color: #93f2ff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-
-.modal-start-button:hover {
-    background-color: #13e0eb;
-}
-
     </style>
 </head>
 <body>
+
+    <script>window.onload = function() {
+        alert("Haz clic en 'Iniciar' para habilitar el sonido y comenzar a jugar!");
+    };
+    
+    document.getElementById('startButton').addEventListener('click', function() {
+        initAudio();
+    });
+    
+    function initAudio() {
+        if (typeof getAudioContext === 'function') {
+            let audioContext = getAudioContext();
+            if (audioContext && audioContext.state !== 'running') {
+                audioContext.resume().then(() => {
+                    console.log('Audio activado');
+                    startGame();  // Inicia el juego aquí si es necesario
+                }).catch(err => {
+                    console.error('Error al activar el audio:', err);
+                });
+            }
+        } else {
+            console.log('Función getAudioContext no definida');
+        }
+    }
+    
+    function startGame() {
+        console.log("El juego ha comenzado");
+        // Aquí inicia la lógica principal de tu juego
+    }
+    </script>
     <div id="buttonContainer">
+        <button id="startButton">Iniciar</button>
 
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
@@ -127,14 +106,7 @@
        Tu misión es recolectar la miel para ayudar a la abejas a migrar a sus destinos
     </div>
 
-    <div id="alertModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <p>Haz clic en 'Iniciar' para habilitar el sonido y comenzar a jugar!</p>
-            <button id="startButton" class="modal-start-button">Iniciar</button>
-        </div>
-    </div>
-    
+   
     <script>
         let flock = [];
         let backgroundImage, cityImage, finalImage, fourthImage, fifthImage, sixthImage, panalImage, boidImage;
@@ -478,55 +450,6 @@ function startGame() {
                 pop();
             }
         }
-    </script>
-
-    <script>
-
-window.onload = function() {
-    var modal = document.getElementById('alertModal');
-    var closeButton = document.querySelector('.close-button');
-    var startButton = document.getElementById('startButton');
-
-    modal.style.display = "block";
-
-    closeButton.onclick = function() {
-        modal.style.display = "none";
-    };
-
-    startButton.addEventListener('click', function() {
-        initAudio();
-        modal.style.display = "none";
-    });
-
-    function initAudio() {
-        if (typeof getAudioContext === 'function') {
-            let audioContext = getAudioContext();
-            if (audioContext && audioContext.state !== 'running') {
-                audioContext.resume().then(() => {
-                    console.log('Audio activado');
-                    startGame();  // Inicia el juego aquí si es necesario
-                }).catch(err => {
-                    console.error('Error al activar el audio:', err);
-                });
-            }
-        } else {
-            console.log('Función getAudioContext no definida');
-        }
-    }
-
-    function startGame() {
-        console.log("El juego ha comenzado");
-        // Aquí inicia la lógica principal de tu juego
-    }
-};
-
-window.onclick = function(event) {
-    var modal = document.getElementById('alertModal');
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-};
-
     </script>
 </body>
 </html>
