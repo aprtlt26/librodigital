@@ -60,11 +60,10 @@
 
 
     <div id="buttonContainer">
-        <button id="startButton">Iniciar</button>
 
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
-        <button id="restartButton">Reiniciar Juego</button>
+        <button id="restartButton">Iniciar Juego</button>
         <button id="newGameButton">Collage</button>
         <button id="subtitleButton">Misión</button>
     </div>
@@ -97,7 +96,10 @@
     });
 });
 
-
+function startGame() {
+    console.log("El juego ha comenzado");
+    initFlock();  // Asegúrate de que esta función configura los boids correctamente
+}
 // Clase para definir un rectángulo
 class Rectangle {
     constructor(x, y, w, h) {
@@ -215,10 +217,7 @@ function initAudio() {
     }
 }
 
-function startGame() {
-    console.log("El juego ha comenzado");
-    initFlock(); // Asegura que los boids se inicializan aquí
-}
+
 
 
         class Boid {
@@ -242,7 +241,7 @@ function startGame() {
     this.osc.freq(freq);
 
     // Amplitud se modifica en base a la posición y
-    let amp = map(this.position.y, 0, height, 0.00, 0.01);
+    let amp = map(this.position.y, 0, height, -0.01, 0.00);
     this.osc.amp(amp);
 
     // Panorámica se modifica basada en la posición x para dar sensación de movimiento lateral
@@ -426,7 +425,7 @@ function startGame() {
         function initFlock() {
     console.log(`Inicializando boids en canvas de tamaño: ${width}x${height}`);
     flock = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 180; i++) {
         let boid = new Boid(random(width), random(height));
         flock.push(boid);
         console.log(`Boid creado en posición: ${boid.position.x}, ${boid.position.y}`);
@@ -567,6 +566,7 @@ function draw() {
 
 
 
+
         function mousePressed() {
             for (let i = panalPositions.length - 1; i >= 0; i--) {
                 let pos = panalPositions[i];
@@ -585,7 +585,9 @@ function draw() {
             }
         }
 
-   
+        document.getElementById('startButton').addEventListener('click', function() {
+    initAudio();
+});
 
 
     </script>
