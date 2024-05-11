@@ -503,9 +503,8 @@ function draw() {
 
 
 function touchStarted() {
-    // Maneja el evento táctil y luego desencadena la lógica del clic del mouse
-    mousePressed();
-    return false; // Evita el comportamiento por defecto del navegador, como el desplazamiento
+    mousePressed();  // Esta línea llamará a mousePressed cuando se detecte un toque
+    return false;  // Esto previene comportamiento por defecto, como el scrolling
 }
 
 
@@ -519,6 +518,7 @@ function touchStarted() {
                         stage++;
                         changeStage(stage);
                         function touchStarted() {
+    mousePressed();  // Puedes llamar a mousePressed o manejarlo de forma específica para toques
 }
 
                     }
