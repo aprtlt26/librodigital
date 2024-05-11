@@ -497,14 +497,15 @@ function draw() {
         boid.update();
 
         // Ajusta la visualización de los boids basado en la escala del dispositivo
-        boid.show();
+        boid.show(scaleFactor);
     });
 }
 
 
 function touchStarted() {
-    mousePressed();  // Esta línea llamará a mousePressed cuando se detecte un toque
-    return false;  // Esto previene comportamiento por defecto, como el scrolling
+    // Maneja el evento táctil y luego desencadena la lógica del clic del mouse
+    mousePressed();
+    return false; // Evita el comportamiento por defecto del navegador, como el desplazamiento
 }
 
 
@@ -517,9 +518,7 @@ function touchStarted() {
                     if (panalPositions.length === 0) {
                         stage++;
                         changeStage(stage);
-                        function touchStarted() {
-    mousePressed();  // Puedes llamar a mousePressed o manejarlo de forma específica para toques
-}
+                        function touchStarted() 
 
                     }
                 }
