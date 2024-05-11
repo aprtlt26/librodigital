@@ -565,23 +565,7 @@ function draw() {
     });
 }
 
-function touchStarted() {
-    console.log("Touch position:", touches[0].x, touches[0].y); // Imprime la posición del toque
-    // Procesa el toque como si fuera un click
-    for (let i = panalPositions.length - 1; i >= 0; i--) {
-        let pos = panalPositions[i];
-        if (dist(touches[0].x, touches[0].y, pos.x, pos.y) < 50) {
-            panalPositions.splice(i, 1);
-            panalDisappearSound.play();
-            if (panalPositions.length === 0) {
-                stage++;
-                changeStage(stage);
-            }
-            break; // Salir después de procesar el primer toque válido
-        }
-    }
-    return false; // Esto puede ayudar a evitar comportamientos predeterminados del navegador y eventos de scroll
-}
+
 
 
         function mousePressed() {
