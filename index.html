@@ -1,35 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Alfonso Pretelt - Arte y Psique - Collage">
-    <meta name="keywords" content="collage, alfonsopretelt,tarot,erosion,">
-    <meta name="author" content="alfonsopretelt">
-    <meta name="robots" content="collage">
-    <meta name="google" content="translate">
-   <meta property="og:type" content="www.arteypsique.com">
-    <meta property="og:url" content="https://www.arteypsique.com">
-    <meta property="og:title" content="Arte & Psique">
-    <meta property="og:description" content="Plataforma de aprendizaje y creación">
-    <link rel="icon" href="rostro.jpg" type="image/x-icon">
-    <meta property="og:image" content="log.png">
-    <title>Viaje Abejas</title>
-    <link rel="stylesheet" href="stylec.css">
-
-    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/RecordRTC/5.6.1/RecordRTC.min.js"></script>
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Asegura responsividad -->
+    <title>Libro Digital Interactivo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
-
-   <style>
+    <style>
         body, html {
             margin: 0;
             padding: 0;
@@ -59,7 +36,11 @@
         button:hover {
             background-color: #1ccad3;
         }
-  
+        @media (max-width: 768px) {
+    #buttonContainer {
+        flex-direction: column; /* Alinea los botones verticalmente */
+        padding: 10px 0; /* Aumenta el padding para mejor accesibilidad */
+    }}
         #subtitles {
             display: none;
             position: absolute;
@@ -138,35 +119,15 @@
 
    
 
-
+    <div id="loading" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: rgb(255, 255, 255); color: rgb(0, 255, 21); z-index: 1000;">
+        Cargando...
+        <img src="destino.png" alt="Cargando...">
+    </div>
     
 
 <script>
+document.getElementById('loading').style.display = 'none';
 
-
-window.onload = function() {
-    // Ocultar la pantalla de carga una vez que todo esté completamente cargado
-    var loadingScreen = document.getElementById('loadingScreen');
-    if (loadingScreen) {
-        loadingScreen.style.display = 'none';
-    }
-
-    // Mostrar el botón 'Iniciar' solo en dispositivos móviles
-    var startButton = document.getElementById('startButton');
-    if (window.innerWidth <= 768) {
-        if (startButton) {
-            startButton.style.display = 'block'; // Mostrar el botón en dispositivos móviles
-            startButton.addEventListener('click', function() {
-                this.style.display = 'none'; // Ocultar el botón después de ser presionado
-                startGame(); // Función que inicia el juego y la narración
-            });
-        }
-    } else {
-        if (startButton) {
-            startButton.style.display = 'none'; // Asegúrate de que el botón no se muestre en dispositivos de escritorio
-        }
-    }
-};
 
 let audioInitialized = false;
 
@@ -185,7 +146,17 @@ function initGame() {
     }
 }
 
-
+window.onload = function() {
+    // Mostrar el botón 'Iniciar' solo después de que la página haya cargado completamente
+    var startButton = document.getElementById('startButton');
+    if (startButton) {
+        startButton.style.display = 'block'; // Asegúrate de que este estilo sobrescriba cualquier otro que pueda ocultarlo inicialmente
+        startButton.addEventListener('click', function() {
+            this.style.display = 'none'; // Ocultar el botón después de ser presionado
+            startGame(); // Función que inicia el juego y la narración
+        });
+    }
+};
 
 
 function startNarration() {
@@ -208,7 +179,23 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+window.onload = function() {
 
+    var startButton = document.getElementById('startButton');
+    if (window.innerWidth <= 768) {
+        if (startButton) {
+            startButton.style.display = 'block'; // Mostrar el botón en dispositivos móviles
+            startButton.addEventListener('click', function() {
+                this.style.display = 'none'; // Ocultar el botón después de ser presionado
+                startGame(); // Función que inicia el juego y la narración
+            });
+        }
+    } else {
+        if (startButton) {
+            startButton.style.display = 'none'; // Asegúrate de que el botón no se muestre en dispositivos de escritorio
+        }
+    }
+};
 
 
 
