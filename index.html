@@ -126,6 +126,7 @@
     
 
 <script>
+document.getElementById('loading').style.display = 'none';
 
 
 let audioInitialized = false;
@@ -145,7 +146,17 @@ function initGame() {
     }
 }
 
-
+window.onload = function() {
+    // Mostrar el botón 'Iniciar' solo después de que la página haya cargado completamente
+    var startButton = document.getElementById('startButton');
+    if (startButton) {
+        startButton.style.display = 'block'; // Asegúrate de que este estilo sobrescriba cualquier otro que pueda ocultarlo inicialmente
+        startButton.addEventListener('click', function() {
+            this.style.display = 'none'; // Ocultar el botón después de ser presionado
+            startGame(); // Función que inicia el juego y la narración
+        });
+    }
+};
 
 
 function startNarration() {
@@ -168,7 +179,23 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+window.onload = function() {
 
+    var startButton = document.getElementById('startButton');
+    if (window.innerWidth <= 768) {
+        if (startButton) {
+            startButton.style.display = 'block'; // Mostrar el botón en dispositivos móviles
+            startButton.addEventListener('click', function() {
+                this.style.display = 'none'; // Ocultar el botón después de ser presionado
+                startGame(); // Función que inicia el juego y la narración
+            });
+        }
+    } else {
+        if (startButton) {
+            startButton.style.display = 'none'; // Asegúrate de que el botón no se muestre en dispositivos de escritorio
+        }
+    }
+};
 
 
 
