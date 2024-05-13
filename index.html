@@ -85,8 +85,22 @@
 
 
     // Espera hasta que todo el contenido del DOM esté listo.
-    
+    document.addEventListener('DOMContentLoaded', function() {
+    var startButton = document.getElementById('startButton');
+    startButton.addEventListener('click', function() {
+        getAudioContext().resume().then(() => {
+            console.log('Audio activado');
+            startGame();
+        }).catch(err => {
+            console.error('Error al activar el audio:', err);
+        });
+    });
+});
 
+function startGame() {
+    console.log("El juego ha comenzado");
+    initFlock();  // Asegúrate de que esta función configura los boids correctamente
+}
 // Clase para definir un rectángulo
 class Rectangle {
     constructor(x, y, w, h) {
@@ -362,7 +376,7 @@ class Boid {
         function initFlock() {
     console.log(`Inicializando boids en canvas de tamaño: ${width}x${height}`);
     flock = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 180; i++) {
         let boid = new Boid(random(width), random(height));
         flock.push(boid);
         console.log(`Boid creado en posición: ${boid.position.x}, ${boid.position.y}`);
@@ -464,10 +478,12 @@ function windowResized() {
 }
 
 
+
 function draw() {
     clear();  
     let scaleFactor = window.devicePixelRatio; // Obtiene la densidad de píxeles del dispositivo
     
+
     // Establece el fondo actual basado en la etapa del juego
     let currentBackground = [backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage][stage];
     background(currentBackground);
@@ -492,7 +508,6 @@ function draw() {
         let range = new Rectangle(boid.position.x - 50, boid.position.y - 50, 100, 100);
         let nearbyBoids = quadtree.query(range);
 
-        boid.followMouse();  // Asegúrate de llamar a followMouse para que respondan al mouse
         boid.flock(nearbyBoids);
         boid.update();
 
@@ -501,11 +516,6 @@ function draw() {
     });
 }
 
-
-function touchStarted() {
-    mousePressed();  // Esta línea llamará a mousePressed cuando se detecte un toque
-    return false;  // Esto previene comportamiento por defecto, como el scrolling
-}
 
 
         function mousePressed() {
@@ -531,4 +541,4 @@ function touchStarted() {
 
     </script>
 </body>
-</html> 
+</html>
