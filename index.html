@@ -40,6 +40,7 @@
             button {
                 padding: 8px 10px; /* Botones más pequeños para pantallas pequeñas */
                 font-size: 11px;
+                
             }
         }
         #subtitles {
@@ -60,11 +61,10 @@
 
 
     <div id="buttonContainer">
-        <button id="startButton">Iniciar</button>
 
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
-        <button id="restartButton">Reiniciar Juego</button>
+        <button id="restartButton">Iniciar Juego</button>
         <button id="newGameButton">Collage</button>
         <button id="subtitleButton">Misión</button>
     </div>
@@ -205,120 +205,161 @@ class Quadtree {
     }
 }
 
-class Boid {
-    constructor() {
-        this.position = createVector(random(width), random(height));
-        this.velocity = p5.Vector.random2D();
-        this.velocity.setMag(random(2, 8));
-        this.acceleration = createVector();
-        this.maxForce = 0.35;
-        this.maxSpeed = 8;
-        this.perceptionRadius = 370;
+
+
+function initAudio() {
+    if (getAudioContext().state !== 'running') {
+        getAudioContext().resume().then(() => {
+            console.log('Audio Activado');
+            startGame(); // Inicia tu juego aquí
+        }).catch(err => {
+            console.error('Error al activar el audio:', err);
+        });
     }
-
-    edges() {
-        if (this.position.x > width) this.position.x = 0;
-        if (this.position.x < 0) this.position.x = width;
-        if (this.position.y > height) this.position.y = 0;
-        if (this.position.y < 0) this.position.y = height;
-    }
-
-    align(boids) {
-        let steering = createVector();
-        let total = 0;
-        for (let other of boids) {
-            let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
-            if (other !== this && d < this.perceptionRadius) {
-                steering.add(other.velocity);
-                total++;
-            }
-        }
-
-        if (total > 0) {
-            steering.div(total);
-            steering.setMag(this.maxSpeed);
-            steering.sub(this.velocity);
-            steering.limit(this.maxForce);
-        }
-        return steering;
-    }
-
-    cohesion(boids) {
-        let steering = createVector();
-        let total = 0;
-        for (let other of boids) {
-            let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
-            if (other !== this && d < this.perceptionRadius) {
-                steering.add(other.position);
-                total++;
-            }
-        }
-        if (total > 0) {
-            steering.div(total);
-            steering.sub(this.position);
-            steering.setMag(this.maxSpeed);
-            steering.limit(this.maxForce);
-        }
-        return steering;
-    }
-
-    separation(boids) {
-        let steering = createVector();
-        let total = 0;
-        for (let other of boids) {
-            let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
-            if (other !== this && d < this.perceptionRadius / 2) {
-                let diff = p5.Vector.sub(this.position, other.position);
-                diff.div(d);
-                steering.add(diff);
-                total++;
-            }
-        }
-        if (total > 0) {
-            steering.div(total);
-            steering.setMag(this.maxSpeed);
-            steering.limit(this.maxForce);
-        }
-        return steering;
-    }
-
-    followMouse() {
-        let mouse = createVector(mouseX, mouseY);
-        let steer = p5.Vector.sub(mouse, this.position);
-        steer.setMag(this.maxSpeed);
-        steer.sub(this.velocity);
-        steer.limit(this.maxForce);
-        this.acceleration.add(steer);
-    }
-
-    flock(boids) {
-        let alignment = this.align(boids);
-        let cohesion = this.cohesion(boids);
-        let separation = this.separation(boids);
-        this.acceleration.add(alignment);
-        this.acceleration.add(cohesion);
-        this.acceleration.add(separation);
-    }
-
-    update() {
-        this.position.add(this.velocity);
-        this.velocity.add(this.acceleration);
-        this.velocity.limit(this.maxSpeed);
-        this.acceleration.mult(0);
-    }
-
-    show() {
-        push();
-        imageMode(CENTER);
-        translate(this.position.x, this.position.y);
-        rotate(this.velocity.heading() + radians(90));
-        let size = max(20, 20 * window.devicePixelRatio); // Asegura la visibilidad en dispositivos de alta resolución
-        image(boidImage, 0, 0, size, size);
-        pop();
-    }
-
 }
 
+
+
+
+        class Boid {
+            constructor() {
+                this.position = createVector(random(width), random(height));
+                this.velocity = p5.Vector.random2D();
+                this.velocity.setMag(random(2, 8));
+                this.acceleration = createVector();
+                this.maxForce = 0.35;
+                this.maxSpeed = 8;
+                this.perceptionRadius = 370;
+                this.osc = new p5.Oscillator('sine');
+                
+                this.osc.amp(0.01);
+                this.osc.start();
+            }
+
+            updateOscillator() {
+    // Frecuencia se modifica en base a la posición x
+    let freq = map(this.position.x, 0, width, 100, 800);
+    this.osc.freq(freq);
+
+    // Amplitud se modifica en base a la posición y
+    let amp = map(this.position.y, 0, height, -0.01, 0.00);
+    this.osc.amp(amp);
+
+    // Panorámica se modifica basada en la posición x para dar sensación de movimiento lateral
+    let pan = map(this.position.x, 0, width, -1, 1);
+    pan = constrain(pan, -1, 1); // Asegura que el pan está dentro del rango permitido
+    this.osc.pan(pan);
+}
+
+        
+
+
+
+            edges() {
+                if (this.position.x > width) this.position.x = 0;
+                if (this.position.x < 0) this.position.x = width;
+                if (this.position.y > height) this.position.y = 0;
+                if (this.position.y < 0) this.position.y = height;
+            }
+
+            align(boids) {
+                let steering = createVector();
+                let total = 0;
+                for (let other of boids) {
+                    let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
+                    if (other !== this && d < this.perceptionRadius) {
+                        steering.add(other.velocity);
+                        total++;
+                    }
+                }
+
+                if (total > 0) {
+                    steering.div(total);
+                    steering.setMag(this.maxSpeed);
+                    steering.sub(this.velocity);
+                    steering.limit(this.maxForce);
+                }
+                return steering;
+            }
+
+            cohesion(boids) {
+                let steering = createVector();
+                let total = 0;
+                for (let other of boids) {
+                    let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
+                    if (other !== this && d < this.perceptionRadius) {
+                        steering.add(other.position);
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.div(total);
+                    steering.sub(this.position);
+                    steering.setMag(this.maxSpeed);
+                    steering.limit(this.maxForce);
+                }
+                return steering;
+            }
+
+            separation(boids) {
+                let steering = createVector();
+                let total = 0;
+                for (let other of boids) {
+                    let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
+                    if (other !== this && d < this.perceptionRadius / 2) {
+                        let diff = p5.Vector.sub(this.position, other.position);
+                        diff.div(d);
+                        steering.add(diff);
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.div(total);
+                    steering.setMag(this.maxSpeed);
+                    steering.limit(this.maxForce);
+                }
+                return steering;
+            }
+
+            followMouse() {
+                let mouse = createVector(mouseX, mouseY);
+                let steer = p5.Vector.sub(mouse, this.position);
+                steer.setMag(this.maxSpeed);
+                steer.sub(this.velocity);
+                steer.limit(this.maxForce);
+                this.acceleration.add(steer);
+            }
+
+            flock(boids) {
+                let alignment = this.align(boids);
+                let cohesion = this.cohesion(boids);
+                let separation = this.separation(boids);
+                let mouseForce = this.followMouse();
+                this.acceleration.add(alignment);
+                this.acceleration.add(cohesion);
+                this.acceleration.add(separation);
+                this.acceleration.add(mouseForce);
+            }
+
+        update() {
+    this.position.add(this.velocity);
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxSpeed);
+    this.acceleration.mult(0);
+    this.updateOscillator(); // Asegúrate de llamar a esta función aquí para actualizar continuamente
+}
+            
+
+      
+            show() {
+                push();
+                imageMode(CENTER);
+                translate(this.position.x, this.position.y);
+                rotate(this.velocity.heading() + radians(90));
+                image(boidImage, 0, 0, 20, 20);
+                pop();
+            }
+        }
 
 
         let flock = [];
@@ -347,7 +388,16 @@ class Boid {
             }
         }
 
-        
+        function setupAudioProcessing() {
+            let compressor = new p5.Compressor();
+            compressor.threshold(-24);
+            compressor.ratio(12);
+            compressor.attack(0.003);
+            compressor.release(0.25);
+            let reverb = new p5.Reverb();
+            reverb.process(compressor, 3, 3);
+            flock.forEach(boid => boid.osc.connect(reverb));
+        }
 
         function setupPanales(count) {
             panalPositions = [];
@@ -458,7 +508,6 @@ class Boid {
 
 
 function setup() {
-    
     pixelDensity(1); // Puedes intentar remover esto para usar la densidad por defecto del dispositivo
     createCanvas(windowWidth, windowHeight);
     let canvas = createCanvas(windowWidth, windowHeight);
@@ -467,6 +516,7 @@ function setup() {
 
     // Eliminar inicialización de Quadtree aquí ya que se reiniciará en draw
     initFlock(); // Inicializa los boids
+    setupAudioProcessing(); // Configura el procesamiento de audio
     setupButtons(); // Configura los botones
     changeStage(0); // Establece la etapa inicial del juego
 }
@@ -480,9 +530,8 @@ function windowResized() {
 
 
 function draw() {
-    clear();  
     let scaleFactor = window.devicePixelRatio; // Obtiene la densidad de píxeles del dispositivo
-    
+    clear();
 
     // Establece el fondo actual basado en la etapa del juego
     let currentBackground = [backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage][stage];
@@ -518,6 +567,7 @@ function draw() {
 
 
 
+
         function mousePressed() {
             for (let i = panalPositions.length - 1; i >= 0; i--) {
                 let pos = panalPositions[i];
@@ -536,7 +586,9 @@ function draw() {
             }
         }
 
-   
+        document.getElementById('startButton').addEventListener('click', function() {
+    initAudio();
+});
 
 
     </script>
