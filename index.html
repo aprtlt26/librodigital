@@ -36,6 +36,12 @@
         button:hover {
             background-color: #13e0eb;
         }
+        @media (max-width: 768px) {
+            button {
+                padding: 8px 10px; /* Botones más pequeños para pantallas pequeñas */
+                font-size: 11px;
+            }
+        }
         #subtitles {
             display: none;
             position: absolute;
@@ -46,28 +52,25 @@
             background: rgba(0,0,0,0.5);
             padding: 10px;
         }
-    
-        /* Ocultar el botón 'Iniciar' en pantallas grandes */
+
+   /* Estilos específicos para dispositivos móviles */
+   @media (min-width: 769px) {
         #startButton {
-            display: none; /* Oculta por defecto el botón */
+            display: none; /* Oculta el botón de inicio en dispositivos no móviles */
         }
-    
-        /* Mostrar el botón 'Iniciar' solo en dispositivos móviles (pantallas pequeñas) */
-        @media (max-width: 768px) {
-            #startButton {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                display: block; /* Mostrar solo en pantallas pequeñas */
-                z-index: 10;
-                padding: 15px 30px; /* Tamaño más grande para facilitar la interacción */
-                font-size: 20px; /* Fuente más grande para mejor visibilidad en móviles */
-            }
-        }
+    }
+
+    #startButton {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        display: b; /* Asegúrate de que el botón esté visible inicialmente en móviles */
+    }
+</style>
+
     </style>
-    
-    
 </head>
 <body>
 
@@ -117,19 +120,6 @@ function initGame() {
         startNarration();
     }
 }
-
-window.onload = function() {
-    // Mostrar el botón 'Iniciar' solo después de que la página haya cargado completamente
-    var startButton = document.getElementById('startButton');
-    if (startButton) {
-        startButton.style.display = 'block'; // Asegúrate de que este estilo sobrescriba cualquier otro que pueda ocultarlo inicialmente
-        startButton.addEventListener('click', function() {
-            this.style.display = 'none'; // Ocultar el botón después de ser presionado
-            startGame(); // Función que inicia el juego y la narración
-        });
-    }
-};
-
 
 function startNarration() {
     console.log("Narración iniciada");
