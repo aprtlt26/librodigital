@@ -2,10 +2,7 @@
     
 
 
-// Resto del código...
-    
 
-// Clase para definir un rectángulo
 class Rectangle {
     constructor(x, y, w, h) {
         this.x = x;  // Centro del rectángulo en el eje x
@@ -216,7 +213,7 @@ class Boid {
         imageMode(CENTER);
         translate(this.position.x, this.position.y);
         rotate(this.velocity.heading() + radians(90));
-        let size = max(20, 20 * window.devicePixelRatio); // Asegura la visibilidad en dispositivos de alta resolución
+        let size = max(10, 10 * window.devicePixelRatio); // Asegura la visibilidad en dispositivos de alta resolución
         image(boidImage, 0, 0, size, size);
         pop();
     }
@@ -310,7 +307,7 @@ class Boid {
                 changeStage(stage);
             };
             document.getElementById('newGameButton').onclick = function() {
-                window.location.href = 'newGame.html';
+                window.location.href = 'collage.html';
             };
             document.getElementById('subtitleButton').onclick = function() {
                 let subtitles = document.getElementById('subtitles');
@@ -445,4 +442,5 @@ function draw() {
     initAudio();
 });
 
+    
     
