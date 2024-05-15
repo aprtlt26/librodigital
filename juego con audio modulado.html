@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Asegura responsividad -->
+    <title>Libro Digital Interactivo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Evita barras de desplazamiento */
+        }
+        #buttonContainer {
+            position: absolute;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #bdedf1;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #93f2ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #13e0eb;
+        }
+        @media (max-width: 768px) {
+            button {
+                padding: 8px 10px; /* Botones más pequeños para pantallas pequeñas */
+                font-size: 11px;
+            }
+        }
+        #subtitles {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+   
+
+
+    <div id="buttonContainer">
+
+        <button id="prevButton">Anterior</button>
+        <button id="nextButton">Siguiente</button>
+        <button id="restartButton">Iniciar Juego</button>
+        <button id="newGameButton">Collage</button>
+        <button id="subtitleButton">Misión</button>
+    </div>
+
+        <button id="collageButton" style="display: none; position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background: url('path_to_your_button_image.jpg') no-repeat center; border: none; width: 50px; height: 100px; cursor: pointer;">
+            <img src="insects.png" alt="" >
+        </button>
+
+
+        
+   
+    <div id="subtitles" style="display:none;">
+       Tu misión es recolectar la miel para ayudar a la abejas a migrar a sus destinos
+    </div>
+
+   
+    <script>
+
+
+    // Espera hasta que todo el contenido del DOM esté listo.
+    document.addEventListener('DOMContentLoaded', function() {
+    var startButton = document.getElementById('startButton');
+    startButton.addEventListener('click', function() {
+        getAudioContext().resume().then(() => {
+            console.log('Audio activado');
+            startGame();
+        }).catch(err => {
+            console.error('Error al activar el audio:', err);
+        });
+    });
+});
+
+function startGame() {
+    console.log("El juego ha comenzado");
+    initFlock();  // Asegúrate de que esta función configura los boids correctamente
+}
+// Clase para definir un rectángulo
+class Rectangle {
+    constructor(x, y, w, h) {
+        this.x = x;  // Centro del rectángulo en el eje x
+        this.y = y;  // Centro del rectángulo en el eje y
+        this.w = w;  // Ancho del rectángulo
+        this.h = h;  // Altura del rectángulo
+    }
+
+    contains(point) {
+        // Chequea si un punto está dentro del rectángulo
+        return (point.x >= this.x - this.w &&
+                point.x <= this.x + this.w &&
+                point.y >= this.y - this.h &&
+                point.y <= this.y + this.h);
+    }
+
+    intersects(range) {
+        // Chequea si otro rectángulo se intersecta con este
+        return !(range.x - range.w > this.x + this.w ||
+                 range.x + range.w < this.x - this.w ||
+                 range.y - range.h > this.y + this.h ||
+                 range.y + range.h < this.y - this.h);
+    }
+}
+
+// Clase Quadtree para manejar la partición espacial
+class Quadtree {
+    constructor(boundary, capacity) {
+        this.boundary = boundary;
+        this.capacity = capacity;
+        this.points = [];
+        this.divided = false;
+    }
+
+    subdivide() {
+        let x = this.boundary.x;
+        let y = this.boundary.y;
+        let w = this.boundary.w / 2;
+        let h = this.boundary.h / 2;
+
+        let ne = new Rectangle(x + w, y - h, w, h);
+        this.northeast = new Quadtree(ne, this.capacity);
+
+        let nw = new Rectangle(x - w, y - h, w, h);
+        this.northwest = new Quadtree(nw, this.capacity);
+
+        let se = new Rectangle(x + w, y + h, w, h);
+        this.southeast = new Quadtree(se, this.capacity);
+
+        let sw = new Rectangle(x - w, y + h, w, h);
+        this.southwest = new Quadtree(sw, this.capacity);
+
+        this.divided = true;
+    }
+
+    insert(point) {
+        if (!this.boundary.contains(point)) {
+            return false;
+        }
+
+        if (this.points.length < this.capacity) {
+            this.points.push(point);
+            return true;
+        }
+
+        if (!this.divided) {
+            this.subdivide();
+        }
+
+        if (this.northeast.insert(point) || this.northwest.insert(point) ||
+            this.southeast.insert(point) || this.southwest.insert(point)) {
+            return true;
+        }
+
+        return false;  // En caso de que algo falle
+    }
+
+    query(range, found) {
+        if (!found) {
+            found = [];
+        }
+
+        if (!this.boundary.intersects(range)) {
+            return found;
+        }
+
+        for (let p of this.points) {
+            if (range.contains(p)) {
+                found.push(p);
+            }
+        }
+
+        if (this.divided) {
+            this.northeast.query(range, found);
+            this.northwest.query(range, found);
+            this.southeast.query(range, found);
+            this.southwest.query(range, found);
+        }
+
+        return found;
+    }
+}
+
+
+
+function initAudio() {
+    if (getAudioContext().state !== 'running') {
+        getAudioContext().resume().then(() => {
+            console.log('Audio Activado');
+            startGame(); // Inicia tu juego aquí
+        }).catch(err => {
+            console.error('Error al activar el audio:', err);
+        });
+    }
+}
+
+
+
+
+        class Boid {
+            constructor() {
+                this.position = createVector(random(width), random(height));
+                this.velocity = p5.Vector.random2D();
+                this.velocity.setMag(random(2, 8));
+                this.acceleration = createVector();
+                this.maxForce = 0.35;
+                this.maxSpeed = 8;
+                this.perceptionRadius = 370;
+                this.osc = new p5.Oscillator('sine');
+                
+                this.osc.amp(0.01);
+                this.osc.start();
+            }
+
+            updateOscillator() {
+    // Frecuencia se modifica en base a la posición x
+    let freq = map(this.position.x, 0, width, 100, 800);
+    this.osc.freq(freq);
+
+    // Amplitud se modifica en base a la posición y
+    let amp = map(this.position.y, 0, height, -0.01, 0.00);
+    this.osc.amp(amp);
+
+    // Panorámica se modifica basada en la posición x para dar sensación de movimiento lateral
+    let pan = map(this.position.x, 0, width, -1, 1);
+    pan = constrain(pan, -1, 1); // Asegura que el pan está dentro del rango permitido
+    this.osc.pan(pan);
+}
+
+        
+
+
+
+            edges() {
+                if (this.position.x > width) this.position.x = 0;
+                if (this.position.x < 0) this.position.x = width;
+                if (this.position.y > height) this.position.y = 0;
+                if (this.position.y < 0) this.position.y = height;
+            }
+
+            align(boids) {
+                let steering = createVector();
+                let total = 0;
+                for (let other of boids) {
+                    let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
+                    if (other !== this && d < this.perceptionRadius) {
+                        steering.add(other.velocity);
+                        total++;
+                    }
+                }
+
+                if (total > 0) {
+                    steering.div(total);
+                    steering.setMag(this.maxSpeed);
+                    steering.sub(this.velocity);
+                    steering.limit(this.maxForce);
+                }
+                return steering;
+            }
+
+            cohesion(boids) {
+                let steering = createVector();
+                let total = 0;
+                for (let other of boids) {
+                    let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
+                    if (other !== this && d < this.perceptionRadius) {
+                        steering.add(other.position);
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.div(total);
+                    steering.sub(this.position);
+                    steering.setMag(this.maxSpeed);
+                    steering.limit(this.maxForce);
+                }
+                return steering;
+            }
+
+            separation(boids) {
+                let steering = createVector();
+                let total = 0;
+                for (let other of boids) {
+                    let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
+                    if (other !== this && d < this.perceptionRadius / 2) {
+                        let diff = p5.Vector.sub(this.position, other.position);
+                        diff.div(d);
+                        steering.add(diff);
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.div(total);
+                    steering.setMag(this.maxSpeed);
+                    steering.limit(this.maxForce);
+                }
+                return steering;
+            }
+
+            followMouse() {
+                let mouse = createVector(mouseX, mouseY);
+                let steer = p5.Vector.sub(mouse, this.position);
+                steer.setMag(this.maxSpeed);
+                steer.sub(this.velocity);
+                steer.limit(this.maxForce);
+                this.acceleration.add(steer);
+            }
+
+            flock(boids) {
+                let alignment = this.align(boids);
+                let cohesion = this.cohesion(boids);
+                let separation = this.separation(boids);
+                let mouseForce = this.followMouse();
+                this.acceleration.add(alignment);
+                this.acceleration.add(cohesion);
+                this.acceleration.add(separation);
+                this.acceleration.add(mouseForce);
+            }
+
+        update() {
+    this.position.add(this.velocity);
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxSpeed);
+    this.acceleration.mult(0);
+    this.updateOscillator(); // Asegúrate de llamar a esta función aquí para actualizar continuamente
+}
+            
+
+      
+            show() {
+                push();
+                imageMode(CENTER);
+                translate(this.position.x, this.position.y);
+                rotate(this.velocity.heading() + radians(90));
+                image(boidImage, 0, 0, 20, 20);
+                pop();
+            }
+        }
+
+
+        let flock = [];
+        let backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage, panalImage, boidImage;
+        let panalPositions = [];
+        let stage = 0;
+        let backgroundTracks = [];
+        let narrationTracks = [];
+        let currentBackgroundSound, currentNarration;
+        let panalDisappearSound;
+
+        function preload() {
+            backgroundImage = loadImage('paisaje.png');
+            cityImage = loadImage('ciudad.png');
+            finalImage = loadImage('africa.png');
+            fifthImage = loadImage('centro.png');
+
+            fourthImage = loadImage('campomorado.png');
+            sixthImage = loadImage('azul.png');
+            panalImage = loadImage('panal.png');
+            boidImage = loadImage('abeja.png');
+            panalDisappearSound = loadSound('panal.mp3');
+            for (let i = 1; i <= 6; i++) {
+                backgroundTracks.push(loadSound(`background${i}.mp3`));
+                narrationTracks.push(loadSound(`narration${i}.mp3`));
+            }
+        }
+
+        function setupAudioProcessing() {
+            let compressor = new p5.Compressor();
+            compressor.threshold(-24);
+            compressor.ratio(12);
+            compressor.attack(0.003);
+            compressor.release(0.25);
+            let reverb = new p5.Reverb();
+            reverb.process(compressor, 3, 3);
+            flock.forEach(boid => boid.osc.connect(reverb));
+        }
+
+        function setupPanales(count) {
+            panalPositions = [];
+            let margin = 70;
+            for (let i = 0; i < count; i++) {
+                let placed = false, attempts = 0;
+                while (!placed && attempts < 100) {
+                    let candidatePosition = createVector(random(margin, width - margin), random(margin, height - margin));
+                    let tooClose = panalPositions.some(panal => p5.Vector.dist(candidatePosition, panal) < 80);
+                    if (!tooClose) {
+                        panalPositions.push(candidatePosition);
+                        placed = true;
+                    }
+                    attempts++;
+                }
+            }
+        }
+
+
+      
+
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+        }
+
+        function initFlock() {
+    console.log(`Inicializando boids en canvas de tamaño: ${width}x${height}`);
+    flock = [];
+    for (let i = 0; i < 180; i++) {
+        let boid = new Boid(random(width), random(height));
+        flock.push(boid);
+        console.log(`Boid creado en posición: ${boid.position.x}, ${boid.position.y}`);
+    }
+}
+
+
+
+
+        function setupButtons() {
+            let buttons = document.querySelectorAll('#buttonContainer button');
+            buttons.forEach(button => button.style.display = 'block');
+            document.getElementById('prevButton').onclick = function() {
+                if (stage > 0) {
+                    stage--;
+                    changeStage(stage);
+                }
+            };
+            document.getElementById('nextButton').onclick = function() {
+                if (stage < 5) {
+                    stage++;
+                    changeStage(stage);
+                }
+            };
+            document.getElementById('restartButton').onclick = function() {
+                stage = 0;
+                changeStage(stage);
+            };
+            document.getElementById('newGameButton').onclick = function() {
+                window.location.href = 'newGame.html';
+            };
+            document.getElementById('subtitleButton').onclick = function() {
+                let subtitles = document.getElementById('subtitles');
+                subtitles.style.display = subtitles.style.display === 'none' ? 'block' : 'none';
+            };
+
+            document.getElementById('collageButton').onclick = function() {
+        window.location.href = 'collage.html'; // Cambia esto por la URL de tu página de collage
+    };
+        }
+        function changeStage(newStage) {
+    if (currentBackgroundSound) {
+        currentBackgroundSound.stop();
+    }
+    if (currentNarration) {
+        currentNarration.stop();
+    }
+
+    stage = newStage;
+    let backgrounds = [backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage];
+    background(backgrounds[stage]);
+
+    // Detiene la configuración inicial de los panales aquí
+    // setupPanales(stage < 5 ? 3 + stage : 0); // Comentamos o eliminamos esta línea
+
+    currentBackgroundSound = backgroundTracks[stage];
+    if (currentBackgroundSound) {
+        currentBackgroundSound.loop();
+    }
+
+    if (narrationTracks[stage]) {
+        currentNarration = narrationTracks[stage];
+        currentNarration.play();
+        currentNarration.onended(() => {
+            setupPanales(stage < 5 ? 3 + stage : 0);
+        });
+    } else {
+        // Configura los panales inmediatamente solo si no hay narración
+        setupPanales(stage < 5 ? 3 + stage : 0);
+    }
+
+    if (stage === 5) {
+        document.getElementById('collageButton').style.display = 'block';
+    } else {
+        document.getElementById('collageButton').style.display = 'none';
+    }
+}
+
+
+
+function setup() {
+    pixelDensity(1); // Puedes intentar remover esto para usar la densidad por defecto del dispositivo
+    createCanvas(windowWidth, windowHeight);
+    let canvas = createCanvas(windowWidth, windowHeight);
+    canvas.style('display', 'block');
+ 
+
+    // Eliminar inicialización de Quadtree aquí ya que se reiniciará en draw
+    initFlock(); // Inicializa los boids
+    setupAudioProcessing(); // Configura el procesamiento de audio
+    setupButtons(); // Configura los botones
+    changeStage(0); // Establece la etapa inicial del juego
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+    // Asegúrate de reiniciar el Quadtree aquí también si las dimensiones del canvas cambian
+    quadtree = new Quadtree(new Rectangle(0, 0, width, height), 4);
+}
+
+
+
+function draw() {
+    let scaleFactor = window.devicePixelRatio; // Obtiene la densidad de píxeles del dispositivo
+    clear();
+
+    // Establece el fondo actual basado en la etapa del juego
+    let currentBackground = [backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage][stage];
+    background(currentBackground);
+
+    // Dibuja panales sólo si la etapa no es la 6
+    if (stage !== 5) {
+        panalPositions.forEach(panal => {
+            image(panalImage, panal.x, panal.y, 50, 50);
+        });
+    }
+
+    // Reinicia el Quadtree cada frame para mantenerlo actualizado con las posiciones de los boids
+    quadtree = new Quadtree(new Rectangle(0, 0, width, height), 4);
+
+    // Insertar cada boid en el Quadtree y procesar su comportamiento
+    flock.forEach(boid => {
+        quadtree.insert(boid);
+
+        boid.edges();
+
+        // Consulta al Quadtree para obtener boids cercanos
+        let range = new Rectangle(boid.position.x - 50, boid.position.y - 50, 100, 100);
+        let nearbyBoids = quadtree.query(range);
+
+        boid.flock(nearbyBoids);
+        boid.update();
+
+        // Ajusta la visualización de los boids basado en la escala del dispositivo
+        boid.show(scaleFactor);
+    });
+}
+
+
+
+
+        function mousePressed() {
+            for (let i = panalPositions.length - 1; i >= 0; i--) {
+                let pos = panalPositions[i];
+                if (dist(mouseX, mouseY, pos.x, pos.y) < 50) {
+                    panalPositions.splice(i, 1);
+                    panalDisappearSound.play();
+                    if (panalPositions.length === 0) {
+                        stage++;
+                        changeStage(stage);
+                        function touchStarted() {
+    mousePressed();  // Puedes llamar a mousePressed o manejarlo de forma específica para toques
+}
+
+                    }
+                }
+            }
+        }
+
+        document.getElementById('startButton').addEventListener('click', function() {
+    initAudio();
+});
+
+
+    </script>
+</body>
+</html>

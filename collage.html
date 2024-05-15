@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Alfonso Pretelt - Arte y Psique - Collage">
+    <meta name="keywords" content="collage, alfonsopretelt,tarot,erosion,">
+    <meta name="author" content="alfonsopretelt">
+    <meta name="robots" content="collage">
+    <meta name="google" content="translate">
+   <meta property="og:type" content="www.arteypsique.com">
+    <meta property="og:url" content="https://www.arteypsique.com">
+    <meta property="og:title" content="Arte & Psique">
+    <meta property="og:description" content="Plataforma de aprendizaje y creación">
+    <link rel="icon" href="rostro.jpg" type="image/x-icon">
+    <meta property="og:image" content="log.png">
+    <title>ART & PSYCHE</title>
+    <link rel="stylesheet" href="stylec.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/RecordRTC/5.6.1/RecordRTC.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+       <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anta&family=Kode+Mono:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet">
+
+
+
+</head>
+  
+<style>
+  
+  body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Evita barras de desplazamiento */
+            background-color: #bdedf1;
+        }
+        #buttonContainer {
+            position: absolute;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #bdedf1;
+        }
+    button {
+        margin: 5px;
+        padding: 10px 15px;
+        font-size: 11px;
+        cursor: pointer;
+        background-color: #93f2ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+    button:hover {
+        background-color: #1ccad3;
+    }
+
+    #subtitles {
+        display: none;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        color: white;
+        background: rgba(0,0,0,0.5);
+        padding: 10px;
+    }
+
+    /* Ocultar el botón 'Iniciar' en pantallas grandes */
+    #startButton {
+        display: none; /* Oculta por defecto el botón */
+    }
+
+  
+
+
+</style>
+<body>
+
+    
+
+
+     <header>
+
+        <div id="buttonContainer">
+            <button id="storyButton">Cuento</button>
+            
+            <button id="misionButton">Misión</button>
+            <button id="resetButton">Comenzar de Nuevo</button>
+            <button id="newGameButton">Viaje de las Abejas</button>
+        </div>
+        
+    
+     </header>
+
+
+    <div id="gallery-container">
+    </div>
+    
+ 
+
+
+    <div id="collage-container" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="return false"
+    ondragleave="return false">
+
+
+
+
+   
+    <div class="=icons" > 
+
+        <button id="play-button" i class='bx bx-play-circle' style='color:rgba(0, 0, 0, 0.98)' ></i>
+         <span class="hover-text">Escuchar</span>
+    </button>
+
+       
+
+        <div class="input-container">
+
+   
+    
+            <div class="color-picker" style=" display: inline-block;">
+                <input type="color" id="bg-color-picker" value="#ffffff" class='bx bx-palette' style='color:rgba(0, 0, 0, 0.98)'>
+                <span class="hover-text">Cambia el color de Fondo</span>
+            </div>
+            
+
+    <button id="print-button" i class='bx bx-save' style='color:rgba(0, 0, 0, 0.98)' 
+        i class='bx bx-printer' style='color:rgba(0, 0, 0, 0.98)' ></i>  <span class="hover-text">Guarda-Imprime</span></button>
+
+    <button id="change-background-button" i class='bx bx-image-alt' style='color:rgba(0, 0, 0, 0.98)'></i>  <span class="hover-text">Cambia el Fondo</span> </button>
+
+    <button id="delete-button" i class='bx bx-eraser' style='color:rgba(0, 0, 0, 0.98)' ></i><span class="hover-text">Borrar</span></button></button>
+
+    <button id="move-up" i class='bx bx-layer-plus' style='color:rgba(0, 0, 0, 0.98)' ></i> <span class="hover-text">Poner Debajo</span></button>
+    <button id="move-down" i class='bx bxs-layer-minus' style='color:rgba(0, 0, 0, 0.98)' ></i> <span class="hover-text">Poner Encima</span></button>
+
+
+  
+
+<script src="collage.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
