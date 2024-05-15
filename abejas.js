@@ -213,7 +213,7 @@ class Boid {
         imageMode(CENTER);
         translate(this.position.x, this.position.y);
         rotate(this.velocity.heading() + radians(90));
-        let size = max(10, 10 * window.devicePixelRatio); // Asegura la visibilidad en dispositivos de alta resolución
+        let size = max(10, 0 * window.devicePixelRatio); // Asegura la visibilidad en dispositivos de alta resolución
         image(boidImage, 0, 0, size, size);
         pop();
     }
@@ -442,5 +442,6 @@ function draw() {
     initAudio();
 });
 
+    
     
     
