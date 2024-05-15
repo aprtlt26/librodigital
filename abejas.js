@@ -112,7 +112,7 @@ class Boid {
         this.velocity = p5.Vector.random2D();
         this.velocity.setMag(random(2, 8));
         this.acceleration = createVector();
-        this.maxForce = 0.35;
+        this.maxForce = 0.30;
         this.maxSpeed = 8;
         this.perceptionRadius = 370;
     }
@@ -213,7 +213,7 @@ class Boid {
         imageMode(CENTER);
         translate(this.position.x, this.position.y);
         rotate(this.velocity.heading() + radians(90));
-        let size = max(10, 0 * window.devicePixelRatio); // Asegura la visibilidad en dispositivos de alta resolución
+        let size = max(15, 0 * window.devicePixelRatio); // Asegura la visibilidad en dispositivos de alta resolución
         image(boidImage, 0, 0, size, size);
         pop();
     }
@@ -277,7 +277,7 @@ class Boid {
         function initFlock() {
     console.log(`Inicializando boids en canvas de tamaño: ${width}x${height}`);
     flock = [];
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < 80; i++) {
         let boid = new Boid(random(width), random(height));
         flock.push(boid);
         console.log(`Boid creado en posición: ${boid.position.x}, ${boid.position.y}`);
