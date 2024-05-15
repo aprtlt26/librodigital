@@ -1,0 +1,1896 @@
+
+       
+body {
+    margin-left: 10px;
+    margin-right: 10px;
+
+    overflow: hidden;
+}
+
+.anta-regular {
+font-family: "Anta", sans-serif;
+font-weight: 400;
+font-style: normal;
+}
+
+
+
+#header {
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+left: 0;
+z-index: 1050; /* Eleva el z-index para que esté sobre otros elementos */
+position: fixed;
+
+
+}
+
+
+
+
+
+
+#audio-player-container {
+padding: 1px;
+background-color: transparent; 
+border-radius: 2px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-around;
+max-width: 200px; 
+margin: auto; 
+}
+
+#audio-player-container label {
+font-size: 14px;
+color: #cdcdcd;
+margin-bottom: 2px;
+}
+
+#audio-player-container #pitchRange {
+width: 100%; 
+-webkit-appearance: none;
+appearance: none;
+height: 5px;
+background: #ddd;
+outline: none;
+opacity: 0.7;
+-webkit-transition: .2s;
+transition: opacity .2s;
+}
+
+#audio-player-container audio {
+width: 100%; 
+margin-bottom: 5px; 
+}
+
+#audio-player-container #pitchRange:hover::-webkit-slider-thumb,
+#audio-player-container #pitchRange:hover::-moz-range-thumb {
+background: #fefffe;
+}
+
+
+
+
+
+
+#gallery-container {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 20%; 
+    overflow-x: auto;
+
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 5px;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #bdedf1;
+    background-image: url('lago.webp'); /* Ruta a la imagen de fondo */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 50), 0 0px 20px 0 rgba(106, 209, 3, 0.9); /* Standard shadow */
+
+
+}
+
+
+
+
+#gallery-container img {
+    width: 50px;
+    height: 50px;
+    margin-right: 1px;
+    margin-bottom: 1px;
+    cursor: pointer;
+    background-color: transparent;
+    display: inline-block;
+vertical-align: middle;
+background-size: cover; 
+background-position: center;
+
+    }
+
+
+
+#collage-container {
+    color: #ffffff;
+    font-size: 70%;
+    width: 100%;
+    height: 90%;
+    float: left;
+    display: flex;
+    background-color: #ffffff;
+    position: relative;
+ background-image: url('pasto.png');
+background-size: cover; 
+height: calc(200vh - 200px); /* Altura ajustada para permitir interacción */
+padding: 50px; /* Añade un poco de relleno alrededor */
+            margin-top: 230px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 50), 0 0px 20px 0 rgba(106, 209, 3, 0.9); /* Standard shadow */
+
+       
+            body {
+                margin-left: 10px;
+                margin-right: 10px;
+            
+                overflow: hidden;
+            }
+            
+            .anta-regular {
+            font-family: "Anta", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            }
+            
+            
+            
+            #header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            left: 0;
+            z-index: 1050; /* Eleva el z-index para que esté sobre otros elementos */
+            position: fixed;
+            
+            
+            }
+            
+            
+            
+            
+            
+            
+            #audio-player-container {
+            padding: 1px;
+            background-color: transparent; 
+            border-radius: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            max-width: 200px; 
+            margin: auto; 
+            }
+            
+            #audio-player-container label {
+            font-size: 14px;
+            color: #cdcdcd;
+            margin-bottom: 2px;
+            }
+            
+            #audio-player-container #pitchRange {
+            width: 100%; 
+            -webkit-appearance: none;
+            appearance: none;
+            height: 5px;
+            background: #ddd;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            }
+            
+            #audio-player-container audio {
+            width: 100%; 
+            margin-bottom: 5px; 
+            }
+            
+            #audio-player-container #pitchRange:hover::-webkit-slider-thumb,
+            #audio-player-container #pitchRange:hover::-moz-range-thumb {
+            background: #fefffe;
+            }
+            
+            
+            
+            
+            
+            
+            #gallery-container {
+                position: fixed;
+                left: 0;
+                width: 100%;
+                height: 20%; 
+                overflow-x: auto;
+            
+                white-space: nowrap;
+                display: flex;
+                flex-wrap: wrap; 
+                gap: 5px;
+                align-items: center;
+                justify-content: flex-start;
+                background-color: #bdedf1;
+                background-image: url('lago.webp'); /* Ruta a la imagen de fondo */
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 50), 0 0px 20px 0 rgba(106, 209, 3, 0.9); /* Standard shadow */
+            
+            
+            }
+            
+            
+            
+            
+            #gallery-container img {
+                width: 50px;
+                height: 50px;
+                margin-right: 1px;
+                margin-bottom: 1px;
+                cursor: pointer;
+                background-color: transparent;
+                display: inline-block;
+            vertical-align: middle;
+            background-size: cover; 
+            background-position: center;
+            
+                }
+            
+            
+            
+            #collage-container {
+                color: #ffffff;
+                font-size: 70%;
+                width: 100%;
+                height: 90%;
+                float: left;
+                display: flex;
+                background-color: #ffffff;
+                position: relative;
+             background-image: url('pasto.png');
+            background-size: cover; 
+            height: calc(200vh - 200px); /* Altura ajustada para permitir interacción */
+            padding: 50px; /* Añade un poco de relleno alrededor */
+                        margin-top: 230px;
+                        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 50), 0 0px 20px 0 rgba(106, 209, 3, 0.9); /* Standard shadow */
+
+            
+            }
+            
+            @media (max-width: 390px) {
+                
+                #gallery-container img {
+                   width: 20px;
+                height: 20px;
+                gap: 5px;
+            
+                    height: auto; /* Ajusta para mantener la proporción */
+                    margin: 0 auto; /* Centra la imagen si es necesario */
+                    position: relative;
+                    display: inline;
+                    z-index :100px;
+                    margin-right: 0px;
+                margin-bottom: 0px;
+            
+                }
+              
+            
+                #collage-container {
+                    margin-top: 60vh; /* Ajusta según la altura de tu galería */
+                    width: 100%;
+                    height: 500px;
+                    position: fixed;
+                    display: block;
+                }
+            
+                #collage-container img {
+                    max-width: 100%; /* Asegúrate de que no excedan el ancho del contenedor */
+                    max-height: auto; /* Ajusta para mantener la proporción */
+                    cursor: move;
+                    box-shadow: 0 0 5px rgb(52, 52, 52);
+                    transition: transform 0.1s ease;
+                    display: block;
+                    margin: 0 auto; /* Centra la imagen si es necesario */
+                }
+            }
+            
+            /* iPads en modo paisaje */
+            @media only screen 
+            and (min-device-width: 768px) 
+            and (max-device-width: 1024px) 
+            and (orientation: landscape) {
+            #gallery-container-2 {
+            /* Ajustes para mejorar la visibilidad */
+            position: fixed;
+            top: 10%; /* Ajusta este valor según sea necesario */
+            }
+            #collage-container {
+            margin-top: 10vh; /* Espacio para la galería */
+            position: fixed;
+            }
+            }
+            
+            /* iPads en modo retrato */
+            @media only screen 
+            and (min-device-width: 768px) 
+            and (max-device-width: 1024px) 
+            and (orientation: portrait) {
+            
+            #gallery-container {
+            height: 20%;
+            
+            position: fixed;
+            top: 5%; /* Ajuste según necesidad */
+            }    
+            #gallery-container-2 {
+            height: 10%;
+            
+            position: fixed;
+            top: 30%; /* Ajuste basado en tu diseño específico */
+            }
+            #collage-container {
+            top: 5vh; /* Ajuste según el contenido de tu galería */
+            position: fixed;
+            }
+            }
+            
+            
+            
+            
+            /* Estilos específicos para iPhone 12 */
+            @media only screen 
+            and (min-device-width: 390px) 
+            and (max-device-width: 844px) {
+            
+            #gallery-container img {
+            
+                   width:10%;
+                height: 30%;}
+            
+            
+            #gallery-container {
+            position: fixed;
+            top: 15%; /* Ajusta esta distancia según lo que se vea mejor */
+            gap: 2px;
+            }
+            }
+            
+            
+            
+            #gallery-container{
+            position: fixed;
+            top: 10%; /* Posición ajustada para la visualización */
+            overflow-x: auto; /* Permite desplazamiento horizontal */
+            white-space: nowrap; /* Alinea las imágenes horizontalmente */
+            padding: 20px; /* Añade un poco de relleno alrededor */
+            }
+            
+            .image-container {
+                display: inline-block;
+                position: relative;
+                margin: 10px;
+            }
+            
+            .image-name {
+                position: absolute;
+                bottom: 5px;
+                left: 0;
+                width: 100%;
+                color: white;
+                background-color: rgba(0, 0, 0, 0.7);
+                text-align: center;
+                visibility: hidden; // Oculto por defecto
+                padding: 2px 0;
+            }
+            
+            .image-container:hover .image-name {
+                visibility: visible; // Mostrar nombre al hacer hover
+            }
+            
+            
+            
+            .no-scroll {
+            touch-action: none;
+            }
+            
+            
+            
+            
+            #bg-color-picker {
+            
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #93f2ff;
+                color: rgb(255, 255, 255);    font-weight: bold;
+                text-align: center;
+                border: none;
+                cursor: pointer;
+                        border: 2px dashed#c2f700;
+                width:50px; 
+                font-size: 12px;
+                
+                position: absolute;
+                top: 195px; 
+                
+                right:  14px; 
+                z-index: 1000;
+            
+                display: none;
+            }
+            #bg-color-picker:hover {
+            background-color: rgb(218, 212, 252)
+            
+            }
+            
+            
+            .color-picker:hover .hover-text {
+            display: block; /* Oculta el texto por defecto */
+            position: absolute; /* Posicionamiento relativo al botón */
+            bottom: -10px; /* Ajusta según necesites */
+            padding: 1px 4px; 
+            top: 225px; 
+            z-index: 15;
+            right:  10px;
+            transform: translateX(-50%); /* Centra el texto bajo el botón */
+            background-color: #fff; /* Fondo del texto */
+            background-color: #93f2ff;
+            /* Espaciado interno */
+            border-radius: 5px; /* Bordes redondeados */
+            font-size: 10px; /* Tamaño del texto */
+            white-space: nowrap; /* Evita que el texto se divida en líneas */
+            height: 20px;
+            }
+            
+            #play-button {
+            
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #93f2ff;
+            color: rgb(255, 255, 255);    font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+                    border: 2px dashed#c2f700;
+            width:50px; 
+            font-size: 12px;
+            
+            position: absolute;
+            top: 10px; 
+            
+            right:  10px; 
+            z-index: 1000;
+            }
+            
+            .hover-text {
+            display: none; /* Oculta el texto por defecto */
+            position: absolute; /* Posicionamiento relativo al botón */
+            bottom: -10px; /* Ajusta según necesites */
+            padding: 1px 4px; 
+            top: 10px; 
+            z-index: 1000;
+            right:  10px;
+            height: 20px;
+                            font-family: "Anta", sans-serif;
+            
+            transform: translateX(-50%); /* Centra el texto bajo el botón */
+            background-color: #fff; /* Fondo del texto */
+            background-color: #93f2ff;
+            /* Espaciado interno */
+            border-radius: 5px; /* Bordes redondeados */
+            font-size: 10px; /* Tamaño del texto */
+            white-space: nowrap; /* Evita que el texto se divida en líneas */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Sombra opcional para resaltar */
+            }
+            #play-button:hover {
+            
+            background-color: rgb(218, 212, 252)
+            
+            }
+            
+            
+            button:hover .hover-text {
+            display: block; /* Muestra el texto en hover */
+            }
+            
+            
+            
+            
+            #play-audios-images2{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #93f2ff;
+            color: rgb(255, 255, 255);    font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+                    border: 2px dashed #c2f700;
+            width:50px; 
+            font-size: 12px;
+            
+            position: absolute;
+            top: 50px; 
+            
+            right:  60px; 
+            z-index: 100;
+            }
+            #play-audios-images2:hover{ 
+            background-color: rgb(218, 212, 252)
+            }
+            #stop-audios-button{
+            
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #93f2ff;
+            color: rgb(255, 255, 255);    font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            border: 2px dashed #c2f700;
+            width:50px; 
+            font-size: 12px;
+            position: absolute;
+            top: 85px; 
+            right:  60px; 
+            z-index: 1000;
+            }
+            #stop-audios-button:hover{
+            
+            background-color: rgb(218, 212, 252)
+            
+            }
+            
+            #loop-audios-button{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #93f2ff;
+            color: rgb(255, 255, 255);    font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            border: 2px dashed #c2f700;
+            width:50px; 
+            font-size: 12px;
+            position: absolute;
+            top: 120px; 
+            right:  60px; 
+            z-index: 1000;
+            }
+            #loop-audios-button:hover {
+            background-color: rgb(218, 212, 252)
+            
+            }
+            
+            #move-down{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #93f2ff;
+            color: rgb(255, 255, 255);    font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            border: 2px dashed#c2f700;
+            width:50px; 
+            font-size: 12px;
+            position: absolute;
+            top: 120px; 
+            right:  10px; 
+            z-index: 1000;
+            }
+            #move-down:hover{
+            background-color: rgb(218, 212, 252)
+            }
+            
+            
+            #move-up{
+            
+            display: inline-block;
+            padding: 10px 10px;
+            background-color: #93f2ff;
+            color: rgb(255, 255, 255);    font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            width: 50px; 
+            font-size: 12px;
+            border: 2px dashed#c2f700;
+            position: absolute;
+            top: 155px; 
+            right:  10px; 
+            z-index: 1000;
+            
+            }
+            
+            
+            #move-up:hover{
+            background-color: rgb(218, 212, 252)
+            }
+            
+            
+            #change-background-button{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #93f2ff;
+            color: rgb(255, 255, 255);    font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            border: 2px dashed #c2f700;;
+            width:50px; 
+            font-size: 12px;
+            position: absolute;
+            top: 49px; 
+            right:  10px; 
+            z-index: 1000;
+            }
+            
+            #change-background-button:hover{
+            background-color: rgb(218, 212, 252)
+            }
+            
+            #delete-button{
+            
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #93f2ff;
+            color: rgb(255, 255, 255);    font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            border: 2px dashed#c2f700;
+            width:50px; 
+            font-size: 12px;
+            position: absolute;
+            top: 85px; 
+            right:  10px; 
+            z-index: 1000;
+            }
+            
+            #delete-button:hover{
+            background-color: rgb(218, 212, 252)
+            }
+            
+            #print-button{
+            
+            display: inline-block;
+            padding: 5px 7px;
+            background-color: #93f2ff;
+            color: rgb(255, 255, 255);    font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            width: 50px; 
+            font-size: 12px;
+            border: 2px dashed#c2f700;
+            position: absolute;
+            top: 212px; 
+            right:  10px; 
+            z-index: 1000;
+            }
+            
+            #print-button:hover {
+            
+            background-color: rgb(211, 199, 199)
+            
+            }
+            
+            
+            
+            
+            #collage-container img {
+            
+            min-width:  60px;
+            min-height: 60px;
+            max-width: none;
+            max-height: none;
+            cursor: move;
+            transition: transform 0.1s ease; 
+            transform-origin: center center; 
+            }
+            
+            
+            
+            .draggable {
+                position: absolute;
+                cursor: move;
+                background-size: cover;
+                background-position: center;
+               touch-action: manipulation;
+            
+            }
+            
+            
+            
+            #collage-footer {
+                text-align: center;
+                font-size: 12px;
+                margin-top: 200px;
+                color: gray;
+                position: fixed;
+                bottom: -5px;
+                left: 0;
+                right: 0;
+            }
+            
+            #selection-box {
+                border: 1px solid #000000;
+                position: absolute;
+                z-index: 1000;
+                pointer-events: none;
+            }
+            
+            
+            @media print {
+            body, html {
+            background: #FFF;
+            color: #000;
+            }
+            #print-button, #volume-control, #volume-slider, #bg-color-picker, #gallery-container img{
+            display: none; 
+            }
+            
+            }
+            .draggable.selected {
+            border: 2px dashed #90ff00;
+            }
+            
+            #logout-btn{
+            color: gray;
+            background-color: #fff;
+            border: none;
+            
+            }
+            #logout-btn:hover{
+            border: 2px dashed  #c4d49c
+            }
+            
+            .no-scroll {
+            overflow: hidden;
+            height: 100%;
+            }
+            
+            
+
+}
+
+@media (max-width: 390px) {
+    
+    #gallery-container img {
+       width: 20px;
+    height: 20px;
+    gap: 5px;
+
+        height: auto; /* Ajusta para mantener la proporción */
+        margin: 0 auto; /* Centra la imagen si es necesario */
+        position: relative;
+        display: inline;
+        z-index :100px;
+        margin-right: 0px;
+    margin-bottom: 0px;
+
+    }
+  
+
+    #collage-container {
+        margin-top: 60vh; /* Ajusta según la altura de tu galería */
+        width: 100%;
+        height: 500px;
+        position: fixed;
+        display: block;
+
+       
+body {
+    margin-left: 10px;
+    margin-right: 10px;
+
+    overflow: hidden;
+}
+
+.anta-regular {
+font-family: "Anta", sans-serif;
+font-weight: 400;
+font-style: normal;
+}
+
+
+
+#header {
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+left: 0;
+z-index: 1050; /* Eleva el z-index para que esté sobre otros elementos */
+position: fixed;
+
+
+}
+
+
+
+
+
+
+#audio-player-container {
+padding: 1px;
+background-color: transparent; 
+border-radius: 2px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-around;
+max-width: 200px; 
+margin: auto; 
+}
+
+#audio-player-container label {
+font-size: 14px;
+color: #cdcdcd;
+margin-bottom: 2px;
+}
+
+#audio-player-container #pitchRange {
+width: 100%; 
+-webkit-appearance: none;
+appearance: none;
+height: 5px;
+background: #ddd;
+outline: none;
+opacity: 0.7;
+-webkit-transition: .2s;
+transition: opacity .2s;
+}
+
+#audio-player-container audio {
+width: 100%; 
+margin-bottom: 5px; 
+}
+
+#audio-player-container #pitchRange:hover::-webkit-slider-thumb,
+#audio-player-container #pitchRange:hover::-moz-range-thumb {
+background: #fefffe;
+}
+
+
+
+
+
+
+#gallery-container {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 20%; 
+    overflow-x: auto;
+
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 5px;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #bdedf1;
+    background-image: url('lago.webp'); /* Ruta a la imagen de fondo */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 50), 0 0px 20px 0 rgba(106, 209, 3, 0.9); /* Standard shadow */
+
+
+}
+
+
+
+
+#gallery-container img {
+    width: 50px;
+    height: 50px;
+    margin-right: 1px;
+    margin-bottom: 1px;
+    cursor: pointer;
+    background-color: transparent;
+    display: inline-block;
+vertical-align: middle;
+background-size: cover; 
+background-position: center;
+
+    }
+
+
+
+
+@media (max-width: 390px) {
+    
+    #gallery-container img {
+       width: 20px;
+    height: 20px;
+    gap: 5px;
+
+        height: auto; /* Ajusta para mantener la proporción */
+        margin: 0 auto; /* Centra la imagen si es necesario */
+        position: relative;
+        display: inline;
+        z-index :100px;
+        margin-right: 0px;
+    margin-bottom: 0px;
+
+    }
+  
+
+    #collage-container {
+        margin-top: 60vh; /* Ajusta según la altura de tu galería */
+        width: 100%;
+        height: 500px;
+        position: fixed;
+        display: block;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 50), 0 0px 20px 0 rgba(106, 209, 3, 0.9); /* Standard shadow */
+
+    }
+
+    #collage-container img {
+        max-width: 100%; /* Asegúrate de que no excedan el ancho del contenedor */
+        max-height: auto; /* Ajusta para mantener la proporción */
+        cursor: move;
+        box-shadow: 0 0 5px rgb(52, 52, 52);
+        transition: transform 0.1s ease;
+        display: block;
+        margin: 0 auto; /* Centra la imagen si es necesario */
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 50), 0 0px 20px 0 rgba(106, 209, 3, 0.9); /* Standard shadow */
+
+    }
+}
+
+/* iPads en modo paisaje */
+@media only screen 
+and (min-device-width: 768px) 
+and (max-device-width: 1024px) 
+and (orientation: landscape) {
+#gallery-container-2 {
+/* Ajustes para mejorar la visibilidad */
+position: fixed;
+top: 10%; /* Ajusta este valor según sea necesario */
+}
+#collage-container {
+margin-top: 10vh; /* Espacio para la galería */
+position: fixed;
+}
+}
+
+/* iPads en modo retrato */
+@media only screen 
+and (min-device-width: 768px) 
+and (max-device-width: 1024px) 
+and (orientation: portrait) {
+
+#gallery-container {
+height: 20%;
+
+position: fixed;
+top: 5%; /* Ajuste según necesidad */
+}    
+#gallery-container-2 {
+height: 10%;
+
+position: fixed;
+top: 30%; /* Ajuste basado en tu diseño específico */
+}
+#collage-container {
+top: 5vh; /* Ajuste según el contenido de tu galería */
+position: fixed;
+}
+}
+
+
+
+
+/* Estilos específicos para iPhone 12 */
+@media only screen 
+and (min-device-width: 390px) 
+and (max-device-width: 844px) {
+
+#gallery-container img {
+
+       width:10%;
+    height: 30%;}
+
+
+#gallery-container {
+position: fixed;
+top: 15%; /* Ajusta esta distancia según lo que se vea mejor */
+gap: 2px;
+}
+}
+
+
+
+#gallery-container{
+position: fixed;
+top: 10%; /* Posición ajustada para la visualización */
+overflow-x: auto; /* Permite desplazamiento horizontal */
+white-space: nowrap; /* Alinea las imágenes horizontalmente */
+padding: 20px; /* Añade un poco de relleno alrededor */
+}
+
+
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.image-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80%;
+    color: white;
+    background-color: rgba(162, 162, 162, 0.7); 
+    text-align: center;
+    visibility: hidden; 
+    border-radius: 10px;
+    padding: 2px 0; 
+}
+
+.image-container:hover .image-name {
+    visibility: visible; 
+}
+
+
+
+.no-scroll {
+touch-action: none;
+}
+
+
+
+
+#bg-color-picker {
+
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #93f2ff;
+    color: rgb(255, 255, 255);    font-weight: bold;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+            border: 2px dashed#c2f700;
+    width:50px; 
+    font-size: 12px;
+    
+    position: absolute;
+    top: 195px; 
+    
+    right:  14px; 
+    z-index: 1000;
+
+    display: none;
+}
+#bg-color-picker:hover {
+background-color: rgb(218, 212, 252)
+
+}
+
+
+.color-picker:hover .hover-text {
+display: block; /* Oculta el texto por defecto */
+position: absolute; /* Posicionamiento relativo al botón */
+bottom: -10px; /* Ajusta según necesites */
+padding: 1px 4px; 
+top: 225px; 
+z-index: 15;
+right:  10px;
+transform: translateX(-50%); /* Centra el texto bajo el botón */
+background-color: #fff; /* Fondo del texto */
+background-color: #93f2ff;
+/* Espaciado interno */
+border-radius: 5px; /* Bordes redondeados */
+font-size: 10px; /* Tamaño del texto */
+white-space: nowrap; /* Evita que el texto se divida en líneas */
+height: 20px;
+}
+
+#play-button {
+
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+        border: 2px dashed#c2f700;
+width:50px; 
+font-size: 12px;
+
+position: absolute;
+top: 10px; 
+
+right:  10px; 
+z-index: 1000;
+}
+
+.hover-text {
+display: none; /* Oculta el texto por defecto */
+position: absolute; /* Posicionamiento relativo al botón */
+bottom: -10px; /* Ajusta según necesites */
+padding: 1px 4px; 
+top: 10px; 
+z-index: 1000;
+right:  10px;
+height: 20px;
+                font-family: "Anta", sans-serif;
+
+transform: translateX(-50%); /* Centra el texto bajo el botón */
+background-color: #fff; /* Fondo del texto */
+background-color: #93f2ff;
+/* Espaciado interno */
+border-radius: 5px; /* Bordes redondeados */
+font-size: 10px; /* Tamaño del texto */
+white-space: nowrap; /* Evita que el texto se divida en líneas */
+box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Sombra opcional para resaltar */
+}
+#play-button:hover {
+
+background-color: rgb(218, 212, 252)
+
+}
+
+
+button:hover .hover-text {
+display: block; /* Muestra el texto en hover */
+}
+
+
+
+
+#play-audios-images2{
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+        border: 2px dashed #c2f700;
+width:50px; 
+font-size: 12px;
+
+position: absolute;
+top: 50px; 
+
+right:  60px; 
+z-index: 100;
+}
+#play-audios-images2:hover{ 
+background-color: rgb(218, 212, 252)
+}
+#stop-audios-button{
+
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+border: 2px dashed #c2f700;
+width:50px; 
+font-size: 12px;
+position: absolute;
+top: 85px; 
+right:  60px; 
+z-index: 1000;
+}
+#stop-audios-button:hover{
+
+background-color: rgb(218, 212, 252)
+
+}
+
+#loop-audios-button{
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+border: 2px dashed #c2f700;
+width:50px; 
+font-size: 12px;
+position: absolute;
+top: 120px; 
+right:  60px; 
+z-index: 1000;
+}
+#loop-audios-button:hover {
+background-color: rgb(218, 212, 252)
+
+}
+
+#move-down{
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+border: 2px dashed#c2f700;
+width:50px; 
+font-size: 12px;
+position: absolute;
+top: 120px; 
+right:  10px; 
+z-index: 1000;
+}
+#move-down:hover{
+background-color: rgb(218, 212, 252)
+}
+
+
+#move-up{
+
+display: inline-block;
+padding: 10px 10px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+cursor: pointer;
+width: 50px; 
+font-size: 12px;
+border: 2px dashed#c2f700;
+position: absolute;
+top: 155px; 
+right:  10px; 
+z-index: 1000;
+
+}
+
+
+#move-up:hover{
+background-color: rgb(218, 212, 252)
+}
+
+
+#change-background-button{
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+border: 2px dashed #c2f700;;
+width:50px; 
+font-size: 12px;
+position: absolute;
+top: 49px; 
+right:  10px; 
+z-index: 1000;
+}
+
+#change-background-button:hover{
+background-color: rgb(218, 212, 252)
+}
+
+#delete-button{
+
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+border: 2px dashed#c2f700;
+width:50px; 
+font-size: 12px;
+position: absolute;
+top: 85px; 
+right:  10px; 
+z-index: 1000;
+}
+
+#delete-button:hover{
+background-color: rgb(218, 212, 252)
+}
+
+#print-button{
+
+display: inline-block;
+padding: 5px 7px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+cursor: pointer;
+width: 50px; 
+font-size: 12px;
+border: 2px dashed#c2f700;
+position: absolute;
+top: 212px; 
+right:  10px; 
+z-index: 1000;
+}
+
+#print-button:hover {
+
+background-color: rgb(211, 199, 199)
+
+}
+
+
+
+
+#collage-container img {
+
+min-width:  60px;
+min-height: 60px;
+max-width: none;
+max-height: none;
+cursor: move;
+transition: transform 0.1s ease; 
+transform-origin: center center; 
+}
+
+
+
+.draggable {
+    position: absolute;
+    cursor: move;
+    background-size: cover;
+    background-position: center;
+   touch-action: manipulation;
+
+}
+
+
+
+#collage-footer {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 200px;
+    color: gray;
+    position: fixed;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+}
+
+#selection-box {
+    border: 1px solid #000000;
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+
+@media print {
+body, html {
+background: #FFF;
+color: #000;
+}
+#print-button, #volume-control, #volume-slider, #bg-color-picker, #gallery-container img{
+display: none; 
+}
+
+}
+.draggable.selected {
+border: 2px dashed #90ff00;
+}
+
+#logout-btn{
+color: gray;
+background-color: #fff;
+border: none;
+
+}
+#logout-btn:hover{
+border: 2px dashed  #c4d49c
+}
+
+.no-scroll {
+overflow: hidden;
+height: 100%;
+}
+
+
+    }
+
+    #collage-container img {
+        max-width: 100%; /* Asegúrate de que no excedan el ancho del contenedor */
+        max-height: auto; /* Ajusta para mantener la proporción */
+        cursor: move;
+        box-shadow: 0 0 5px rgb(52, 52, 52);
+        transition: transform 0.1s ease;
+        display: block;
+        margin: 0 auto; /* Centra la imagen si es necesario */
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 50), 0 0px 20px 0 rgba(106, 209, 3, 0.9); /* Standard shadow */
+
+    }
+}
+
+/* iPads en modo paisaje */
+@media only screen 
+and (min-device-width: 768px) 
+and (max-device-width: 1024px) 
+and (orientation: landscape) {
+#gallery-container-2 {
+/* Ajustes para mejorar la visibilidad */
+position: fixed;
+top: 10%; /* Ajusta este valor según sea necesario */
+}
+#collage-container {
+margin-top: 10vh; /* Espacio para la galería */
+position: fixed;
+}
+}
+
+/* iPads en modo retrato */
+@media only screen 
+and (min-device-width: 768px) 
+and (max-device-width: 1024px) 
+and (orientation: portrait) {
+
+#gallery-container {
+height: 20%;
+
+position: fixed;
+top: 5%; /* Ajuste según necesidad */
+}    
+#gallery-container-2 {
+height: 10%;
+
+position: fixed;
+top: 30%; /* Ajuste basado en tu diseño específico */
+}
+#collage-container {
+top: 5vh; /* Ajuste según el contenido de tu galería */
+position: fixed;
+}
+}
+
+
+
+
+/* Estilos específicos para iPhone 12 */
+@media only screen 
+and (min-device-width: 390px) 
+and (max-device-width: 844px) {
+
+#gallery-container img {
+
+       width:10%;
+    height: 30%;}
+
+
+#gallery-container {
+position: fixed;
+top: 15%; /* Ajusta esta distancia según lo que se vea mejor */
+gap: 2px;
+}
+}
+
+
+
+#gallery-container{
+position: fixed;
+top: 10%; /* Posición ajustada para la visualización */
+overflow-x: auto; /* Permite desplazamiento horizontal */
+white-space: nowrap; /* Alinea las imágenes horizontalmente */
+padding: 20px; /* Añade un poco de relleno alrededor */
+}
+
+
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.image-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80%;
+    color: white;
+    background-color: rgba(162, 162, 162, 0.7); 
+    text-align: center;
+    visibility: hidden; 
+    border-radius: 10px;
+    padding: 2px 0; 
+}
+
+.image-container:hover .image-name {
+    visibility: visible; 
+}
+
+
+
+.no-scroll {
+touch-action: none;
+}
+
+
+
+
+#bg-color-picker {
+
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #93f2ff;
+    color: rgb(255, 255, 255);    font-weight: bold;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+            border: 2px dashed#c2f700;
+    width:50px; 
+    font-size: 12px;
+    
+    position: absolute;
+    top: 195px; 
+    
+    right:  14px; 
+    z-index: 1000;
+
+    display: none;
+}
+#bg-color-picker:hover {
+background-color: rgb(218, 212, 252)
+
+}
+
+
+.color-picker:hover .hover-text {
+display: block; /* Oculta el texto por defecto */
+position: absolute; /* Posicionamiento relativo al botón */
+bottom: -10px; /* Ajusta según necesites */
+padding: 1px 4px; 
+top: 225px; 
+z-index: 15;
+right:  10px;
+transform: translateX(-50%); /* Centra el texto bajo el botón */
+background-color: #fff; /* Fondo del texto */
+background-color: #93f2ff;
+/* Espaciado interno */
+border-radius: 5px; /* Bordes redondeados */
+font-size: 10px; /* Tamaño del texto */
+white-space: nowrap; /* Evita que el texto se divida en líneas */
+height: 20px;
+}
+
+#play-button {
+
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+        border: 2px dashed#c2f700;
+width:50px; 
+font-size: 12px;
+
+position: absolute;
+top: 10px; 
+
+right:  10px; 
+z-index: 1000;
+}
+
+.hover-text {
+display: none; /* Oculta el texto por defecto */
+position: absolute; /* Posicionamiento relativo al botón */
+bottom: -10px; /* Ajusta según necesites */
+padding: 1px 4px; 
+top: 10px; 
+z-index: 1000;
+right:  10px;
+height: 20px;
+                font-family: "Anta", sans-serif;
+
+transform: translateX(-50%); /* Centra el texto bajo el botón */
+background-color: #fff; /* Fondo del texto */
+background-color: #93f2ff;
+/* Espaciado interno */
+border-radius: 5px; /* Bordes redondeados */
+font-size: 10px; /* Tamaño del texto */
+white-space: nowrap; /* Evita que el texto se divida en líneas */
+box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Sombra opcional para resaltar */
+}
+#play-button:hover {
+
+background-color: rgb(218, 212, 252)
+
+}
+
+
+button:hover .hover-text {
+display: block; /* Muestra el texto en hover */
+}
+
+
+
+
+#play-audios-images2{
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+        border: 2px dashed #c2f700;
+width:50px; 
+font-size: 12px;
+
+position: absolute;
+top: 50px; 
+
+right:  60px; 
+z-index: 100;
+}
+#play-audios-images2:hover{ 
+background-color: rgb(218, 212, 252)
+}
+#stop-audios-button{
+
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+border: 2px dashed #c2f700;
+width:50px; 
+font-size: 12px;
+position: absolute;
+top: 85px; 
+right:  60px; 
+z-index: 1000;
+}
+#stop-audios-button:hover{
+
+background-color: rgb(218, 212, 252)
+
+}
+
+#loop-audios-button{
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+border: 2px dashed #c2f700;
+width:50px; 
+font-size: 12px;
+position: absolute;
+top: 120px; 
+right:  60px; 
+z-index: 1000;
+}
+#loop-audios-button:hover {
+background-color: rgb(218, 212, 252)
+
+}
+
+#move-down{
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+border: 2px dashed#c2f700;
+width:50px; 
+font-size: 12px;
+position: absolute;
+top: 120px; 
+right:  10px; 
+z-index: 1000;
+}
+#move-down:hover{
+background-color: rgb(218, 212, 252)
+}
+
+
+#move-up{
+
+display: inline-block;
+padding: 10px 10px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+cursor: pointer;
+width: 50px; 
+font-size: 12px;
+border: 2px dashed#c2f700;
+position: absolute;
+top: 155px; 
+right:  10px; 
+z-index: 1000;
+
+}
+
+
+#move-up:hover{
+background-color: rgb(218, 212, 252)
+}
+
+
+#change-background-button{
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+border: 2px dashed #c2f700;;
+width:50px; 
+font-size: 12px;
+position: absolute;
+top: 49px; 
+right:  10px; 
+z-index: 1000;
+}
+
+#change-background-button:hover{
+background-color: rgb(218, 212, 252)
+}
+
+#delete-button{
+
+display: inline-block;
+padding: 10px 20px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+border: none;
+cursor: pointer;
+border: 2px dashed#c2f700;
+width:50px; 
+font-size: 12px;
+position: absolute;
+top: 85px; 
+right:  10px; 
+z-index: 1000;
+}
+
+#delete-button:hover{
+background-color: rgb(218, 212, 252)
+}
+
+#print-button{
+
+display: inline-block;
+padding: 5px 7px;
+background-color: #93f2ff;
+color: rgb(255, 255, 255);    font-weight: bold;
+text-align: center;
+cursor: pointer;
+width: 50px; 
+font-size: 12px;
+border: 2px dashed#c2f700;
+position: absolute;
+top: 212px; 
+right:  10px; 
+z-index: 1000;
+}
+
+#print-button:hover {
+
+background-color: rgb(211, 199, 199)
+
+}
+
+
+
+
+#collage-container img {
+
+min-width:  60px;
+min-height: 60px;
+max-width: none;
+max-height: none;
+cursor: move;
+transition: transform 0.1s ease; 
+transform-origin: center center; 
+}
+
+
+
+.draggable {
+    position: absolute;
+    cursor: move;
+    background-size: cover;
+    background-position: center;
+   touch-action: manipulation;
+
+}
+
+
+
+#collage-footer {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 200px;
+    color: gray;
+    position: fixed;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+}
+
+#selection-box {
+    border: 1px solid #000000;
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+
+@media print {
+body, html {
+background: #FFF;
+color: #000;
+}
+#print-button, #volume-control, #volume-slider, #bg-color-picker, #gallery-container img{
+display: none; 
+}
+
+}
+.draggable.selected {
+border: 2px dashed #90ff00;
+}
+
+#logout-btn{
+color: gray;
+background-color: #fff;
+border: none;
+
+}
+#logout-btn:hover{
+border: 2px dashed  #c4d49c
+}
+
+.no-scroll {
+overflow: hidden;
+height: 100%;
+}
+
+#gallery-container img {
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+#gallery-container img:hover::after {
+    content: "Your text here"; /* Replace 'Your text here' with whatever text you want on hover */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 20px; /* Adjust font size as needed */
+}
+
+#gallery-container img:hover::after {
+    opacity: 1;
+}
