@@ -63,9 +63,11 @@
 
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
-        <button id="restartButton">Iniciar Juego</button>
-        <button id="newGameButton">Collage</button>
         <button id="subtitleButton">Misión</button>
+        <button id="restartButton">Reiniciar Juego</button>
+        <button id="newGameButton">Collage</button>
+        <button id="paintButton">Pintar</button>
+
     </div>
 
         <button id="collageButton" style="display: none; position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background: url('path_to_your_button_image.jpg') no-repeat center; border: none; width: 50px; height: 100px; cursor: pointer;">
@@ -458,15 +460,15 @@ class Boid {
                 changeStage(stage);
             };
             document.getElementById('newGameButton').onclick = function() {
-                window.location.href = 'newGame.html';
+                window.location.href = 'collage.html';
             };
             document.getElementById('subtitleButton').onclick = function() {
                 let subtitles = document.getElementById('subtitles');
                 subtitles.style.display = subtitles.style.display === 'none' ? 'block' : 'none';
             };
 
-            document.getElementById('collageButton').onclick = function() {
-        window.location.href = 'collage.html'; // Cambia esto por la URL de tu página de collage
+            document.getElementById('paintButton').onclick = function() {
+        window.location.href = 'paint.html'; // Cambia esto por la URL de tu página de collage
     };
         }
         function changeStage(newStage) {
