@@ -446,6 +446,11 @@ document.getElementById('newGameButton').addEventListener('click', function() {
     window.location.href = 'abejas.html'; // Redirecciona al usuario a la página "abejas.html"
 });
 
+document.getElementById('paintButton').addEventListener('click', function() {
+    window.location.href = 'paint.html'; // Redirecciona al usuario a la página "abejas.html"
+});
+
+
 
 function clearCanvas() {
     const collageContainer = document.getElementById('collage-container');
@@ -468,3 +473,8 @@ function clearCanvas() {
 document.getElementById('resetButton').addEventListener('click', function() {
     clearCanvas();  // Llama a la función que limpia el canvas
 });
+
+  
+    
+     
+        
