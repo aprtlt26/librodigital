@@ -409,7 +409,7 @@
          document.body.classList.remove('no-scroll');
      });
          
-     var storyAudio = new Audio('cuento.wav');  // Create the audio object for the story
+     var storyAudio = new Audio('cuento.mp3');  // Create the audio object for the story
      var missionAudio = new Audio('elcollage.wav');  // Create the audio object for the mission
      
      // Function to stop all audios and play the provided audio
