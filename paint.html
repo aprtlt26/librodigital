@@ -359,8 +359,9 @@ body, html {
         <div id="buttonContainer">
             <button id="storyButton">Cuento</button>
             <button id="misionButton">Misión</button>
-            <button id="resetButton">Comenzar de Nuevo</button>
             <button id="newGameButton">Viaje de las Abejas</button>
+            <button id="collageButton">Collage</button>
+
         </div>
         
     
@@ -673,7 +674,15 @@ document.getElementById("togglePaintMode").addEventListener("touchstart", functi
     togglePaintMode(); // Llama a la función al tocar
 });
 
-// Función para deshacer el último trazo de pintura
+document.getElementById('newGameButton').addEventListener('click', function() {
+    window.location.href = 'abejas.html'; // Redirecciona al usuario a la página "abejas.html"
+});
+
+
+document.getElementById('collageButton').addEventListener('click', function() {
+    window.location.href = 'collage.html'; // Redirecciona al usuario a la página "abejas.html"
+});
+
 
 
 function printDocument() {
