@@ -443,7 +443,7 @@ document.getElementById('resetButton').addEventListener('click', function() {
 });
 
 document.getElementById('newGameButton').addEventListener('click', function() {
-    window.location.href = 'abejas.html'; // Redirecciona al usuario a la página "abejas.html"
+    window.location.href = 'index.html'; // Redirecciona al usuario a la página "abejas.html"
 });
 
 document.getElementById('paintButton').addEventListener('click', function() {
