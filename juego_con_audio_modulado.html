@@ -230,17 +230,17 @@ class Boid {
 
         // Crear un oscilador para cada boid
         this.osc = new p5.Oscillator('sine');
-        this.osc.amp(0.05); // Inicialmente, una amplitud baja para evitar ruidos molestos
+        this.osc.amp(0.01); // Inicialmente, una amplitud baja para evitar ruidos molestos
         this.osc.start();
     }
 
             updateOscillator() {
     // Frecuencia se modifica en base a la posición x
-    let freq = map(this.position.x, 0, width, 205.285, 220,655);
+    let freq = map(this.position.x, 0, width, 205.285, 260,655);
     this.osc.freq(freq);
 
     // Amplitud se modifica en base a la posición y
-    let amp = map(this.position.y, 0, height, -0.01, 0.00);
+    let amp = map(this.position.y, 0, height, 0.00, 0.03);
     this.osc.amp(amp);
 
     // Panorámica se modifica basada en la posición x para dar sensación de movimiento lateral
