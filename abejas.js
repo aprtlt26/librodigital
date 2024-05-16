@@ -319,6 +319,11 @@ class Boid {
             document.getElementById('collageButton').onclick = function() {
         window.location.href = 'collage.html'; // Cambia esto por la URL de tu página de collage
     };
+
+            
+    document.getElementById('audioButton').onclick = function() {
+        window.location.href = 'juego_con_audio_modulado.html'; // Cambia esto por la URL de tu página de collage
+    };
         }
         function changeStage(newStage) {
     if (currentBackgroundSound) {
