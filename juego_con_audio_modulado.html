@@ -230,7 +230,7 @@ class Boid {
 
         // Crear un oscilador para cada boid
         this.osc = new p5.Oscillator('sine');
-        this.osc.amp(0.01); // Inicialmente, una amplitud baja para evitar ruidos molestos
+        this.osc.amp(0.05); // Inicialmente, una amplitud baja para evitar ruidos molestos
         this.osc.start();
     }
 
