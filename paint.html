@@ -9,7 +9,7 @@
     <meta name="author" content="alfonsopretelt">
     <meta name="robots" content="collage">
     <meta name="google" content="translate">
-   <meta property="og:type" content="www.arteypsique.com">
+    <meta property="og:type" content="www.arteypsique.com">
     <meta property="og:url" content="https://www.arteypsique.com">
     <meta property="og:title" content="Arte & Psique">
     <meta property="og:description" content="Plataforma de aprendizaje y creación">
@@ -21,374 +21,209 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/RecordRTC/5.6.1/RecordRTC.min.js"></script>
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-       <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anta&family=Kode+Mono:wght@400..700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Kode+Mono:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet">
 
     <style>
-    
-       
-       /* Estilos base para móviles */
-body {
-    font-family: "Anta", sans-serif;
-    margin: 10px;
-    background-color: #f2f2f2;
-    background-position: center;
-    width: 100vh;
-
-  
-}
-
-
-
-        #text-container {
-    max-width: 800px; /* Ancho máximo para pantallas grandes */
-    margin: auto; /* Centra el contenedor */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 30px;
-    background-color: rgb(249, 249, 249);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    font-size: 80%;
-}
-
-/* Ajustes para dispositivos móviles */
-@media (max-width: 768px) {
-    #text-container {
-        max-width: 90%; /* Ajusta el ancho máximo para pantallas pequeñas */
-        padding: 15px; /* Reduce el padding para más espacio */
-        font-size: 16px; /* Ajusta el tamaño de la fuente para mejor legibilidad */
-    }
-}
-
-
-
-
-
-#logout-btn{
-    color: gray;
-    background-color: #fff;
-    border: none;
-
-}
-#logout-btn:hover{
-    border: 2px dashed  #c4d49c
-}
-
-
-
-
-
-     
-        .gallery-container img:hover {
-            border-color: #ffd53d;
-        }
-
-        svg { 
-          display: flex; 
-          width: 550px; height: auto; 
-align-items: center;
-justify-content: center;
-margin-top:120px;}
-
-.gallery-container {
-    position: fixed; /* Hace que la galería se mantenga fija a la izquierda */
-    top:65px;
-    left: 0;
-    bottom: 0;
-    width: 100px; /* Ajusta este valor según el ancho deseado para tu galería */
-    overflow-y: auto; /* Permite desplazamiento vertical si el contenido excede la altura */
-    background-color: #f9f9f9; /* Color de fondo, ajústalo según tu diseño */
-    padding: 10px 0; /* Espacio superior e inferior dentro de la galería */
-    z-index: 1000; /* Asegura que la galería esté sobre otros elementos */
-    background-color: #ffea00;
-    border: dashed #bdbdbd ;
-
-}
-
-.gallery-container img {
-    width: 80%; /* Hace que las imágenes se ajusten al ancho de la galería */
-    margin: 10px 10%; /* Espacio alrededor de las imágenes */
-    cursor: pointer;
-    display: block; /* Asegura que las imágenes se muestren una debajo de la otra */
-}
-
-        
-
-        .main-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-    margin-left: 200px; /* Ajusta según el ancho de tu galería */
-    padding-top: 70px;
-    padding-bottom: 100px; 
-}
-
-
-@media (max-width: 767px) {
-    .main-content {
-        margin-left: 200px; /* Remueve el margen izquierdo para pantallas pequeñas */
-        padding: 30px 30px; /* Añade algo de padding para no pegar el contenido a los bordes */
-        width: auto; /* Asegura que el contenido se expanda de manera apropiada */
-        max-width: 50%; /* Previene que el contenido exceda el ancho de la pantalla */
-        box-sizing: border-box; /* Incluye el padding dentro del ancho definido */
-    padding-top: 90px;
-    margin-top: 60px;}
-
-    }
-    
-    
-@media (max-width: 768px) {
-    .gallery-container {
-        width: 50px; /* Reduce el ancho de la galería para ahorrar espacio */
-        overflow-y: auto; /* Permite el desplazamiento vertical */
-    }
-
-    .gallery-container img {
-        width: 100%; /* Hace que las imágenes llenen el contenedor */
-        margin: 5px 0; /* Reduce el margen para ahorrar espacio */
-    }
-}
-
-
-
-footer {
-    text-align: center;
-    padding: 5px 0;
-    background-color: transparent;
-    color: #bffa6c;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-footer:hover {
-color: #000000;
-text-decoration: none; /* Elimina el subrayado de los enlaces */
-
-}
-
-.print-button {
-    margin: 50px auto;
-    padding: 5px 10px;
-    background-color: #e1e1e5 transparent;
-    color: rgb(68, 68, 68);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 1px;
-
-}
-
-.print-button:hover {
-    background-color: #b2eef3;
-}
-.image-controls button {
-    margin: 50px auto;
-    padding: 5px 10px;
-    background-color: #e1e1e5 transparent;
-    color: rgb(78, 78, 78);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 1px;
-
-}
-#color-picker{
-  margin:  auto;
-  height: 40px;
-    background-color: #e1e1e5 transparent;
-    color: rgb(78, 78, 78);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-
-
-        }
-
-.image-controls button:hover {
-    background-color: #b2eef3;
-    border: dashed #b2eef3;
-}
-
-
-/* Ajustes generales para los controles */
-.image-controls-container {
-    display: flex;
-    justify-content: center; /* Centra los controles horizontalmente */
-    align-items: center; /* Centra los controles verticalmente */
-    flex-wrap: wrap; /* Permite que los controles se ajusten en filas según el ancho disponible */
-    margin-top: 3px; /* Espacio entre los controles y el contenido arriba */
-}
-
-.image-controls button, .image-controls #color-picker {
-    margin: 5px; /* Espaciado alrededor de cada control */
-    padding: 10px; /* Aumenta el área táctil para dispositivos móviles */
-}
-
-
-
-
-.button-active {
-    background-color: #bffa88; /* Color de fondo cuando está activo */
-}
-
-button:focus, .button-class:focus {
-    outline: none;
-    border: dashed #3c3c3c ;
-}
-
-button:focus, .button-class:focus {
-    outline: none;
-    background-color: #ebebeb; /* Color de fondo más claro al enfocar */
-}
-
-.no-scroll {
-    touch-action: none;
-}
-
-
-/* Ajustes generales para móviles */
-.image-controls-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column; /* Cambia la dirección a columna para móviles */
-    margin-top: 20px; /* Asegura un margen superior para evitar solapamientos */
-}
-
-@media screen and (orientation: portrait) {
-    /* Estilos específicos para orientación vertical */
-    .main-content {
-        margin-top: 20px; /* Ajusta según necesidad */
-        text-align: center; /* Centra el contenido */
-    }
-
-    .image-controls-container {
-        flex-direction: column; /* Alinea los controles verticalmente */
-
-    }
-}
-
-@media screen and (orientation: landscape) {
-    /* Estilos específicos para orientación horizontal */
-    .main-content {
-        padding: 10px; /* Proporciona suficiente espacio alrededor del contenido */
-
-    }
-
-    .image-controls-container {
-        flex-direction: row; /* Alinea los controles horizontalmente en paisaje */
-        justify-content: space-around; /* Distribuye el espacio uniformemente */
-
-    }
-}
-
-
-
-body, html {
+        body {
+            font-family: "Anta", sans-serif;
             margin: 0;
-            padding: 0;
-            overflow: hidden; /* Evita barras de desplazamiento */
-            background-color: #eeeeee;
+            background-color: #f2f2f2;
+            overflow-x: hidden;
         }
+
         #buttonContainer {
-            position: absolute;
+            position: fixed;
             top: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             width: 100%;
             text-align: center;
             padding: 10px 0;
             background-color: #bdedf1;
+            z-index: 1000;
         }
-    button {
-        margin: 5px;
-        padding: 10px 15px;
-        font-size: 11px;
-        cursor: pointer;
-        background-color: #93f2ff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-    }
-    button:hover {
-        background-color: #1ccad3;
-    }
 
-    #subtitles {
-        display: none;
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        text-align: center;
-        color: white;
-        background: rgba(0,0,0,0.5);
-        padding: 10px;
-    }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #93f2ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
 
-    /* Ocultar el botón 'Iniciar' en pantallas grandes */
-    #startButton {
-        display: none; /* Oculta por defecto el botón */
-    }
+        button:hover {
+            background-color: #13e0eb;
+        }
 
+        @media (max-width: 768px) {
+            button {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+        }
 
+        .gallery-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            bottom: 0;
+            width: 100px;
+            overflow-y: auto;
+            background-color: #ffea00;
+            padding: 10px 0;
+            z-index: 1000;
+            border: dashed #bdbdbd;
+        }
 
+        .gallery-container img {
+            width: 80%;
+            margin: 10px 10%;
+            cursor: pointer;
+            display: block;
+        }
 
-</style>
+        @media (max-width: 768px) {
+            .gallery-container {
+                width: 50px;
+            }
 
+            .gallery-container img {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
 
+        .main-content {
+            margin-left: 110px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 60px;
+                padding: 10px;
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 5px 0;
+            background-color: transparent;
+            color: #bffa6c;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer:hover {
+            color: #000000;
+            text-decoration: none;
+        }
+
+        .print-button {
+            margin: 50px auto;
+            padding: 5px 10px;
+            background-color: #e1e1e5;
+            color: rgb(68, 68, 68);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .print-button:hover {
+            background-color: #b2eef3;
+        }
+
+        .image-controls-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .image-controls button {
+            margin: 5px;
+            padding: 10px;
+        }
+
+        .button-active {
+            background-color: #bffa88;
+        }
+
+        button:focus, .button-class:focus {
+            outline: none;
+            background-color: #ebebeb;
+        }
+
+        .no-scroll {
+            touch-action: none;
+        }
+
+        @media screen and (orientation: portrait) {
+            .main-content {
+                margin-top: 20px;
+                text-align: center;
+            }
+
+            .image-controls-container {
+                flex-direction: column;
+            }
+        }
+
+        @media screen and (orientation: landscape) {
+            .main-content {
+                padding: 10px;
+            }
+
+            .image-controls-container {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+        }
+
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            width: 200px;
+            margin: 5px;
+        }
+
+        .color-swatch {
+            width: 20px;
+            height: 20px;
+            margin: 2px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+        .color-swatch.selected {
+            border: 2px solid #000;
+        }
+    </style>
 </head>
 
 <body>
 
-
-
-
-
-    <header>
-
-        <div id="buttonContainer">
-            <button id="storyButton">Cuento</button>
-            <button id="misionButton">Misión</button>
-            <button id="newGameButton">Viaje de las Abejas</button>
-            <button id="collageButton">Collage</button>
-
-        </div>
-        
-    
-     </header>
-
-
-
-
-
-
-     
-
-        </div>
-
-        <section>
-        </section>
-        
-
-       
-<p> 
-
-
-</p>
-
+<header>
+    <div id="buttonContainer">
+        <button id="storyButton">Cuento</button>
+        <button id="misionButton">Misión</button>
+        <button id="newGameButton">Viaje de las Abejas</button>
+        <button id="collageButton">Collage</button>
+    </div>
+</header>
 
 <div class="gallery-container">
-    <img src="01.svg" alt="01" data-svg="01.svg" >
+    <img src="01.svg" alt="01" data-svg="01.svg">
     <img src="02.svg" alt="2" data-svg="02.svg">
     <img src="03.svg" alt="3" data-svg="03.svg">
     <img src="04.svg" alt="4" data-svg="04.svg">
@@ -396,132 +231,101 @@ body, html {
     <img src="06.svg" alt="6" data-svg="06.svg">
     <img src="07.svg" alt="7" data-svg="07.svg">
     <img src="8.svg" alt="8" data-svg="08.svg">
-
-  
-   
 </div>
 
+<div class="main-content">
+    <div id="svgContainer"></div>
 </div>
 
-
-<div class="main-content"> 
-    <div class="page-container">
-        <div class="container d-flex ">
-            <div class="row">
-                <div class="no-print">
-
-                  
-                      <!-- Tus elementos SVG aquí -->
-                  </svg>
-                  
-                    <div id="svgContainer"></div> <!-- El SVG se cargará aquí -->
-                </div>
-            </div>
-        </div>
+<div class="image-controls-container">
+    <div class="image-controls">
+        <button onclick="resizeImage(1.1)">-</button>
+        <button onclick="resizeImage(0.9)">+</button>
+        <div class="color-palette" id="colorPalette"></div>
+        <button id="togglePaintMode"><i class='bx bx-paint button-hover-effect'></i></button>
+        <button id="toggleDragMode"><i class='bx bx-move button-hover-effect'></i></button>
+        <button onclick="printDocument()" class="print-button"><i class='bx bx-printer'></i></button>
     </div>
+</div>
 
-    <div class="image-controls-container">
-      <div class="image-controls">
-          <button onclick="resizeImage(1.1)"> - </button>
-          <button onclick="resizeImage(0.9)">+</button>
-          <input type="color" id="color-picker" value="#ff0000" ></i>
-          <button id="togglePaintMode"><i class='bx bx-paint button-hover-effect'></i></button>
-          <button id="toggleDragMode"><i class='bx bx-move button-hover-effect '></i></button>
-          <button onclick="printDocument()" class="print-button"><i class='bx bx-printer ' ></i></button>
+<script>
+let paintHistory = [];
+let paintMode = false;
+let currentColor = '#000000';
 
-      </div>
-
-  
-
-    <script>
-
-
-let paintHistory = []; 
-
-        function loadSVGAndAddInteractivity(svgFile) {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', svgFile, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const container = document.getElementById('svgContainer');
-                    container.innerHTML = xhr.responseText;
-                    applyInteractivity();
-                }
-            };
-            xhr.send();
+function loadSVGAndAddInteractivity(svgFile) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', svgFile, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            const container = document.getElementById('svgContainer');
+            container.innerHTML = xhr.responseText;
+            applyInteractivity();
         }
+    };
+    xhr.send();
+}
 
-
-        function applyInteractivity() {
+function applyInteractivity() {
     document.querySelectorAll('#svgContainer svg path').forEach(path => {
         path.addEventListener('click', function() {
-            if (!paintMode) { // Solo rellena si no estamos en modo pincel
+            if (!paintMode) {
                 const prevState = {
-                    type: 'fill', // Tipo de acción
+                    type: 'fill',
                     element: this,
-                    fill: this.style.fill // Color anterior
+                    fill: this.style.fill
                 };
                 paintHistory.push(prevState);
-                this.style.fill = document.getElementById('color-picker').value;
+                this.style.fill = currentColor;
             }
         });
     });
 }
 
+document.querySelectorAll('.gallery-container img').forEach(img => {
+    img.addEventListener('click', function() {
+        const svgPath = this.getAttribute('data-svg');
+        loadSVGAndAddInteractivity(svgPath);
+    });
+});
 
+window.addEventListener('load', () => {
+    const firstSVGImage = document.querySelector('.gallery-container img');
+    if (firstSVGImage) {
+        const firstSVGPath = firstSVGImage.getAttribute('data-svg');
+        loadSVGAndAddInteractivity(firstSVGPath);
+    }
+    populateColorPalette();
+});
 
-        document.querySelectorAll('.gallery-container img').forEach(img => {
-            img.addEventListener('click', function() {
-                const svgPath = this.getAttribute('data-svg');
-                loadSVGAndAddInteractivity(svgPath);
-            });
-        });
-
-        window.addEventListener('load', () => {
-            // Carga el primer SVG automáticamente si existe
-            const firstSVGImage = document.querySelector('.gallery-container img');
-            if(firstSVGImage) {
-                const firstSVGPath = firstSVGImage.getAttribute('data-svg');
-                loadSVGAndAddInteractivity(firstSVGPath);
-            }
-        });
-
-        function resizeImage(scaleFactor) {
-    var svg = document.querySelector("#svgContainer svg"); // Selecciona el SVG dentro del contenedor
+function resizeImage(scaleFactor) {
+    const svg = document.querySelector("#svgContainer svg");
     if (svg) {
-        // Obtiene las dimensiones actuales del SVG
-        var currentWidth = svg.viewBox.baseVal.width || svg.getBoundingClientRect().width;
-        var currentHeight = svg.viewBox.baseVal.height || svg.getBoundingClientRect().height;
+        const currentWidth = svg.viewBox.baseVal.width || svg.getBoundingClientRect().width;
+        const currentHeight = svg.viewBox.baseVal.height || svg.getBoundingClientRect().height;
 
-        // Calcula las nuevas dimensiones
-        var newWidth = currentWidth * scaleFactor;
-        var newHeight = currentHeight * scaleFactor;
+        const newWidth = currentWidth * scaleFactor;
+        const newHeight = currentHeight * scaleFactor;
 
-        // Aplica las nuevas dimensiones al viewBox del SVG para redimensionarlo
         svg.viewBox.baseVal.width = newWidth;
         svg.viewBox.baseVal.height = newHeight;
-
-        // OPCIONAL: Si también deseas ajustar las dimensiones del elemento SVG (no solo el viewBox)
         svg.setAttribute("width", newWidth + "px");
         svg.setAttribute("height", newHeight + "px");
 
-        console.log("SVG redimensionado a:", newWidth, newHeight); // Para depuración
+        console.log("SVG redimensionado a:", newWidth, newHeight);
     }
 }
 
-
-
 let isDraggable = false;
 function toggleDragMode() {
-    isDraggable = !isDraggable; // Cambia el estado de isDraggable
-    const button = document.getElementById("toggleDragMode"); // Asume que este es el ID de tu botón
+    isDraggable = !isDraggable;
+    const button = document.getElementById("toggleDragMode");
 
-    // Aquí, 'interact' es utilizado para habilitar o deshabilitar la funcionalidad arrastrable
     interact("#svgContainer svg").draggable({
         enabled: isDraggable,
         listeners: {
             move(event) {
-                if (!isDraggable) return; // No hacer nada si el arrastre está desactivado
+                if (!isDraggable) return;
                 
                 let target = event.target,
                     x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
@@ -534,7 +338,6 @@ function toggleDragMode() {
         }
     });
 
-    // Añade o quita la clase 'button-active' basado en el estado de 'isDraggable'
     if (isDraggable) {
         button.classList.add("button-active");
     } else {
@@ -542,154 +345,20 @@ function toggleDragMode() {
     }
 }
 
-
-
-
-// Agrega un listener al botón para cambiar los modos al hacer clic
 document.getElementById("toggleDragMode").addEventListener("click", toggleDragMode);
 
-let paintMode = false;
-
-// Función para alternar el modo pincel
 function togglePaintMode() {
     paintMode = !paintMode;
     const button = document.getElementById("togglePaintMode");
 
     if (paintMode) {
         activatePainting();
-        button.classList.add("button-active"); // Añade la clase cuando está activo
+        button.classList.add("button-active");
     } else {
         deactivatePainting();
-        button.classList.remove("button-active"); // Remueve la clase cuando no está activo
+        button.classList.remove("button-active");
     }
 }
-
-
-
-
-
-
-
-// Función para activar la pintura
-function activatePainting() {
-    const svgContainer = document.getElementById("svgContainer");
-    svgContainer.addEventListener('mousemove', paint);
-}
-
-// Función para desactivar la pintura
-function deactivatePainting() {
-    const svgContainer = document.getElementById("svgContainer");
-    svgContainer.removeEventListener('mousemove', paint);
-}
-
-// Arreglo para almacenar el historial de elementos agregados al SVG
-
-
-// Función modificada para agregar pintura al SVG y al historial
-function paint(event) {
-    if (!paintMode) return;
-    const svg = document.querySelector("#svgContainer svg");
-    // Resto del código para crear el elemento...
-    let newElement = "#svgContainer svg";
-    svg.appendChild(newElement);
-    paintHistory.push({type: 'draw', element: newElement}); // Agregamos el nuevo elemento al historial
-}
-
-
-function paint(event) {
-    if (!paintMode) return;
-
-    // Obtiene el elemento SVG y su punto en el espacio del viewport
-    const svg = document.querySelector("#svgContainer svg");
-    const pt = svg.createSVGPoint();
-    
-    // Ajusta las coordenadas del punto al evento del mouse
-    pt.x = event.clientX;
-    pt.y = event.clientY;
-
-    // Transforma las coordenadas del punto al espacio del SVG∫
-    const svgPoint = pt.matrixTransform(svg.getScreenCTM().inverse());
-    
-    const color = document.getElementById("color-picker").value;
-
-    // Crea un nuevo círculo en la posición transformada
-    let newElement = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    newElement.setAttribute("cx", svgPoint.x); // Usa la coordenada X transformada
-    newElement.setAttribute("cy", svgPoint.y); // Usa la coordenada Y transformada
-    newElement.setAttribute("r", 2); // Tamaño del "pincel"
-    newElement.setAttribute("fill", color);
-
-    svg.appendChild(newElement);
-    paintHistory.push(newElement);
-
-    paintHistory.push({type: 'draw', element: newElement});
-
-}
-
-
-function undoPaint() {
-    if (paintHistory.length > 0) {
-        const lastAction = paintHistory.pop(); // Obtiene la última acción
-        
-        if (lastAction.type === 'fill') {
-            // Deshacer relleno: Restaurar el color anterior
-            lastAction.element.style.fill = lastAction.fill;
-        } else if (lastAction.type === 'draw') {
-            // Deshacer dibujo: Eliminar el último elemento dibujado
-            lastAction.element.remove();
-        }
-    }
-}
-
-// Listener para Ctrl+Z
-document.addEventListener("keydown", function(event) {
-    if (event.ctrlKey && event.key === 'z') {
-        undoPaint();
-    }
-});
-
-
-
-// Event listener para detectar Ctrl+Z
-document.addEventListener("keydown", function(event) {
-    // Verifica si se presionó Ctrl+Z
-    if (event.ctrlKey && event.key === 'z') {
-        undoPaint();
-    }
-});
-
-
-
-// Agrega el listener al botón de modo pincel
-
-
-document.getElementById("togglePaintMode").addEventListener("click", function(e) {
-    e.preventDefault(); // Previene la acción predeterminada para click
-    togglePaintMode(); // Llama a la función al hacer click
-});
-
-// Listener para touchstart
-document.getElementById("togglePaintMode").addEventListener("touchstart", function(e) {
-    e.preventDefault(); // Previene la acción predeterminada para touch
-    togglePaintMode(); // Llama a la función al tocar
-});
-
-document.getElementById('newGameButton').addEventListener('click', function() {
-    window.location.href = 'index.html'; // Redirecciona al usuario a la página "abejas.html"
-});
-
-
-document.getElementById('collageButton').addEventListener('click', function() {
-    window.location.href = 'collage.html'; // Redirecciona al usuario a la página "abejas.html"
-});
-
-
-
-function printDocument() {
-    window.print();
-}
-
-
 
 function activatePainting() {
     const svgContainer = document.getElementById("svgContainer");
@@ -704,42 +373,73 @@ function deactivatePainting() {
 }
 
 function paint(event) {
-    event.preventDefault(); // Previene el desplazamiento de la página al pintar en dispositivos táctiles
+    event.preventDefault();
     if (!paintMode) return;
 
     let clientX, clientY;
     if (event.touches) {
-        // Evento táctil
         clientX = event.touches[0].clientX;
         clientY = event.touches[0].clientY;
     } else {
-        // Evento del mouse
         clientX = event.clientX;
         clientY = event.clientY;
     }
 
-    // Obtiene el elemento SVG y su punto en el espacio del viewport
     const svg = document.querySelector("#svgContainer svg");
     const pt = svg.createSVGPoint();
-
-    // Ajusta las coordenadas del punto al evento del mouse/touch
     pt.x = clientX;
     pt.y = clientY;
-
-    // Transforma las coordenadas del punto al espacio del SVG
     const svgPoint = pt.matrixTransform(svg.getScreenCTM().inverse());
     
-    const color = document.getElementById("color-picker").value;
+    const color = currentColor;
 
-    // Crea un nuevo círculo en la posición transformada
     let newElement = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     newElement.setAttribute("cx", svgPoint.x);
     newElement.setAttribute("cy", svgPoint.y);
-    newElement.setAttribute("r", 2); // Ajusta el radio según sea necesario
+    newElement.setAttribute("r", 2);
     newElement.setAttribute("fill", color);
 
     svg.appendChild(newElement);
-    // Aquí puedes decidir si agregar o no el nuevoElement a paintHistory para la funcionalidad de deshacer
+    paintHistory.push(newElement);
+}
+
+function undoPaint() {
+    if (paintHistory.length > 0) {
+        const lastAction = paintHistory.pop();
+        if (lastAction.type === 'fill') {
+            lastAction.element.style.fill = lastAction.fill;
+        } else if (lastAction.type === 'draw') {
+            lastAction.element.remove();
+        }
+    }
+}
+
+document.addEventListener("keydown", function(event) {
+    if (event.ctrlKey && event.key === 'z') {
+        undoPaint();
+    }
+});
+
+document.getElementById("togglePaintMode").addEventListener("click", function(e) {
+    e.preventDefault();
+    togglePaintMode();
+});
+
+document.getElementById("togglePaintMode").addEventListener("touchstart", function(e) {
+    e.preventDefault();
+    togglePaintMode();
+});
+
+document.getElementById('newGameButton').addEventListener('click', function() {
+    window.location.href = 'abejas.html';
+});
+
+document.getElementById('collageButton').addEventListener('click', function() {
+    window.location.href = 'collage.html';
+});
+
+function printDocument() {
+    window.print();
 }
 
 if ('addEventListener' in document) {
@@ -748,12 +448,29 @@ if ('addEventListener' in document) {
     }, false);
 }
 
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+function populateColorPalette() {
+    const colors = [
+        '#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#8f00ff', // ROYGBIV
+        '#ffffff', '#000000', '#808080', '#800000', '#808000', '#008000', '#800080', '#008080', '#000080'
+    ];
 
+    const colorPalette = document.getElementById('colorPalette');
+
+    colors.forEach(color => {
+        const colorSwatch = document.createElement('div');
+        colorSwatch.className = 'color-swatch';
+        colorSwatch.style.backgroundColor = color;
+        colorSwatch.addEventListener('click', () => {
+            currentColor = color;
+            document.querySelectorAll('.color-swatch').forEach(swatch => swatch.classList.remove('selected'));
+            colorSwatch.classList.add('selected');
+        });
+        colorPalette.appendChild(colorSwatch);
+    });
+}
+</script>
 
 </body>
-
 </html>
+
+
