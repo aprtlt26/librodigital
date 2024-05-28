@@ -166,7 +166,7 @@ const firebaseConfig = {
   }
 
   document.getElementById('newGameButton').addEventListener('click', function() {
-    window.location.href = 'abejas.html';
+    window.location.href = 'index.html';
   });
 
   document.getElementById('paintButton').addEventListener('click', function() {
@@ -198,7 +198,7 @@ const firebaseConfig = {
   document.addEventListener('DOMContentLoaded', changeBackground);
   document.getElementById('change-background-button').addEventListener('click', changeBackground);
 
-  var storyAudio = new Audio('cuento.wav');
+  var storyAudio = new Audio('cuento.mp3');
   var missionAudio = new Audio('elcollage.wav');
 
   function playSingleAudio(audio) {
@@ -231,5 +231,4 @@ const firebaseConfig = {
       }
     });
   });
-     
         
