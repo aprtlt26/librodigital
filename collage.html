@@ -31,6 +31,44 @@
 <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet">
 
 
+<!-- Add Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
+
+<script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyB6ATVR7zP3Xuuk62Y6MXa8kCkX7diFVoE",
+  authDomain: "libro-digital-ccf11.firebaseapp.com",
+  projectId: "libro-digital-ccf11",
+  storageBucket: "libro-digital-ccf11.appspot.com",
+  messagingSenderId: "869085974070",
+  appId: "1:869085974070:web:14a6500caf903bd2749297",
+  measurementId: "G-G57LE45QYR"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+// Get a reference to the storage service, which is used to create references in your storage bucket
+var storage = firebase.storage();
+
+// Create a storage reference from our storage service
+var storageRef = storage.ref();
+
+// Get the download URL for a specific file
+storageRef.child('gs://libro-digital-ccf11.appspot.com').getDownloadURL().then(function(url) {
+  var img = document.getElementById('myimg');
+  img.src = url;
+}).catch(function(error) {
+  // Handle any errors
+});
+
+</script>
+
+<img src="https://firebasestorage.googleapis.com/v0/b/gs://libro-digital-ccf11.appspot.com/o/rostro.jpg?alt=media" type="image/x-icon">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/gs://libro-digital-ccf11.appspot.com/o/log.png?alt=media">
+
 
 </head>
   
@@ -155,6 +193,16 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
 
