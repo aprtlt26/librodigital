@@ -317,11 +317,11 @@
      });
      const backgroundImages = [
        
-        'pasto.webp',
+         'florez.webp',
         'jardin.webp',
         'morado.webp',
         'campo.webp',
-        'florez.webp',
+        'pasto.webp',
 
     ];
     
@@ -447,7 +447,7 @@ document.getElementById('newGameButton').addEventListener('click', function() {
 });
 
 document.getElementById('paintButton').addEventListener('click', function() {
-    window.location.href = 'paint.html'; // Redirecciona al usuario a la página "abejas.html"
+    window.location.href = 'paint.html'; 
 });
 
 
