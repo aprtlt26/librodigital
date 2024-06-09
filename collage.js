@@ -209,9 +209,10 @@
         });
 
         const backgroundImages = [
+             'florez.webp',
             'past.webp',
             'lago.webp',
-            'florez.webp',
+           
         ];
 
         let currentIndex = 0;
