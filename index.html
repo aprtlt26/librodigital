@@ -67,10 +67,18 @@
         <img src="insects.png" alt="">
     </button>
     <div id="subtitles" style="display:none;">
-       Tu misión es recolectar la miel para ayudar a la abejas a migrar a sus destinos
+       Tu misión es recolectar la miel para ayudar a las abejas a migrar a sus destinos
     </div>
     <script>
     let audioContext;
+    let flock = [];
+    let backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage, panalImage, boidImage;
+    let panalPositions = [];
+    let stage = 0;
+    let backgroundTracks = [];
+    let narrationTracks = [];
+    let currentBackgroundSound, currentNarration;
+    let panalDisappearSound;
 
     function requestAudioPermission() {
         return new Promise((resolve, reject) => {
@@ -106,7 +114,7 @@
 
     function startGame() {
         console.log("El juego ha comenzado");
-        initFlock();
+        // initFlock() will be called in setup()
     }
 
     class Rectangle {
@@ -315,15 +323,6 @@
         }
     }
 
-    let flock = [];
-    let backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage, panalImage, boidImage;
-    let panalPositions = [];
-    let stage = 0;
-    let backgroundTracks = [];
-    let narrationTracks = [];
-    let currentBackgroundSound, currentNarration;
-    let panalDisappearSound;
-
     function preload() {
         backgroundImage = loadImage('paisaje.png');
         cityImage = loadImage('ciudad.png');
@@ -449,7 +448,7 @@
         createCanvas(windowWidth, windowHeight);
         let canvas = createCanvas(windowWidth, windowHeight);
         canvas.style('display', 'block');
-        initFlock();
+        initFlock(); // Initialize flock here
         setupAudioProcessing();
         setupButtons();
         changeStage(0);
@@ -496,10 +495,10 @@
             }
         }
     }
-
     </script>
 </body>
 </html>
+
 
 
 
