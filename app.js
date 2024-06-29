@@ -245,7 +245,7 @@ class Boid {
         imageMode(CENTER);
         translate(this.position.x, this.position.y);
         rotate(this.velocity.heading() + radians(190));
-        let size = max(15, 0 * scaleFactor);
+        let size = max(20, 0 * scaleFactor);
         image(boidImage, 0, 0, size, size);
         pop();
     }
@@ -283,7 +283,7 @@ function setupPanales(count) {
     let margin = 70;
     for (let i = 0; i < count; i++) {
         let placed = false, attempts = 0;
-        while (!placed && attempts < 100) {
+        while (!placed && attempts < 75) {
             let candidatePosition = createVector(random(margin, width - margin), random(margin, height - margin));
             let tooClose = panalPositions.some(panal => p5.Vector.dist(candidatePosition, panal) < 80);
             if (!tooClose) {
