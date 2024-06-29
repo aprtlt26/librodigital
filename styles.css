@@ -1,0 +1,45 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+#buttonContainer {
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    background-color: #bdedf1;
+}
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #93f2ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+button:hover {
+    background-color: #13e0eb;
+}
+@media (max-width: 768px) {
+    button {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+}
+#subtitles {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    background: rgba(0,0,0,0.5);
+    padding: 10px;
+}
