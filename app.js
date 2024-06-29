@@ -29,6 +29,7 @@ function requestAudioPermission() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    setupButtons();
     initAudio();
 });
 
@@ -375,7 +376,6 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     initFlock(); // Initialize flock here
     setupAudioProcessing();
-    setupButtons();
     changeStage(0);
 }
 
@@ -424,3 +424,4 @@ function mousePressed() {
 document.addEventListener('DOMContentLoaded', function() {
     setupButtons();
 });
+
