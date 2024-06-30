@@ -9,7 +9,6 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            font-family: Arial, sans-serif;
         }
         #buttonContainer {
             position: absolute;
@@ -21,8 +20,6 @@
             text-align: center;
             padding: 10px 0;
             background-color: #bdedf1;
-            z-index: 10;
-            display: none; /* Ocultar inicialmente */
         }
         button {
             margin: 5px;
@@ -60,12 +57,10 @@
             transform: translate(-50%, -50%);
             padding: 20px 40px;
             font-size: 24px;
-            cursor: pointer;
             background-color: #93f2ff;
             color: white;
             border: none;
             border-radius: 10px;
-            z-index: 10;
         }
         #startButton:hover {
             background-color: #13e0eb;
@@ -95,6 +90,9 @@
         let panalImage = new Image();
         panalImage.src = 'panal.png';
 
+        let portadaImage = new Image();
+        portadaImage.src = 'portada.webp';
+
         let backgroundImages = [];
         let currentBackgroundIndex = 0;
         let backgroundImage;
@@ -103,48 +101,49 @@
         let narrationTracks = [];
         let currentBackgroundSound;
         let currentNarration;
-        let panalDisappearSound = new Audio('panal.mp3');
-        let narration0 = new Audio('narration0.mp3');
 
         let audioContext;
         let panalPositions = [];
         let stage = 0;
-        let flock = [];
 
         function requestAudioPermission() {
             return new Promise((resolve, reject) => {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const permissionAlert = window.confirm('¿Permitir uso de sonido?');
+                if (permissionAlert) {
+                    if (!audioContext) {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    audioContext.resume().then(() => {
+                        console.log('Audio activado');
+                        resolve();
+                    }).catch(err => {
+                        console.error('Error al activar el audio:', err);
+                        reject(err);
+                    });
+                } else {
+                    reject('Permiso denegado');
                 }
-                audioContext.resume().then(() => {
-                    console.log('Audio activado');
-                    resolve();
-                }).catch(err => {
-                    console.error('Error al activar el audio:', err);
-                    reject(err);
-                });
             });
         }
 
         function preload() {
-            let backgrounds = ['portada.webp', 'florez.webp', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
+            let backgrounds = ['florez.webp', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
             for (let i = 0; i < backgrounds.length; i++) {
                 let img = new Image();
                 img.src = backgrounds[i];
                 backgroundImages.push(img);
 
-                if (i !== 0) {  // Evitar cargar background0.mp3 y narration0.mp3 porque no existen
-                    let audio = new Audio(`background${i}.mp3`);
-                    backgroundTracks.push(audio);
+                let audio = new Audio(`background${i + 1}.mp3`);
+                backgroundTracks.push(audio);
 
-                    let narration = new Audio(`narration${i}.mp3`);
-                    narrationTracks.push(narration);
-                }
+                let narration = new Audio(`narration${i + 1}.mp3`);
+                narrationTracks.push(narration);
             }
 
-            backgroundImage = backgroundImages[currentBackgroundIndex];
-            currentBackgroundSound = backgroundTracks[currentBackgroundIndex - 1]; // Ajustar índice por omisión del índice 0
-            currentNarration = narrationTracks[currentBackgroundIndex - 1]; // Ajustar índice por omisión del índice 0
+            backgroundImage = portadaImage;
+            currentNarration = new Audio('narration0.mp3');
+            currentNarration.loop = true;
+            currentNarration.play();
         }
 
         preload();
@@ -155,8 +154,8 @@
                 this.velocity = { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 };
                 this.acceleration = { x: 0, y: 0 };
                 this.maxSpeed = 8;
-                this.maxForce = 0.1;
-                this.perceptionRadius = 300;
+                this.maxForce = 0.35;
+                this.perceptionRadius = 100;
 
                 if (audioContext) {
                     this.osc = audioContext.createOscillator();
@@ -308,11 +307,9 @@
             }
         }
 
-        function initializeFlock() {
-            flock = [];
-            for (let i = 0; i < 50; i++) {
-                flock.push(new Boid());
-            }
+        let flock = [];
+        for (let i = 0; i < 50; i++) {
+            flock.push(new Boid());
         }
 
         let mouseX, mouseY;
@@ -355,33 +352,16 @@
 
             currentBackgroundIndex = newStage;
             backgroundImage = backgroundImages[currentBackgroundIndex];
-            if (currentBackgroundIndex !== 0) {
-                currentBackgroundSound = backgroundTracks[currentBackgroundIndex - 1]; // Ajustar índice
-                currentNarration = narrationTracks[currentBackgroundIndex - 1]; // Ajustar índice
-            }
+            currentBackgroundSound = backgroundTracks[currentBackgroundIndex];
+            currentNarration = narrationTracks[currentBackgroundIndex];
 
-            if (currentBackgroundSound) {
-                currentBackgroundSound.loop = true;
-                currentBackgroundSound.play();
-            }
+            currentBackgroundSound.loop = true;
+            currentBackgroundSound.play();
 
-            if (currentBackgroundIndex === 0) {
-                narration0.play();
-                document.getElementById('startButton').style.display = 'block';
-                flock = [];
-            } else {
-                document.getElementById('startButton').style.display = 'none';
-                document.getElementById('buttonContainer').style.display = 'flex'; // Mostrar barra de botones
-                if (currentNarration) {
-                    currentNarration.play();
-                    currentNarration.onended = () => {
-                        setupPanales(3); // Configurar los panales una vez que termine la narración
-                    };
-                } else {
-                    setupPanales(3); // En caso de no haber narración, configurar los panales inmediatamente
-                }
-                initializeFlock();
-            }
+            currentNarration.play();
+            currentNarration.onended = () => {
+                setupPanales(3 + stage);
+            };
         }
 
         document.getElementById('prevButton').onclick = function() {
@@ -405,8 +385,9 @@
         };
 
         document.getElementById('startButton').onclick = function() {
-            narration0.pause();
-            changeStage(1);
+            currentNarration.pause();
+            changeStage(0);
+            this.style.display = 'none';
         };
 
         function animate() {
@@ -417,36 +398,15 @@
                 ctx.drawImage(panalImage, panal.x, panal.y, 50, 50);
             });
 
-            if (currentBackgroundIndex > 0) {
-                for (let boid of flock) {
-                    boid.edges();
-                    boid.flock(flock, mouseX, mouseY);
-                    boid.update();
-                    boid.show();
-                }
+            for (let boid of flock) {
+                boid.edges();
+                boid.flock(flock, mouseX, mouseY);
+                boid.update();
+                boid.show();
             }
 
             requestAnimationFrame(animate);
         }
-
-        canvas.addEventListener('click', (event) => {
-            const clickX = event.clientX;
-            const clickY = event.clientY;
-
-            for (let i = panalPositions.length - 1; i >= 0; i--) {
-                let panal = panalPositions[i];
-                if (Math.hypot(clickX - panal.x, clickY - panal.y) < 50) {
-                    panalPositions.splice(i, 1);
-                    panalDisappearSound.play();
-                    if (panalPositions.length === 0) {
-                        stage++;
-                        if (stage < backgroundImages.length) {
-                            changeStage(stage);
-                        }
-                    }
-                }
-            }
-        });
 
         requestAudioPermission().then(() => {
             animate();
@@ -457,7 +417,6 @@
     </script>
 </body>
 </html>
-
 
 
 
