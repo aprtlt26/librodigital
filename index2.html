@@ -133,16 +133,18 @@
                 img.src = backgrounds[i];
                 backgroundImages.push(img);
 
-                let audio = new Audio(`background${i}.mp3`);
-                backgroundTracks.push(audio);
+                if (i !== 0) {  // Evitar cargar background0.mp3 y narration0.mp3 porque no existen
+                    let audio = new Audio(`background${i}.mp3`);
+                    backgroundTracks.push(audio);
 
-                let narration = new Audio(`narration${i}.mp3`);
-                narrationTracks.push(narration);
+                    let narration = new Audio(`narration${i}.mp3`);
+                    narrationTracks.push(narration);
+                }
             }
 
             backgroundImage = backgroundImages[currentBackgroundIndex];
-            currentBackgroundSound = backgroundTracks[currentBackgroundIndex];
-            currentNarration = narrationTracks[currentBackgroundIndex];
+            currentBackgroundSound = backgroundTracks[currentBackgroundIndex - 1]; // Ajustar índice por omisión del índice 0
+            currentNarration = narrationTracks[currentBackgroundIndex - 1]; // Ajustar índice por omisión del índice 0
         }
 
         preload();
@@ -353,28 +355,31 @@
 
             currentBackgroundIndex = newStage;
             backgroundImage = backgroundImages[currentBackgroundIndex];
-            currentBackgroundSound = backgroundTracks[currentBackgroundIndex];
-            currentNarration = narrationTracks[currentBackgroundIndex];
+            if (currentBackgroundIndex !== 0) {
+                currentBackgroundSound = backgroundTracks[currentBackgroundIndex - 1]; // Ajustar índice
+                currentNarration = narrationTracks[currentBackgroundIndex - 1]; // Ajustar índice
+            }
 
             if (currentBackgroundSound) {
                 currentBackgroundSound.loop = true;
                 currentBackgroundSound.play();
             }
 
-            if (currentNarration) {
-                currentNarration.play();
-                currentNarration.onended = () => {
-                    setupPanales(3);
-                };
-            }
-
             if (currentBackgroundIndex === 0) {
-                document.getElementById('startButton').style.display = 'block';
-                document.getElementById('buttonContainer').style.display = 'none';
                 narration0.play();
+                document.getElementById('startButton').style.display = 'block';
+                flock = [];
             } else {
                 document.getElementById('startButton').style.display = 'none';
-                document.getElementById('buttonContainer').style.display = 'flex';
+                document.getElementById('buttonContainer').style.display = 'flex'; // Mostrar barra de botones
+                if (currentNarration) {
+                    currentNarration.play();
+                    currentNarration.onended = () => {
+                        setupPanales(3); // Configurar los panales una vez que termine la narración
+                    };
+                } else {
+                    setupPanales(3); // En caso de no haber narración, configurar los panales inmediatamente
+                }
                 initializeFlock();
             }
         }
@@ -400,6 +405,7 @@
         };
 
         document.getElementById('startButton').onclick = function() {
+            narration0.pause();
             changeStage(1);
         };
 
