@@ -9,6 +9,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+            font-family: Arial, sans-serif;
         }
         #buttonContainer {
             position: absolute;
@@ -20,6 +21,8 @@
             text-align: center;
             padding: 10px 0;
             background-color: #bdedf1;
+            z-index: 10;
+            display: none; /* Ocultar inicialmente */
         }
         button {
             margin: 5px;
@@ -50,6 +53,23 @@
             background: rgba(0,0,0,0.5);
             padding: 10px;
         }
+        #startButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            font-size: 24px;
+            cursor: pointer;
+            background-color: #93f2ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            z-index: 10;
+        }
+        #startButton:hover {
+            background-color: #13e0eb;
+        }
     </style>
 </head>
 <body>
@@ -60,6 +80,7 @@
         <button id="newGameButton">Collage</button>
         <button id="paintButton">Pintar</button>
     </div>
+    <button id="startButton">Iniciar</button>
     <canvas id="canvas"></canvas>
 
     <script>
@@ -82,42 +103,40 @@
         let narrationTracks = [];
         let currentBackgroundSound;
         let currentNarration;
+        let panalDisappearSound = new Audio('panal.mp3');
+        let narration0 = new Audio('narration0.mp3');
 
         let audioContext;
         let panalPositions = [];
         let stage = 0;
+        let flock = [];
 
         function requestAudioPermission() {
             return new Promise((resolve, reject) => {
-                const permissionAlert = window.confirm('¿Permitir uso de sonido?');
-                if (permissionAlert) {
-                    if (!audioContext) {
-                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    }
-                    audioContext.resume().then(() => {
-                        console.log('Audio activado');
-                        resolve();
-                    }).catch(err => {
-                        console.error('Error al activar el audio:', err);
-                        reject(err);
-                    });
-                } else {
-                    reject('Permiso denegado');
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 }
+                audioContext.resume().then(() => {
+                    console.log('Audio activado');
+                    resolve();
+                }).catch(err => {
+                    console.error('Error al activar el audio:', err);
+                    reject(err);
+                });
             });
         }
 
         function preload() {
-            let backgrounds = ['paisaje.png', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
+            let backgrounds = ['portada.webp', 'florez.webp', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
             for (let i = 0; i < backgrounds.length; i++) {
                 let img = new Image();
                 img.src = backgrounds[i];
                 backgroundImages.push(img);
 
-                let audio = new Audio(`background${i + 1}.mp3`);
+                let audio = new Audio(`background${i}.mp3`);
                 backgroundTracks.push(audio);
 
-                let narration = new Audio(`narration${i + 1}.mp3`);
+                let narration = new Audio(`narration${i}.mp3`);
                 narrationTracks.push(narration);
             }
 
@@ -134,8 +153,8 @@
                 this.velocity = { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 };
                 this.acceleration = { x: 0, y: 0 };
                 this.maxSpeed = 8;
-                this.maxForce = 0.35;
-                this.perceptionRadius = 100;
+                this.maxForce = 0.1;
+                this.perceptionRadius = 300;
 
                 if (audioContext) {
                     this.osc = audioContext.createOscillator();
@@ -287,9 +306,11 @@
             }
         }
 
-        let flock = [];
-        for (let i = 0; i < 50; i++) {
-            flock.push(new Boid());
+        function initializeFlock() {
+            flock = [];
+            for (let i = 0; i < 50; i++) {
+                flock.push(new Boid());
+            }
         }
 
         let mouseX, mouseY;
@@ -335,13 +356,27 @@
             currentBackgroundSound = backgroundTracks[currentBackgroundIndex];
             currentNarration = narrationTracks[currentBackgroundIndex];
 
-            currentBackgroundSound.loop = true;
-            currentBackgroundSound.play();
+            if (currentBackgroundSound) {
+                currentBackgroundSound.loop = true;
+                currentBackgroundSound.play();
+            }
 
-            currentNarration.play();
-            currentNarration.onended = () => {
-                setupPanales(3 + stage);
-            };
+            if (currentNarration) {
+                currentNarration.play();
+                currentNarration.onended = () => {
+                    setupPanales(3);
+                };
+            }
+
+            if (currentBackgroundIndex === 0) {
+                document.getElementById('startButton').style.display = 'block';
+                document.getElementById('buttonContainer').style.display = 'none';
+                narration0.play();
+            } else {
+                document.getElementById('startButton').style.display = 'none';
+                document.getElementById('buttonContainer').style.display = 'flex';
+                initializeFlock();
+            }
         }
 
         document.getElementById('prevButton').onclick = function() {
@@ -364,6 +399,10 @@
             window.location.href = 'paint.html';
         };
 
+        document.getElementById('startButton').onclick = function() {
+            changeStage(1);
+        };
+
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
@@ -372,11 +411,13 @@
                 ctx.drawImage(panalImage, panal.x, panal.y, 50, 50);
             });
 
-            for (let boid of flock) {
-                boid.edges();
-                boid.flock(flock, mouseX, mouseY);
-                boid.update();
-                boid.show();
+            if (currentBackgroundIndex > 0) {
+                for (let boid of flock) {
+                    boid.edges();
+                    boid.flock(flock, mouseX, mouseY);
+                    boid.update();
+                    boid.show();
+                }
             }
 
             requestAnimationFrame(animate);
@@ -390,6 +431,7 @@
                 let panal = panalPositions[i];
                 if (Math.hypot(clickX - panal.x, clickY - panal.y) < 50) {
                     panalPositions.splice(i, 1);
+                    panalDisappearSound.play();
                     if (panalPositions.length === 0) {
                         stage++;
                         if (stage < backgroundImages.length) {
@@ -409,10 +451,6 @@
     </script>
 </body>
 </html>
-
-
-
-
 
 
 
