@@ -20,7 +20,6 @@
             text-align: center;
             padding: 10px 0;
             background-color: #bdedf1;
-            z-index: 10;
         }
         button {
             margin: 5px;
@@ -51,23 +50,6 @@
             background: rgba(0,0,0,0.5);
             padding: 10px;
         }
-        #startButton {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px 40px;
-            font-size: 24px;
-            cursor: pointer;
-            background-color: #93f2ff;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            z-index: 10;
-        }
-        #startButton:hover {
-            background-color: #13e0eb;
-        }
     </style>
 </head>
 <body>
@@ -78,7 +60,6 @@
         <button id="newGameButton">Collage</button>
         <button id="paintButton">Pintar</button>
     </div>
-    <button id="startButton" style="display: none;">Iniciar</button>
     <canvas id="canvas"></canvas>
 
     <script>
@@ -365,11 +346,7 @@
                 setupPanales(3 + stage);
             };
 
-            if (currentBackgroundIndex === 0) {
-                document.getElementById('startButton').style.display = 'block';
-                flock = [];
-            } else {
-                document.getElementById('startButton').style.display = 'none';
+            if (currentBackgroundIndex > 0 && flock.length === 0) {
                 initializeFlock();
             }
         }
@@ -392,10 +369,6 @@
         };
         document.getElementById('paintButton').onclick = function() {
             window.location.href = 'paint.html';
-        };
-
-        document.getElementById('startButton').onclick = function() {
-            changeStage();
         };
 
         function animate() {
@@ -442,12 +415,6 @@
             console.error('Error al solicitar permiso de audio:', err);
             animate();
         });
-
-        // Reproduce narration1.mp3 en el escenario 0 (destino.webp)
-        if (currentBackgroundIndex === 0) {
-            const narration1 = new Audio('narration1.mp3');
-            narration1.play();
-        }
     </script>
 </body>
 </html>
