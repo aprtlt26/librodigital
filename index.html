@@ -185,6 +185,13 @@
                 }
             }
 
+            stopOscillator() {
+                if (this.osc) {
+                    this.osc.stop();
+                    this.osc.disconnect();
+                }
+            }
+
             updateOscillator() {
                 if (this.osc) {
                     let freq = this.map(this.position.x, 0, canvas.width, 237, 200);
@@ -330,6 +337,10 @@
 
         let flock = [];
         function initFlock() {
+            // Stop the oscillators for all boids before reinitializing the flock
+            for (let boid of flock) {
+                boid.stopOscillator();
+            }
             flock = [];
             for (let i = 0; i < 90; i++) {
                 flock.push(new Boid());
@@ -416,7 +427,7 @@
 
         document.getElementById('startButton').onclick = function() {
             currentNarration.pause();
-            changeStage(0);
+            changeStage(1);
             document.getElementById('buttonContainer').style.display = 'flex'; // Show buttons after start
             this.style.display = 'none';
         };
@@ -473,6 +484,7 @@
     </script>
 </body>
 </html>
+
 
 
 
