@@ -21,8 +21,7 @@
             text-align: center;
             padding: 10px 0;
             background-color: #bdedf1;
-            z-index: 10;
-            display: none; /* Ocultar inicialmente */
+            z-index: 1000;
         }
         button {
             margin: 5px;
@@ -73,7 +72,7 @@
     </style>
 </head>
 <body>
-    <div id="buttonContainer">
+    <div id="buttonContainer" style="display: none;">
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
         <button id="restartButton">Reiniciar Juego</button>
@@ -103,13 +102,11 @@
         let narrationTracks = [];
         let currentBackgroundSound;
         let currentNarration;
-        let panalDisappearSound = new Audio('panal.mp3');
 
         let audioContext;
         let panalPositions = [];
         let stage = 0;
         let flock = [];
-        let narration0 = new Audio('narration0.mp3');
 
         function requestAudioPermission() {
             return new Promise((resolve, reject) => {
@@ -371,11 +368,11 @@
             if (currentBackgroundIndex === 0) {
                 document.getElementById('startButton').style.display = 'block';
                 flock = [];
+                const narration0 = new Audio('narration0.mp3');
                 narration0.play();
             } else {
                 document.getElementById('startButton').style.display = 'none';
                 initializeFlock();
-                setupPanales(3);
             }
         }
 
@@ -400,9 +397,7 @@
         };
 
         document.getElementById('startButton').onclick = function() {
-            narration0.pause();
             changeStage(1);
-            document.getElementById('buttonContainer').style.display = 'flex';
         };
 
         function animate() {
@@ -433,7 +428,6 @@
                 let panal = panalPositions[i];
                 if (Math.hypot(clickX - panal.x, clickY - panal.y) < 50) {
                     panalPositions.splice(i, 1);
-                    panalDisappearSound.play();
                     if (panalPositions.length === 0) {
                         stage++;
                         if (stage < backgroundImages.length) {
@@ -453,6 +447,7 @@
     </script>
 </body>
 </html>
+
 
 
 
