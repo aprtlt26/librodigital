@@ -1,40 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Alfonso Pretelt - Arte y Psique - Collage">
-    <meta name="keywords" content="collage, alfonsopretelt,tarot,erosion,">
-    <meta name="author" content="alfonsopretelt">
-    <meta name="robots" content="collage">
-    <meta name="google" content="translate">
-   <meta property="og:type" content="www.arteypsique.com">
-    <meta property="og:url" content="https://www.arteypsique.com">
-    <meta property="og:title" content="Arte & Psique">
-    <meta property="og:description" content="Plataforma de aprendizaje y creación">
-    <link rel="icon" href="rostro.jpg" type="image/x-icon">
-    <meta property="og:image" content="log.png">
-    <title>Viaje Abejas</title>
-    <link rel="stylesheet" href="stylec.css">
-
-    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/RecordRTC/5.6.1/RecordRTC.min.js"></script>
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
-
-
-   <style>
+    <title>Simulación de Vuelo de Abejas</title>
+    <style>
         body, html {
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Evita barras de desplazamiento */
+            overflow: hidden;
+            background-color: #bdedf1;
         }
         #buttonContainer {
             position: absolute;
@@ -49,8 +24,8 @@
         }
         button {
             margin: 5px;
-            padding: 10px 15px;
-            font-size: 11px;
+            padding: 10px 20px;
+            font-size: 16px;
             cursor: pointer;
             background-color: #93f2ff;
             color: white;
@@ -58,175 +33,174 @@
             border-radius: 5px;
         }
         button:hover {
-            background-color: #1ccad3;
+            background-color: #13e0eb;
         }
         @media (max-width: 768px) {
             button {
-                padding: 8px 10px; /* Botones más pequeños para pantallas pequeñas */
+                padding: 8px 10px;
                 font-size: 11px;
             }
         }
-
-        #subtitles {
-            display: none;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            color: white;
-            background: rgba(0,0,0,0.5);
-            padding: 10px;
-        }
-    
-        /* Ocultar el botón 'Iniciar' en pantallas grandes */
-        #startButton {
-            display: none; /* Oculta por defecto el botón */
-        }
-    
-        /* Mostrar el botón 'Iniciar' solo en dispositivos móviles (pantallas pequeñas) */
-        @media (max-width: 768px) {
-            #startButton {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                display: block; /* Mostrar solo en pantallas pequeñas */
-                z-index: 10;
-                padding: 15px 30px; /* Tamaño más grande para facilitar la interacción */
-                font-size: 20px; /* Fuente más grande para mejor visibilidad en móviles */
-            }
-        }
-
-        #loadingScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('destino.png') center center no-repeat;
-            background-size: 30%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 24px;
-            z-index: 100;
-        }
     </style>
-    
-    <div id="loadingScreen">Cargando...</div>
-
 </head>
 <body>
-
-
-
-
     <div id="buttonContainer">
-
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
         <button id="subtitleButton">Misión</button>
         <button id="restartButton">Reiniciar Juego</button>
         <button id="newGameButton">Collage</button>
         <button id="paintButton">Pintar</button>
-
-        <button id="SoundButton">Sound</button>
-
-
     </div>
-        <button id="startButton">Iniciar</button>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
+        class Boid {
+            constructor() {
+                this.position = { x: Math.random() * canvas.width, y: Math.random() * canvas.height };
+                this.velocity = { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 };
+                this.acceleration = { x: 0, y: 0 };
+                this.maxSpeed = 2;
+                this.maxForce = 0.1;
+                this.perceptionRadius = 50;
+            }
 
-        <button id="collageButton" style="display: none; position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background: url('path_to_your_button_image.jpg') no-repeat center; border: none; width: 50px; height: 100px; cursor: pointer;">
-            <img src="insects.png" alt="" >
-        </button>
+            edges() {
+                if (this.position.x > canvas.width) this.position.x = 0;
+                if (this.position.x < 0) this.position.x = canvas.width;
+                if (this.position.y > canvas.height) this.position.y = 0;
+                if (this.position.y < 0) this.position.y = canvas.height;
+            }
 
+            align(boids) {
+                let steering = { x: 0, y: 0 };
+                let total = 0;
+                for (let other of boids) {
+                    let d = Math.hypot(this.position.x - other.position.x, this.position.y - other.position.y);
+                    if (other !== this && d < this.perceptionRadius) {
+                        steering.x += other.velocity.x;
+                        steering.y += other.velocity.y;
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.x /= total;
+                    steering.y /= total;
+                    const mag = Math.hypot(steering.x, steering.y);
+                    steering.x = (steering.x / mag) * this.maxSpeed - this.velocity.x;
+                    steering.y = (steering.y / mag) * this.maxSpeed - this.velocity.y;
+                    steering.x = Math.min(steering.x, this.maxForce);
+                    steering.y = Math.min(steering.y, this.maxForce);
+                }
+                return steering;
+            }
 
-        
-   
-    <div id="subtitles" style="display:none;">
-       Tu misión es recolectar la miel para ayudar a la abejas a migrar a sus destinos
-    </div>
+            cohesion(boids) {
+                let steering = { x: 0, y: 0 };
+                let total = 0;
+                for (let other of boids) {
+                    let d = Math.hypot(this.position.x - other.position.x, this.position.y - other.position.y);
+                    if (other !== this && d < this.perceptionRadius) {
+                        steering.x += other.position.x;
+                        steering.y += other.position.y;
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.x /= total;
+                    steering.y /= total;
+                    steering.x = (steering.x - this.position.x) * this.maxSpeed - this.velocity.x;
+                    steering.y = (steering.y - this.position.y) * this.maxSpeed - this.velocity.y;
+                    steering.x = Math.min(steering.x, this.maxForce);
+                    steering.y = Math.min(steering.y, this.maxForce);
+                }
+                return steering;
+            }
 
-   
+            separation(boids) {
+                let steering = { x: 0, y: 0 };
+                let total = 0;
+                for (let other of boids) {
+                    let d = Math.hypot(this.position.x - other.position.x, this.position.y - other.position.y);
+                    if (other !== this && d < this.perceptionRadius / 2) {
+                        let diff = { x: this.position.x - other.position.x, y: this.position.y - other.position.y };
+                        diff.x /= d;
+                        diff.y /= d;
+                        steering.x += diff.x;
+                        steering.y += diff.y;
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.x /= total;
+                    steering.y /= total;
+                    steering.x = (steering.x / Math.hypot(steering.x, steering.y)) * this.maxSpeed - this.velocity.x;
+                    steering.y = (steering.y / Math.hypot(steering.x, steering.y)) * this.maxSpeed - this.velocity.y;
+                    steering.x = Math.min(steering.x, this.maxForce);
+                    steering.y = Math.min(steering.y, this.maxForce);
+                }
+                return steering;
+            }
 
+            flock(boids) {
+                let alignment = this.align(boids);
+                let cohesion = this.cohesion(boids);
+                let separation = this.separation(boids);
 
-    
+                this.acceleration.x += alignment.x;
+                this.acceleration.y += alignment.y;
+                this.acceleration.x += cohesion.x;
+                this.acceleration.y += cohesion.y;
+                this.acceleration.x += separation.x;
+                this.acceleration.y += separation.y;
+            }
 
-<script>
+            update() {
+                this.position.x += this.velocity.x;
+                this.position.y += this.velocity.y;
+                this.velocity.x += this.acceleration.x;
+                this.velocity.y += this.acceleration.y;
+                const mag = Math.hypot(this.velocity.x, this.velocity.y);
+                this.velocity.x = (this.velocity.x / mag) * this.maxSpeed;
+                this.velocity.y = (this.velocity.y / mag) * this.maxSpeed;
+                this.acceleration.x = 0;
+                this.acceleration.y = 0;
+            }
 
-
-window.onload = function() {
-    // Ocultar la pantalla de carga una vez que todo esté completamente cargado
-    var loadingScreen = document.getElementById('loadingScreen');
-    if (loadingScreen) {
-        loadingScreen.style.display = 'none';
-    }
-
-    // Mostrar el botón 'Iniciar' solo en dispositivos móviles
-    var startButton = document.getElementById('startButton');
-    if (window.innerWidth <= 768) {
-        if (startButton) {
-            startButton.style.display = 'block'; // Mostrar el botón en dispositivos móviles
-            startButton.addEventListener('click', function() {
-                this.style.display = 'none'; // Ocultar el botón después de ser presionado
-                startGame(); // Función que inicia el juego y la narración
-            });
+            show() {
+                ctx.beginPath();
+                ctx.arc(this.position.x, this.position.y, 5, 0, 2 * Math.PI);
+                ctx.fillStyle = 'yellow';
+                ctx.fill();
+                ctx.stroke();
+            }
         }
-    } else {
-        if (startButton) {
-            startButton.style.display = 'none'; // Asegúrate de que el botón no se muestre en dispositivos de escritorio
+
+        let flock = [];
+
+        for (let i = 0; i < 50; i++) {
+            flock.push(new Boid());
         }
-    }
-};
 
-let audioInitialized = false;
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-function initGame() {
-    if (!audioInitialized) {
-        getAudioContext().resume().then(() => {
-            console.log('Audio activado');
-            audioInitialized = true;
-            startNarration();
-            document.getElementById('startButton').style.display = 'none'; // Oculta el botón de inicio después de activar el audio
-        }).catch(err => {
-            console.error('Error al activar el audio:', err);
-        });
-    } else {
-        startNarration();
-    }
-}
+            for (let boid of flock) {
+                boid.edges();
+                boid.flock(flock);
+                boid.update();
+                boid.show();
+            }
 
+            requestAnimationFrame(animate);
+        }
 
-
-
-function startNarration() {
-    console.log("Narración iniciada");
-    if (narrationTracks && narrationTracks[0]) {
-        currentNarration = narrationTracks[0];
-        currentNarration.play(); // Inicia la narración para la primera etapa
-    }
-    startGame(); // Inicia el juego, como la configuración de los boids
-}
-
-function startGame() {
-    console.log("El juego ha comenzado");
-    initFlock();  // Inicia la configuración de los boids
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    var startButton = document.getElementById('startButton');
-    startButton.addEventListener('click', initGame);
-});
-
-
-
-
-
-
-</script>
-<script src="abejas.js"></script>
-
+        animate();
+    </script>
 </body>
-</html> 
+</html>
+
