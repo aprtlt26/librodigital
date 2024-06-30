@@ -9,7 +9,6 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: #bdedf1;
         }
         #buttonContainer {
             position: absolute;
@@ -41,32 +40,45 @@
                 font-size: 11px;
             }
         }
+        #subtitles {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
     <div id="buttonContainer">
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
-        <button id="subtitleButton">Misión</button>
         <button id="restartButton">Reiniciar Juego</button>
         <button id="newGameButton">Collage</button>
         <button id="paintButton">Pintar</button>
     </div>
     <canvas id="canvas"></canvas>
+
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        let boidImage = new Image();
+        boidImage.src = 'abeja.png';
+
         class Boid {
             constructor() {
                 this.position = { x: Math.random() * canvas.width, y: Math.random() * canvas.height };
                 this.velocity = { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 };
                 this.acceleration = { x: 0, y: 0 };
-                this.maxSpeed = 2;
-                this.maxForce = 0.1;
-                this.perceptionRadius = 50;
+                this.maxSpeed = 4;
+                this.maxForce = 0.35;
+                this.perceptionRadius = 100;
             }
 
             edges() {
@@ -172,16 +184,15 @@
             }
 
             show() {
-                ctx.beginPath();
-                ctx.arc(this.position.x, this.position.y, 5, 0, 2 * Math.PI);
-                ctx.fillStyle = 'yellow';
-                ctx.fill();
-                ctx.stroke();
+                ctx.save();
+                ctx.translate(this.position.x, this.position.y);
+                ctx.rotate(Math.atan2(this.velocity.y, this.velocity.x));
+                ctx.drawImage(boidImage, -10, -10, 20, 20); // Ajusta el tamaño según sea necesario
+                ctx.restore();
             }
         }
 
         let flock = [];
-
         for (let i = 0; i < 50; i++) {
             flock.push(new Boid());
         }
@@ -203,4 +214,5 @@
     </script>
 </body>
 </html>
+
 
