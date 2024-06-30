@@ -134,10 +134,10 @@
                 img.src = backgrounds[i];
                 backgroundImages.push(img);
 
-                let audio = new Audio(`background${1}.mp3`);
+                let audio = new Audio(`background${i}.mp3`);
                 backgroundTracks.push(audio);
 
-                let narration = new Audio(`narration${1}.mp3`);
+                let narration = new Audio(`narration${i}.mp3`);
                 narrationTracks.push(narration);
             }
 
@@ -445,12 +445,13 @@
 
         // Reproduce narration1.mp3 en el escenario 0 (destino.webp)
         if (currentBackgroundIndex === 0) {
-            const narration0 = new Audio('narration0.mp3');
-            narration0.play();
+            const narration0 = new Audio('narration1.mp3');
+            narration.play();
         }
     </script>
 </body>
 </html>
+
 
 
 
