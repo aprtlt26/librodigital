@@ -63,7 +63,6 @@
     <canvas id="canvas"></canvas>
 
     <script>
-        
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -109,7 +108,7 @@
         }
 
         function preload() {
-            let backgrounds = ['destino.webp','florez.webp', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
+            let backgrounds = ['destino.webp','paisaje.png', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
             for (let i = 0; i < backgrounds.length; i++) {
                 let img = new Image();
                 img.src = backgrounds[i];
