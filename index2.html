@@ -360,7 +360,7 @@
 
             currentNarration.play();
             currentNarration.onended = () => {
-                setupPanales(3 + stage);
+                setupPanales(3 + newStage); // 3 panales in stage 1, 4 in stage 2, etc.
             };
         }
 
@@ -386,7 +386,7 @@
 
         document.getElementById('startButton').onclick = function() {
             currentNarration.pause();
-            changeStage(1);
+            changeStage(0);
             this.style.display = 'none';
         };
 
