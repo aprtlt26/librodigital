@@ -72,7 +72,7 @@
     </style>
 </head>
 <body>
-    <div id="buttonContainer">
+    <div id="buttonContainer" style="display:none;">
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
         <button id="restartButton">Reiniciar Juego</button>
@@ -108,6 +108,7 @@
         let panalPositions = [];
         let stage = 0;
         let flock = [];
+        let narration0 = new Audio('narration0.mp3');
 
         function requestAudioPermission() {
             return new Promise((resolve, reject) => {
@@ -369,7 +370,6 @@
             if (currentBackgroundIndex === 0) {
                 document.getElementById('startButton').style.display = 'block';
                 flock = [];
-                const narration0 = new Audio('narration0.mp3');
                 narration0.play();
             } else {
                 document.getElementById('startButton').style.display = 'none';
@@ -398,7 +398,9 @@
         };
 
         document.getElementById('startButton').onclick = function() {
+            narration0.pause();
             changeStage(1);
+            document.getElementById('buttonContainer').style.display = 'flex';
         };
 
         function animate() {
@@ -449,6 +451,5 @@
     </script>
 </body>
 </html>
-
 
 
