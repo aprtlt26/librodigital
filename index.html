@@ -150,12 +150,18 @@
             for (let i = 0; i < backgrounds.length; i++) {
                 let img = new Image();
                 img.src = backgrounds[i];
+                img.onload = () => console.log(`Image ${backgrounds[i]} loaded successfully`);
+                img.onerror = () => console.error(`Error loading image ${backgrounds[i]}`);
                 backgroundImages.push(img);
 
                 let audio = new Audio(`background${i + 1}.mp3`);
+                audio.oncanplaythrough = () => console.log(`Audio ${i + 1} loaded successfully`);
+                audio.onerror = () => console.error(`Error loading audio ${i + 1}`);
                 backgroundTracks.push(audio);
 
                 let narration = new Audio(`narration${i + 1}.mp3`);
+                narration.oncanplaythrough = () => console.log(`Narration ${i + 1} loaded successfully`);
+                narration.onerror = () => console.error(`Error loading narration ${i + 1}`);
                 narrationTracks.push(narration);
             }
 
@@ -435,7 +441,7 @@
 
         document.getElementById('startButton').onclick = function() {
             currentNarration.pause();
-            changeStage(0);
+            changeStage(1);
             document.getElementById('buttonContainer').style.display = 'flex'; // Show buttons after start
             this.style.display = 'none';
         };
@@ -492,6 +498,7 @@
     </script>
 </body>
 </html>
+
 
 
 
