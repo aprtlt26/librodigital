@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -56,7 +56,7 @@
     <div id="buttonContainer">
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
-        <button id="restartButton">Iniciar Juego</button>
+        <button id="restartButton">Reiniciar Juego</button>
         <button id="newGameButton">Collage</button>
         <button id="paintButton">Pintar</button>
     </div>
@@ -134,7 +134,7 @@
                 this.velocity = { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 };
                 this.acceleration = { x: 0, y: 0 };
                 this.maxSpeed = 8;
-                this.maxForce = 0.1;
+                this.maxForce = 0.;
                 this.perceptionRadius = 300;
 
                 if (audioContext) {
@@ -409,6 +409,7 @@
     </script>
 </body>
 </html>
+
 
 
 
