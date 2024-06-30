@@ -56,13 +56,16 @@
     <div id="buttonContainer">
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
-        <button id="restartButton">Reiniciar Juego</button>
+        <button id="restartButton">Iniciar Juego</button>
         <button id="newGameButton">Collage</button>
         <button id="paintButton">Pintar</button>
     </div>
     <canvas id="canvas"></canvas>
+    
 
     <script>
+
+        
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -86,7 +89,6 @@
         let audioContext;
         let panalPositions = [];
         let stage = 0;
-        let flock = [];
 
         function requestAudioPermission() {
             return new Promise((resolve, reject) => {
@@ -109,16 +111,16 @@
         }
 
         function preload() {
-            let backgrounds = ['destino.webp', 'florez.webp', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
+            let backgrounds = ['destino.webp','florez.webp', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
             for (let i = 0; i < backgrounds.length; i++) {
                 let img = new Image();
                 img.src = backgrounds[i];
                 backgroundImages.push(img);
 
-                let audio = new Audio(`background${i}.mp3`);
+                let audio = new Audio(`background${i + 0}.mp3`);
                 backgroundTracks.push(audio);
 
-                let narration = new Audio(`narration${i}.mp3`);
+                let narration = new Audio(`narration${i + 0}.mp3`);
                 narrationTracks.push(narration);
             }
 
@@ -288,11 +290,9 @@
             }
         }
 
-        function initializeFlock() {
-            flock = [];
-            for (let i = 0; i < 50; i++) {
-                flock.push(new Boid());
-            }
+        let flock = [];
+        for (let i = 0; i < 50; i++) {
+            flock.push(new Boid());
         }
 
         let mouseX, mouseY;
@@ -345,10 +345,6 @@
             currentNarration.onended = () => {
                 setupPanales(3 + stage);
             };
-
-            if (currentBackgroundIndex > 0 && flock.length === 0) {
-                initializeFlock();
-            }
         }
 
         document.getElementById('prevButton').onclick = function() {
@@ -379,13 +375,11 @@
                 ctx.drawImage(panalImage, panal.x, panal.y, 50, 50);
             });
 
-            if (currentBackgroundIndex > 0) {
-                for (let boid of flock) {
-                    boid.edges();
-                    boid.flock(flock, mouseX, mouseY);
-                    boid.update();
-                    boid.show();
-                }
+            for (let boid of flock) {
+                boid.edges();
+                boid.flock(flock, mouseX, mouseY);
+                boid.update();
+                boid.show();
             }
 
             requestAnimationFrame(animate);
@@ -418,6 +412,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
