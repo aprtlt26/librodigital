@@ -20,6 +20,7 @@
             text-align: center;
             padding: 10px 0;
             background-color: #bdedf1;
+            display: none; /* Hide initially */
         }
         button {
             margin: 5px;
@@ -101,6 +102,8 @@
         let narrationTracks = [];
         let currentBackgroundSound;
         let currentNarration;
+
+        let panalSound = new Audio('panal.mp3');
 
         let audioContext;
         let panalPositions = [];
@@ -360,7 +363,11 @@
 
             currentNarration.play();
             currentNarration.onended = () => {
-                setupPanales(3 + newStage); // 3 panales in stage 1, 4 in stage 2, etc.
+                if (newStage < backgroundImages.length - 1) {
+                    setupPanales(3 + newStage); // 3 panales in stage 1, 4 in stage 2, etc.
+                } else {
+                    panalPositions = [];
+                }
             };
         }
 
@@ -386,7 +393,8 @@
 
         document.getElementById('startButton').onclick = function() {
             currentNarration.pause();
-            changeStage(0);
+            changeStage(1);
+            document.getElementById('buttonContainer').style.display = 'flex'; // Show buttons after start
             this.style.display = 'none';
         };
 
@@ -416,6 +424,7 @@
                 let panal = panalPositions[i];
                 if (Math.hypot(clickX - panal.x, clickY - panal.y) < 50) {
                     panalPositions.splice(i, 1);
+                    panalSound.play();
                     if (panalPositions.length === 0) {
                         stage++;
                         if (stage < backgroundImages.length) {
