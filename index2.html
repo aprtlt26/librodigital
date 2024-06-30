@@ -9,7 +9,6 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            font-family: Arial, sans-serif;
         }
         #buttonContainer {
             position: absolute;
@@ -21,7 +20,7 @@
             text-align: center;
             padding: 10px 0;
             background-color: #bdedf1;
-            z-index: 1000;
+            z-index: 10;
         }
         button {
             margin: 5px;
@@ -72,14 +71,14 @@
     </style>
 </head>
 <body>
-    <div id="buttonContainer" style="display: none;">
+    <div id="buttonContainer">
         <button id="prevButton">Anterior</button>
         <button id="nextButton">Siguiente</button>
         <button id="restartButton">Reiniciar Juego</button>
         <button id="newGameButton">Collage</button>
         <button id="paintButton">Pintar</button>
     </div>
-    <button id="startButton">Iniciar</button>
+    <button id="startButton" style="display: none;">Iniciar</button>
     <canvas id="canvas"></canvas>
 
     <script>
@@ -110,16 +109,21 @@
 
         function requestAudioPermission() {
             return new Promise((resolve, reject) => {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const permissionAlert = window.confirm('¿Permitir uso de sonido?');
+                if (permissionAlert) {
+                    if (!audioContext) {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    audioContext.resume().then(() => {
+                        console.log('Audio activado');
+                        resolve();
+                    }).catch(err => {
+                        console.error('Error al activar el audio:', err);
+                        reject(err);
+                    });
+                } else {
+                    reject('Permiso denegado');
                 }
-                audioContext.resume().then(() => {
-                    console.log('Audio activado');
-                    resolve();
-                }).catch(err => {
-                    console.error('Error al activar el audio:', err);
-                    reject(err);
-                });
             });
         }
 
@@ -130,10 +134,10 @@
                 img.src = backgrounds[i];
                 backgroundImages.push(img);
 
-                let audio = new Audio(`background${i}.mp3`);
+                let audio = new Audio(`background${1}.mp3`);
                 backgroundTracks.push(audio);
 
-                let narration = new Audio(`narration${i}.mp3`);
+                let narration = new Audio(`narration${1}.mp3`);
                 narrationTracks.push(narration);
             }
 
@@ -353,23 +357,17 @@
             currentBackgroundSound = backgroundTracks[currentBackgroundIndex];
             currentNarration = narrationTracks[currentBackgroundIndex];
 
-            if (currentBackgroundSound) {
-                currentBackgroundSound.loop = true;
-                currentBackgroundSound.play();
-            }
+            currentBackgroundSound.loop = true;
+            currentBackgroundSound.play();
 
-            if (currentNarration) {
-                currentNarration.play();
-                currentNarration.onended = () => {
-                    setupPanales(3);
-                };
-            }
+            currentNarration.play();
+            currentNarration.onended = () => {
+                setupPanales(3 + stage);
+            };
 
             if (currentBackgroundIndex === 0) {
                 document.getElementById('startButton').style.display = 'block';
                 flock = [];
-                const narration0 = new Audio('narration0.mp3');
-                narration0.play();
             } else {
                 document.getElementById('startButton').style.display = 'none';
                 initializeFlock();
@@ -387,7 +385,7 @@
             }
         };
         document.getElementById('restartButton').onclick = function() {
-            changeStage(0);
+            changeStage(1);
         };
         document.getElementById('newGameButton').onclick = function() {
             window.location.href = 'collage.html';
@@ -444,6 +442,12 @@
             console.error('Error al solicitar permiso de audio:', err);
             animate();
         });
+
+        // Reproduce narration1.mp3 en el escenario 0 (destino.webp)
+        if (currentBackgroundIndex === 0) {
+            const narration0 = new Audio('narration0.mp3');
+            narration0.play();
+        }
     </script>
 </body>
 </html>
