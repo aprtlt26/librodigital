@@ -395,7 +395,7 @@
         };
 
         document.getElementById('startButton').onclick = function() {
-            changeStage(1);
+            changeStage();
         };
 
         function animate() {
@@ -445,12 +445,13 @@
 
         // Reproduce narration1.mp3 en el escenario 0 (destino.webp)
         if (currentBackgroundIndex === 0) {
-            const narration0 = new Audio('narration1.mp3');
-            narration.play();
+            const narration1 = new Audio('narration1.mp3');
+            narration1.play();
         }
     </script>
 </body>
 </html>
+
 
 
 
