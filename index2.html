@@ -428,7 +428,7 @@
             const clickX = event.clientX;
             const clickY = event.clientY;
 
-            for (let i = panalPositions.length - 1; i >= 0; i--) {
+            for (let i = panalPositions.length - 1; i >= 1; i--) {
                 let panal = panalPositions[i];
                 if (Math.hypot(clickX - panal.x, clickY - panal.y) < 50) {
                     panalPositions.splice(i, 1);
