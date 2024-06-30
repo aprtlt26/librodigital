@@ -108,16 +108,16 @@
         }
 
         function preload() {
-            let backgrounds = ['destino.webp','paisaje.png', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
+            let backgrounds = ['paisaje.png','paisaje.png', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
             for (let i = 0; i < backgrounds.length; i++) {
                 let img = new Image();
                 img.src = backgrounds[i];
                 backgroundImages.push(img);
 
-                let audio = new Audio(`background${i + 0}.mp3`);
+                let audio = new Audio(`background${i + 1}.mp3`);
                 backgroundTracks.push(audio);
 
-                let narration = new Audio(`narration${i + 0}.mp3`);
+                let narration = new Audio(`narration${i + 1}.mp3`);
                 narrationTracks.push(narration);
             }
 
@@ -135,7 +135,7 @@
                 this.acceleration = { x: 0, y: 0 };
                 this.maxSpeed = 8;
                 this.maxForce = 0.35;
-                this.perceptionRadius = 300;
+                this.perceptionRadius = 100;
 
                 if (audioContext) {
                     this.osc = audioContext.createOscillator();
@@ -409,6 +409,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
