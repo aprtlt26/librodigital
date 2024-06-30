@@ -9,6 +9,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+            font-family: Arial, sans-serif;
         }
         #buttonContainer {
             position: absolute;
@@ -78,7 +79,7 @@
         <button id="newGameButton">Collage</button>
         <button id="paintButton">Pintar</button>
     </div>
-    <button id="startButton" style="display: none;">Iniciar</button>
+    <button id="startButton">Iniciar</button>
     <canvas id="canvas"></canvas>
 
     <script>
@@ -101,6 +102,7 @@
         let narrationTracks = [];
         let currentBackgroundSound;
         let currentNarration;
+        let panalDisappearSound = new Audio('panal.mp3');
 
         let audioContext;
         let panalPositions = [];
@@ -109,21 +111,16 @@
 
         function requestAudioPermission() {
             return new Promise((resolve, reject) => {
-                const permissionAlert = window.confirm('¿Permitir uso de sonido?');
-                if (permissionAlert) {
-                    if (!audioContext) {
-                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    }
-                    audioContext.resume().then(() => {
-                        console.log('Audio activado');
-                        resolve();
-                    }).catch(err => {
-                        console.error('Error al activar el audio:', err);
-                        reject(err);
-                    });
-                } else {
-                    reject('Permiso denegado');
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 }
+                audioContext.resume().then(() => {
+                    console.log('Audio activado');
+                    resolve();
+                }).catch(err => {
+                    console.error('Error al activar el audio:', err);
+                    reject(err);
+                });
             });
         }
 
@@ -357,13 +354,17 @@
             currentBackgroundSound = backgroundTracks[currentBackgroundIndex];
             currentNarration = narrationTracks[currentBackgroundIndex];
 
-            currentBackgroundSound.loop = true;
-            currentBackgroundSound.play();
+            if (currentBackgroundSound) {
+                currentBackgroundSound.loop = true;
+                currentBackgroundSound.play();
+            }
 
-            currentNarration.play();
-            currentNarration.onended = () => {
-                setupPanales(3 + stage);
-            };
+            if (currentNarration) {
+                currentNarration.play();
+                currentNarration.onended = () => {
+                    setupPanales(3);
+                };
+            }
 
             if (currentBackgroundIndex === 0) {
                 document.getElementById('startButton').style.display = 'block';
@@ -387,7 +388,7 @@
             }
         };
         document.getElementById('restartButton').onclick = function() {
-            changeStage(1);
+            changeStage(0);
         };
         document.getElementById('newGameButton').onclick = function() {
             window.location.href = 'collage.html';
@@ -428,6 +429,7 @@
                 let panal = panalPositions[i];
                 if (Math.hypot(clickX - panal.x, clickY - panal.y) < 50) {
                     panalPositions.splice(i, 1);
+                    panalDisappearSound.play();
                     if (panalPositions.length === 0) {
                         stage++;
                         if (stage < backgroundImages.length) {
@@ -447,5 +449,6 @@
     </script>
 </body>
 </html>
+
 
 
