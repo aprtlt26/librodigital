@@ -182,6 +182,14 @@
                     this.osc.connect(this.gainNode);
                     this.gainNode.connect(audioContext.destination);
                     this.osc.start();
+                    this.fadeInOscillator();
+                }
+            }
+
+            fadeInOscillator() {
+                if (this.gainNode) {
+                    this.gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                    this.gainNode.gain.linearRampToValueAtTime(0.01, audioContext.currentTime + 1); // Fade in over 1 second
                 }
             }
 
@@ -427,7 +435,7 @@
 
         document.getElementById('startButton').onclick = function() {
             currentNarration.pause();
-            changeStage(0);
+            changeStage(1);
             document.getElementById('buttonContainer').style.display = 'flex'; // Show buttons after start
             this.style.display = 'none';
         };
