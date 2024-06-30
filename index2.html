@@ -134,16 +134,20 @@
                 this.velocity = { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 };
                 this.acceleration = { x: 0, y: 0 };
                 this.maxSpeed = 8;
-                this.maxForce = 0.35;
-                this.perceptionRadius = 100;
+                this.maxForce = 0.1;
+                this.perceptionRadius = 400;
 
-                this.osc = audioContext ? new OscillatorNode(audioContext, { type: 'sine' }) : null;
-                if (this.osc) {
-                    this.osc.frequency.setValueAtTime(440, audioContext.currentTime);
+                
+
+                if (audioContext) {
+                    this.osc = audioContext.createOscillator();
+                    this.gainNode = audioContext.createGain();
+                    this.osc.connect(this.gainNode);
+                    this.gainNode.connect(audioContext.destination);
                     this.osc.start();
-                    let gainNode = audioContext.createGain();
-                    gainNode.gain.setValueAtTime(0.01, audioContext.currentTime);
-                    this.osc.connect(gainNode).connect(audioContext.destination);
+                    this.osc = new p5.Oscillator('sine');
+        this.osc.amp(0.01);
+        this.osc.start();
                 }
             }
 
@@ -151,8 +155,9 @@
                 if (this.osc) {
                     let freq = this.map(this.position.x, 0, canvas.width, 200, 800);
                     let amp = this.map(this.position.y, 0, canvas.height, 0.01, 0.05);
-                    this.osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-                    this.osc.gain.setValueAtTime(amp, audioContext.currentTime);
+                    this.osc.frequency.value = freq;
+                    this.gainNode.gain.value = amp;
+               
                 }
             }
 
@@ -289,7 +294,7 @@
         }
 
         let flock = [];
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 100; i++) {
             flock.push(new Boid());
         }
 
@@ -410,5 +415,6 @@
     </script>
 </body>
 </html>
+
 
 
