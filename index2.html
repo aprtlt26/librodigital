@@ -383,6 +383,24 @@
             requestAnimationFrame(animate);
         }
 
+        canvas.addEventListener('click', (event) => {
+            const clickX = event.clientX;
+            const clickY = event.clientY;
+
+            for (let i = panalPositions.length - 1; i >= 0; i--) {
+                let panal = panalPositions[i];
+                if (Math.hypot(clickX - panal.x, clickY - panal.y) < 50) {
+                    panalPositions.splice(i, 1);
+                    if (panalPositions.length === 0) {
+                        stage++;
+                        if (stage < backgroundImages.length) {
+                            changeStage(stage);
+                        }
+                    }
+                }
+            }
+        });
+
         requestAudioPermission().then(() => {
             animate();
         }).catch(err => {
