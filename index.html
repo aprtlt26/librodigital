@@ -66,6 +66,21 @@
         #startButton:hover {
             background-color: #13e0eb;
         }
+        #insectsButton {
+            display: none; /* Hide initially */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        #insectsButton img {
+            width: 350px;
+            height: auto;
+            border: #0a0a0a;
+        }
     </style>
 </head>
 <body>
@@ -77,6 +92,7 @@
         <button id="paintButton">Pintar</button>
     </div>
     <button id="startButton">Iniciar</button>
+    <button id="insectsButton"><img src="insects.webp" alt="Insects"></button>
     <canvas id="canvas"></canvas>
 
     <script>
@@ -130,7 +146,7 @@
         }
 
         function preload() {
-            let backgrounds = ['paisaje.png', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
+            let backgrounds = ['paisaje.webp', 'ciudad.webp', 'africa.webp', 'centro.webp', 'campomorado.webp', 'fin.webp'];
             for (let i = 0; i < backgrounds.length; i++) {
                 let img = new Image();
                 img.src = backgrounds[i];
@@ -372,6 +388,7 @@
                     setupPanales(3 + newStage); // 3 panales in stage 1, 4 in stage 2, etc.
                 } else {
                     panalPositions = [];
+                    document.getElementById('insectsButton').style.display = 'block';
                 }
             };
         }
@@ -398,9 +415,13 @@
 
         document.getElementById('startButton').onclick = function() {
             currentNarration.pause();
-            changeStage(0);
+            changeStage(1);
             document.getElementById('buttonContainer').style.display = 'flex'; // Show buttons after start
             this.style.display = 'none';
+        };
+
+        document.getElementById('insectsButton').onclick = function() {
+            window.location.href = 'collage.html';
         };
 
         function animate() {
@@ -451,6 +472,7 @@
     </script>
 </body>
 </html>
+
 
 
 
