@@ -1,427 +1,453 @@
-let audioContext;
-let flock = [];
-let backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage, panalImage, boidImage;
-let panalPositions = [];
-let stage = 0;
-let backgroundTracks = [];
-let narrationTracks = [];
-let currentBackgroundSound, currentNarration;
-let panalDisappearSound;
-
-function requestAudioPermission() {
-    return new Promise((resolve, reject) => {
-        const permissionAlert = window.confirm('¿Permitir uso de sonido?');
-        if (permissionAlert) {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación de Vuelo de Abejas</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #buttonContainer {
+            position: absolute;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #bdedf1;
+            display: none; /* Hide initially */
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #93f2ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #13e0eb;
+        }
+        @media (max-width: 768px) {
+            button {
+                padding: 8px 10px;
+                font-size: 11px;
             }
-            audioContext.resume().then(() => {
-                console.log('Audio activado');
-                resolve();
-            }).catch(err => {
-                console.error('Error al activar el audio:', err);
-                reject(err);
+        }
+        #subtitles {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+        }
+        #startButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            font-size: 24px;
+            background-color: #93f2ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+        }
+        #startButton:hover {
+            background-color: #13e0eb;
+        }
+    </style>
+</head>
+<body>
+    <div id="buttonContainer">
+        <button id="prevButton">Anterior</button>
+        <button id="nextButton">Siguiente</button>
+        <button id="restartButton">Reiniciar Juego</button>
+        <button id="newGameButton">Collage</button>
+        <button id="paintButton">Pintar</button>
+    </div>
+    <button id="startButton">Iniciar</button>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        let audioContext;
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let boidImage = new Image();
+        boidImage.src = 'abeja.png';
+        
+        let panalImage = new Image();
+        panalImage.src = 'panal.png';
+
+        let portadaImage = new Image();
+        portadaImage.src = 'portada.webp';
+
+        let backgroundImages = [];
+        let currentBackgroundIndex = 0;
+        let backgroundImage;
+
+        let backgroundTracks = [];
+        let narrationTracks = [];
+        let currentBackgroundSound;
+        let currentNarration;
+
+        let panalSound = new Audio('panal.mp3');
+
+        let panalPositions = [];
+        let stage = 0;
+
+        function requestAudioPermission() {
+            return new Promise((resolve, reject) => {
+                const permissionAlert = window.confirm('¿Permitir uso de sonido?');
+                if (permissionAlert) {
+                    if (!audioContext) {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    audioContext.resume().then(() => {
+                        console.log('Audio activado');
+                        resolve();
+                    }).catch(err => {
+                        console.error('Error al activar el audio:', err);
+                        reject(err);
+                    });
+                } else {
+                    reject('Permiso denegado');
+                }
             });
-        } else {
-            reject('Permiso denegado');
         }
-    });
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-    setupButtons();
-    initAudio();
-});
+        function preload() {
+            let backgrounds = ['paisaje.png', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
+            for (let i = 0; i < backgrounds.length; i++) {
+                let img = new Image();
+                img.src = backgrounds[i];
+                backgroundImages.push(img);
 
-function initAudio() {
-    requestAudioPermission().then(() => {
-        startGame();
-    }).catch(err => {
-        console.error('Error al solicitar permiso de audio:', err);
-    });
-}
+                let audio = new Audio(`background${i + 1}.mp3`);
+                backgroundTracks.push(audio);
 
-function startGame() {
-    console.log("El juego ha comenzado");
-}
+                let narration = new Audio(`narration${i + 1}.mp3`);
+                narrationTracks.push(narration);
+            }
 
-class Rectangle {
-    constructor(x, y, w, h) {
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-    }
-    contains(point) {
-        return (point.x >= this.x - this.w &&
-                point.x <= this.x + this.w &&
-                point.y >= this.y - this.h &&
-                point.y <= this.y + this.h);
-    }
-    intersects(range) {
-        return !(range.x - range.w > this.x + this.w ||
-                 range.x + range.w < this.x - this.w ||
-                 range.y - range.h > this.y + this.h ||
-                 range.y + range.h < this.y - this.h);
-    }
-}
-
-class Quadtree {
-    constructor(boundary, capacity) {
-        this.boundary = boundary;
-        this.capacity = capacity;
-        this.points = [];
-        this.divided = false;
-    }
-    subdivide() {
-        let x = this.boundary.x;
-        let y = this.boundary.y;
-        let w = this.boundary.w / 2;
-        let h = this.boundary.h / 2;
-
-        let ne = new Rectangle(x + w, y - h, w, h);
-        this.northeast = new Quadtree(ne, this.capacity);
-
-        let nw = new Rectangle(x - w, y - h, w, h);
-        this.northwest = new Quadtree(nw, this.capacity);
-
-        let se = new Rectangle(x + w, y + h, w, h);
-        this.southeast = new Quadtree(se, this.capacity);
-
-        let sw = new Rectangle(x - w, y + h, w, h);
-        this.southwest = new Quadtree(sw, this.capacity);
-
-        this.divided = true;
-    }
-    insert(point) {
-        if (!this.boundary.contains(point)) {
-            return false;
+            backgroundImage = portadaImage;
+            currentNarration = new Audio('narration0.mp3');
+            currentNarration.loop = true;
+            currentNarration.play();
         }
-        if (this.points.length < this.capacity) {
-            this.points.push(point);
-            return true;
-        }
-        if (!this.divided) {
-            this.subdivide();
-        }
-        if (this.northeast.insert(point) || this.northwest.insert(point) ||
-            this.southeast.insert(point) || this.southwest.insert(point)) {
-            return true;
-        }
-        return false;
-    }
-    query(range, found) {
-        if (!found) {
-            found = [];
-        }
-        if (!this.boundary.intersects(range)) {
-            return found;
-        }
-        for (let p of this.points) {
-            if (range.contains(p)) {
-                found.push(p);
+
+        preload();
+
+        class Boid {
+            constructor() {
+                this.position = { x: Math.random() * canvas.width, y: Math.random() * canvas.height };
+                this.velocity = { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 };
+                this.acceleration = { x: 0, y: 0 };
+                this.maxSpeed = 8;
+                this.maxForce = 0.35;
+                this.perceptionRadius = 100;
+
+                if (audioContext) {
+                    this.osc = audioContext.createOscillator();
+                    this.gainNode = audioContext.createGain();
+                    this.osc.connect(this.gainNode);
+                    this.gainNode.connect(audioContext.destination);
+                    this.osc.start();
+                }
+            }
+
+            updateOscillator() {
+                if (this.osc) {
+                    let freq = this.map(this.position.x, 0, canvas.width, 285, 300);
+                    let amp = this.map(this.position.y, 0, canvas.height, 0.01, 0.05);
+                    this.osc.frequency.value = freq;
+                    this.gainNode.gain.value = amp;
+                }
+            }
+
+            map(value, start1, stop1, start2, stop2) {
+                return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+            }
+
+            edges() {
+                if (this.position.x > canvas.width) this.position.x = 0;
+                if (this.position.x < 0) this.position.x = canvas.width;
+                if (this.position.y > canvas.height) this.position.y = 0;
+                if (this.position.y < 0) this.position.y = canvas.height;
+            }
+
+            align(boids) {
+                let steering = { x: 0, y: 0 };
+                let total = 0;
+                for (let other of boids) {
+                    let d = Math.hypot(this.position.x - other.position.x, this.position.y - other.position.y);
+                    if (other !== this && d < this.perceptionRadius) {
+                        steering.x += other.velocity.x;
+                        steering.y += other.velocity.y;
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.x /= total;
+                    steering.y /= total;
+                    const mag = Math.hypot(steering.x, steering.y);
+                    steering.x = (steering.x / mag) * this.maxSpeed - this.velocity.x;
+                    steering.y = (steering.y / mag) * this.maxSpeed - this.velocity.y;
+                    steering.x = Math.min(steering.x, this.maxForce);
+                    steering.y = Math.min(steering.y, this.maxForce);
+                }
+                return steering;
+            }
+
+            cohesion(boids) {
+                let steering = { x: 0, y: 0 };
+                let total = 0;
+                for (let other of boids) {
+                    let d = Math.hypot(this.position.x - other.position.x, this.position.y - other.position.y);
+                    if (other !== this && d < this.perceptionRadius) {
+                        steering.x += other.position.x;
+                        steering.y += other.position.y;
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.x /= total;
+                    steering.y /= total;
+                    steering.x = (steering.x - this.position.x) * this.maxSpeed - this.velocity.x;
+                    steering.y = (steering.y - this.position.y) * this.maxSpeed - this.velocity.y;
+                    steering.x = Math.min(steering.x, this.maxForce);
+                    steering.y = Math.min(steering.y, this.maxForce);
+                }
+                return steering;
+            }
+
+            separation(boids) {
+                let steering = { x: 0, y: 0 };
+                let total = 0;
+                for (let other of boids) {
+                    let d = Math.hypot(this.position.x - other.position.x, this.position.y - other.position.y);
+                    if (other !== this && d < this.perceptionRadius / 2) {
+                        let diff = { x: this.position.x - other.position.x, y: this.position.y - other.position.y };
+                        diff.x /= d;
+                        diff.y /= d;
+                        steering.x += diff.x;
+                        steering.y += diff.y;
+                        total++;
+                    }
+                }
+                if (total > 0) {
+                    steering.x /= total;
+                    steering.y /= total;
+                    steering.x = (steering.x / Math.hypot(steering.x, steering.y)) * this.maxSpeed - this.velocity.x;
+                    steering.y = (steering.y / Math.hypot(steering.x, steering.y)) * this.maxSpeed - this.velocity.y;
+                    steering.x = Math.min(steering.x, this.maxForce);
+                    steering.y = Math.min(steering.y, this.maxForce);
+                }
+                return steering;
+            }
+
+            followMouse(mouseX, mouseY) {
+                let mouse = { x: mouseX, y: mouseY };
+                let steer = { x: mouse.x - this.position.x, y: mouse.y - this.position.y };
+                let mag = Math.hypot(steer.x, steer.y);
+                steer.x = (steer.x / mag) * this.maxSpeed - this.velocity.x;
+                steer.y = (steer.y / mag) * this.maxSpeed - this.velocity.y;
+                steer.x = Math.min(steer.x, this.maxForce);
+                steer.y = Math.min(steer.y, this.maxForce);
+                this.acceleration.x += steer.x;
+                this.acceleration.y += steer.y;
+            }
+
+            flock(boids, mouseX, mouseY) {
+                let alignment = this.align(boids);
+                let cohesion = this.cohesion(boids);
+                let separation = this.separation(boids);
+
+                this.acceleration.x += alignment.x;
+                this.acceleration.y += alignment.y;
+                this.acceleration.x += cohesion.x;
+                this.acceleration.y += cohesion.y;
+                this.acceleration.x += separation.x;
+                this.acceleration.y += separation.y;
+
+                if (mouseX !== undefined && mouseY !== undefined) {
+                    this.followMouse(mouseX, mouseY);
+                }
+            }
+
+            update() {
+                this.position.x += this.velocity.x;
+                this.position.y += this.velocity.y;
+                this.velocity.x += this.acceleration.x;
+                this.velocity.y += this.acceleration.y;
+                const mag = Math.hypot(this.velocity.x, this.velocity.y);
+                this.velocity.x = (this.velocity.x / mag) * this.maxSpeed;
+                this.velocity.y = (this.velocity.y / mag) * this.maxSpeed;
+                this.acceleration.x = 0;
+                this.acceleration.y = 0;
+                this.updateOscillator();
+            }
+
+            show() {
+                ctx.save();
+                ctx.translate(this.position.x, this.position.y);
+                ctx.rotate(Math.atan2(this.velocity.y, this.velocity.x));
+                ctx.drawImage(boidImage, -10, -10, 20, 20);
+                ctx.restore();
             }
         }
-        if (this.divided) {
-            this.northeast.query(range, found);
-            this.northwest.query(range, found);
-            this.southeast.query(range, found);
-            this.southwest.query(range, found);
-        }
-        return found;
-    }
-}
 
-class Boid {
-    constructor() {
-        this.position = createVector(random(width), random(height));
-        this.velocity = p5.Vector.random2D();
-        this.velocity.setMag(random(2, 4));
-        this.acceleration = createVector();
-        this.maxForce = 0.1;
-        this.maxSpeed = 8;
-        this.perceptionRadius = 100;
-        this.osc = new p5.Oscillator('sine');
-        this.osc.amp(0.01);
-        this.osc.start();
-    }
-    updateOscillator() {
-        let freq = map(this.position.x, 0, width, 205.285, 260.655);
-        this.osc.freq(freq);
-        let amp = map(this.position.y, 0, height, 0.00, 0.03);
-        this.osc.amp(amp);
-        let pan = map(this.position.x, 0, width, -1, 1);
-        pan = constrain(pan, -1, 1);
-        this.osc.pan(pan);
-    }
-    edges() {
-        if (this.position.x > width) this.position.x = 0;
-        if (this.position.x < 0) this.position.x = width;
-        if (this.position.y > height) this.position.y = 0;
-        if (this.position.y < 0) this.position.y = height;
-    }
-    align(boids) {
-        let steering = createVector();
-        let total = 0;
-        for (let other of boids) {
-            let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
-            if (other !== this && d < this.perceptionRadius) {
-                steering.add(other.velocity);
-                total++;
+        let flock = [];
+        function initFlock() {
+            flock = [];
+            for (let i = 0; i < 50; i++) {
+                flock.push(new Boid());
             }
         }
-        if (total > 0) {
-            steering.div(total);
-            steering.setMag(this.maxSpeed);
-            steering.sub(this.velocity);
-            steering.limit(this.maxForce);
-        }
-        return steering;
-    }
-    cohesion(boids) {
-        let steering = createVector();
-        let total = 0;
-        for (let other of boids) {
-            let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
-            if (other !== this && d < this.perceptionRadius) {
-                steering.add(other.position);
-                total++;
-            }
-        }
-        if (total > 0) {
-            steering.div(total);
-            steering.sub(this.position);
-            steering.setMag(this.maxSpeed);
-            steering.limit(this.maxForce);
-        }
-        return steering;
-    }
-    separation(boids) {
-        let steering = createVector();
-        let total = 0;
-        for (let other of boids) {
-            let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
-            if (other !== this && d < this.perceptionRadius / 8) {
-                let diff = p5.Vector.sub(this.position, other.position);
-                diff.div(d);
-                steering.add(diff);
-                total++;
-            }
-        }
-        if (total > 0) {
-            steering.div(total);
-            steering.setMag(this.maxSpeed);
-            steering.limit(this.maxForce);
-        }
-        return steering;
-    }
-    followMouse() {
-        let mouse = createVector(mouseX, mouseY);
-        let steer = p5.Vector.sub(mouse, this.position);
-        steer.setMag(this.maxSpeed);
-        steer.sub(this.velocity);
-        steer.limit(this.maxForce);
-        this.acceleration.add(steer);
-    }
-    flock(boids) {
-        let alignment = this.align(boids);
-        let cohesion = this.cohesion(boids);
-        let separation = this.separation(boids);
-        let mouseForce = this.followMouse();
-        this.acceleration.add(alignment);
-        this.acceleration.add(cohesion);
-        this.acceleration.add(separation);
-        this.acceleration.add(mouseForce);
-    }
-    update() {
-        this.position.add(this.velocity);
-        this.velocity.add(this.acceleration);
-        this.velocity.limit(this.maxSpeed);
-        this.acceleration.mult(0);
-        this.updateOscillator();
-    }
-    show(scaleFactor) {
-        push();
-        imageMode(CENTER);
-        translate(this.position.x, this.position.y);
-        rotate(this.velocity.heading() + radians(190));
-        let size = max(20, 0 * scaleFactor);
-        image(boidImage, 0, 0, size, size);
-        pop();
-    }
-}
 
-function preload() {
-    backgroundImage = loadImage('paisaje.png');
-    cityImage = loadImage('ciudad.png');
-    finalImage = loadImage('africa.png');
-    fifthImage = loadImage('centro.png');
-    fourthImage = loadImage('campomorado.png');
-    sixthImage = loadImage('azul.png');
-    panalImage = loadImage('panal.png');
-    boidImage = loadImage('abeja.png');
-    panalDisappearSound = loadSound('panal.mp3');
-    for (let i = 1; i <= 6; i++) {
-        backgroundTracks.push(loadSound(`background${i}.mp3`));
-        narrationTracks.push(loadSound(`narration${i}.mp3`));
-    }
-}
-
-function setupAudioProcessing() {
-    let compressor = new p5.Compressor();
-    compressor.threshold(-24);
-    compressor.ratio(12);
-    compressor.attack(0.003);
-    compressor.release(0.25);
-    let reverb = new p5.Reverb();
-    reverb.process(compressor, 3, 3);
-    flock.forEach(boid => boid.osc.connect(reverb));
-}
-
-function setupPanales(count) {
-    panalPositions = [];
-    let margin = 70;
-    for (let i = 0; i < count; i++) {
-        let placed = false, attempts = 0;
-        while (!placed && attempts < 75) {
-            let candidatePosition = createVector(random(margin, width - margin), random(margin, height - margin));
-            let tooClose = panalPositions.some(panal => p5.Vector.dist(candidatePosition, panal) < 80);
-            if (!tooClose) {
-                panalPositions.push(candidatePosition);
-                placed = true;
-            }
-            attempts++;
-        }
-    }
-}
-
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-}
-
-function initFlock() {
-    console.log(`Inicializando boids en canvas de tamaño: ${width}x${height}`);
-    flock = [];
-    for (let i = 0; i < 100; i++) {
-        let boid = new Boid(random(width), random(height));
-        flock.push(boid);
-        console.log(`Boid creado en posición: ${boid.position.x}, ${boid.position.y}`);
-    }
-}
-
-function setupButtons() {
-    let buttons = document.querySelectorAll('#buttonContainer button');
-    buttons.forEach(button => button.style.display = 'block');
-    document.getElementById('prevButton').onclick = function() {
-        if (stage > 0) {
-            stage--;
-            changeStage(stage);
-        }
-    };
-    document.getElementById('nextButton').onclick = function() {
-        if (stage < 5) {
-            stage++;
-            changeStage(stage);
-        }
-    };
-    document.getElementById('restartButton').onclick = function() {
-        stage = 0;
-        changeStage(stage);
-    };
-    document.getElementById('newGameButton').onclick = function() {
-        window.location.href = 'collage.html';
-    };
-    document.getElementById('subtitleButton').onclick = function() {
-        let subtitles = document.getElementById('subtitles');
-        subtitles.style.display = subtitles.style.display === 'none' ? 'block' : 'none';
-    };
-    document.getElementById('paintButton').onclick = function() {
-        window.location.href = 'paint.html';
-    };
-}
-
-function changeStage(newStage) {
-    if (currentBackgroundSound) {
-        currentBackgroundSound.stop();
-    }
-    if (currentNarration) {
-        currentNarration.stop();
-    }
-    stage = newStage;
-    let backgrounds = [backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage];
-    background(backgrounds[stage]);
-
-    currentBackgroundSound = backgroundTracks[stage];
-    if (currentBackgroundSound) {
-        currentBackgroundSound.loop();
-    }
-    if (narrationTracks[stage]) {
-        currentNarration = narrationTracks[stage];
-        currentNarration.play();
-        currentNarration.onended(() => {
-            setupPanales(stage < 5 ? 3 + stage : 0);
+        let mouseX, mouseY;
+        canvas.addEventListener('mousemove', (event) => {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
         });
-    } else {
-        setupPanales(stage < 5 ? 3 + stage : 0);
-    }
-    if (stage === 5) {
-        document.getElementById('collageButton').style.display = 'block';
-    } else {
-        document.getElementById('collageButton').style.display = 'none';
-    }
-}
 
-function setup() {
-    pixelDensity(1);
-    createCanvas(windowWidth, windowHeight);
-    initFlock(); // Initialize flock here
-    setupAudioProcessing();
-    changeStage(0);
-}
-
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-}
-
-function draw() {
-    clear();
-    let currentBackground = [backgroundImage, cityImage, finalImage, fifthImage, fourthImage, sixthImage][stage];
-    background(currentBackground);
-
-    if (stage !== 5) {
-        panalPositions.forEach(panal => {
-            image(panalImage, panal.x, panal.y, 50, 50);
+        canvas.addEventListener('touchmove', (event) => {
+            mouseX = event.touches[0].clientX;
+            mouseY = event.touches[0].clientY;
         });
-    }
 
-    quadtree = new Quadtree(new Rectangle(0, 0, width, height), 4);
-
-    flock.forEach(boid => {
-        quadtree.insert(boid);
-        boid.edges();
-        let range = new Rectangle(boid.position.x - 50, boid.position.y - 50, 100, 100);
-        let nearbyBoids = quadtree.query(range);
-        boid.flock(nearbyBoids);
-        boid.update();
-        boid.show(window.devicePixelRatio);
-    });
-}
-
-function mousePressed() {
-    for (let i = panalPositions.length - 1; i >= 0; i--) {
-        let pos = panalPositions[i];
-        if (dist(mouseX, mouseY, pos.x, pos.y) < 50) {
-            panalPositions.splice(i, 1);
-            panalDisappearSound.play();
-            if (panalPositions.length === 0) {
-                stage++;
-                changeStage(stage);
+        function setupPanales(count) {
+            panalPositions = [];
+            let margin = 70;
+            for (let i = 0; i < count; i++) {
+                let placed = false, attempts = 0;
+                while (!placed && attempts < 100) {
+                    let candidatePosition = { x: Math.random() * (canvas.width - 2 * margin) + margin, y: Math.random() * (canvas.height - 2 * margin) + margin };
+                    let tooClose = panalPositions.some(panal => Math.hypot(candidatePosition.x - panal.x, candidatePosition.y - panal.y) < 80);
+                    if (!tooClose) {
+                        panalPositions.push(candidatePosition);
+                        placed = true;
+                    }
+                    attempts++;
+                }
             }
         }
-    }
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-    setupButtons();
-});
+        function changeStage(newStage) {
+            if (currentBackgroundSound) {
+                currentBackgroundSound.pause();
+                currentBackgroundSound.currentTime = 0;
+            }
+            if (currentNarration) {
+                currentNarration.pause();
+                currentNarration.currentTime = 0;
+            }
+
+            currentBackgroundIndex = newStage;
+            backgroundImage = backgroundImages[currentBackgroundIndex];
+            currentBackgroundSound = backgroundTracks[currentBackgroundIndex];
+            currentNarration = narrationTracks[currentBackgroundIndex];
+
+            currentBackgroundSound.loop = true;
+            currentBackgroundSound.play();
+
+            currentNarration.play();
+            currentNarration.onended = () => {
+                if (newStage < backgroundImages.length - 1) {
+                    setupPanales(3 + newStage); // 3 panales in stage 1, 4 in stage 2, etc.
+                } else {
+                    panalPositions = [];
+                }
+            };
+        }
+
+        document.getElementById('prevButton').onclick = function() {
+            if (currentBackgroundIndex > 0) {
+                changeStage(currentBackgroundIndex - 1);
+            }
+        };
+        document.getElementById('nextButton').onclick = function() {
+            if (currentBackgroundIndex < backgroundImages.length - 1) {
+                changeStage(currentBackgroundIndex + 1);
+            }
+        };
+        document.getElementById('restartButton').onclick = function() {
+            changeStage(0);
+        };
+        document.getElementById('newGameButton').onclick = function() {
+            window.location.href = 'collage.html';
+        };
+        document.getElementById('paintButton').onclick = function() {
+            window.location.href = 'paint.html';
+        };
+
+        document.getElementById('startButton').onclick = function() {
+            currentNarration.pause();
+            changeStage(1);
+            document.getElementById('buttonContainer').style.display = 'flex'; // Show buttons after start
+            this.style.display = 'none';
+        };
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+
+            panalPositions.forEach(panal => {
+                ctx.drawImage(panalImage, panal.x, panal.y, 50, 50);
+            });
+
+            for (let boid of flock) {
+                boid.edges();
+                boid.flock(flock, mouseX, mouseY);
+                boid.update();
+                boid.show();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        canvas.addEventListener('click', (event) => {
+            const clickX = event.clientX;
+            const clickY = event.clientY;
+
+            for (let i = panalPositions.length - 1; i >= 0; i--) {
+                let panal = panalPositions[i];
+                if (Math.hypot(clickX - panal.x, clickY - panal.y) < 50) {
+                    panalPositions.splice(i, 1);
+                    panalSound.play();
+                    if (panalPositions.length === 0) {
+                        stage++;
+                        if (stage < backgroundImages.length) {
+                            changeStage(stage);
+                        }
+                    }
+                }
+            }
+        });
+
+        requestAudioPermission().then(() => {
+            initFlock();
+            animate();
+        }).catch(err => {
+            console.error('Error al solicitar permiso de audio:', err);
+            initFlock();
+            animate();
+        });
+    </script>
+</body>
+</html>
+
 
