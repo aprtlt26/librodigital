@@ -171,7 +171,7 @@
 
             updateOscillator() {
                 if (this.osc) {
-                    let freq = this.map(this.position.x, 0, canvas.width, 285, 300);
+                    let freq = this.map(this.position.x, 0, canvas.width, 237, 200);
                     let amp = this.map(this.position.y, 0, canvas.height, 0.01, 0.05);
                     this.osc.frequency.value = freq;
                     this.gainNode.gain.value = amp;
@@ -206,8 +206,8 @@
                     const mag = Math.hypot(steering.x, steering.y);
                     steering.x = (steering.x / mag) * this.maxSpeed - this.velocity.x;
                     steering.y = (steering.y / mag) * this.maxSpeed - this.velocity.y;
-                    steering.x = Math.min(steering.x, this.maxForce);
-                    steering.y = Math.min(steering.y, this.maxForce);
+                    steering.x = Math.min(Math.max(steering.x, -this.maxForce), this.maxForce);
+                    steering.y = Math.min(Math.max(steering.y, -this.maxForce), this.maxForce);
                 }
                 return steering;
             }
@@ -228,8 +228,8 @@
                     steering.y /= total;
                     steering.x = (steering.x - this.position.x) * this.maxSpeed - this.velocity.x;
                     steering.y = (steering.y - this.position.y) * this.maxSpeed - this.velocity.y;
-                    steering.x = Math.min(steering.x, this.maxForce);
-                    steering.y = Math.min(steering.y, this.maxForce);
+                    steering.x = Math.min(Math.max(steering.x, -this.maxForce), this.maxForce);
+                    steering.y = Math.min(Math.max(steering.y, -this.maxForce), this.maxForce);
                 }
                 return steering;
             }
@@ -253,8 +253,8 @@
                     steering.y /= total;
                     steering.x = (steering.x / Math.hypot(steering.x, steering.y)) * this.maxSpeed - this.velocity.x;
                     steering.y = (steering.y / Math.hypot(steering.x, steering.y)) * this.maxSpeed - this.velocity.y;
-                    steering.x = Math.min(steering.x, this.maxForce);
-                    steering.y = Math.min(steering.y, this.maxForce);
+                    steering.x = Math.min(Math.max(steering.x, -this.maxForce), this.maxForce);
+                    steering.y = Math.min(Math.max(steering.y, -this.maxForce), this.maxForce);
                 }
                 return steering;
             }
@@ -263,10 +263,12 @@
                 let mouse = { x: mouseX, y: mouseY };
                 let steer = { x: mouse.x - this.position.x, y: mouse.y - this.position.y };
                 let mag = Math.hypot(steer.x, steer.y);
-                steer.x = (steer.x / mag) * this.maxSpeed - this.velocity.x;
-                steer.y = (steer.y / mag) * this.maxSpeed - this.velocity.y;
-                steer.x = Math.min(steer.x, this.maxForce);
-                steer.y = Math.min(steer.y, this.maxForce);
+                steer.x = (steer.x / mag) * this.maxSpeed;
+                steer.y = (steer.y / mag) * this.maxSpeed;
+                steer.x -= this.velocity.x;
+                steer.y -= this.velocity.y;
+                steer.x = Math.min(Math.max(steer.x, -this.maxForce), this.maxForce);
+                steer.y = Math.min(Math.max(steer.y, -this.maxForce), this.maxForce);
                 this.acceleration.x += steer.x;
                 this.acceleration.y += steer.y;
             }
@@ -305,7 +307,7 @@
                 ctx.save();
                 ctx.translate(this.position.x, this.position.y);
                 ctx.rotate(Math.atan2(this.velocity.y, this.velocity.x));
-                ctx.drawImage(boidImage, -10, -10, 20, 20);
+                ctx.drawImage(boidImage, 25, 25, 25, 25);
                 ctx.restore();
             }
         }
@@ -313,7 +315,7 @@
         let flock = [];
         function initFlock() {
             flock = [];
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 90; i++) {
                 flock.push(new Boid());
             }
         }
@@ -396,7 +398,7 @@
 
         document.getElementById('startButton').onclick = function() {
             currentNarration.pause();
-            changeStage(1);
+            changeStage(0);
             document.getElementById('buttonContainer').style.display = 'flex'; // Show buttons after start
             this.style.display = 'none';
         };
@@ -449,5 +451,6 @@
     </script>
 </body>
 </html>
+
 
 
