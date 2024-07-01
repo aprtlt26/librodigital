@@ -20,7 +20,6 @@
             text-align: center;
             padding: 10px 0;
             background-color: #bdedf1;
-            display: none; /* Hide initially */
         }
         button {
             margin: 5px;
@@ -51,20 +50,20 @@
             background: rgba(0,0,0,0.5);
             padding: 10px;
         }
-        #startButton {
+        #insectsButton {
+            display: none; /* Hide initially */
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 20px 40px;
-            font-size: 24px;
-            background-color: #93f2ff;
-            color: white;
+            background: none;
             border: none;
-            border-radius: 10px;
+            cursor: pointer;
         }
-        #startButton:hover {
-            background-color: #13e0eb;
+        #insectsButton img {
+            width: 350px;
+            height: auto;
+            border: #0a0a0a;
         }
     </style>
 </head>
@@ -76,10 +75,11 @@
         <button id="newGameButton">Collage</button>
         <button id="paintButton">Pintar</button>
     </div>
-    <button id="startButton">Iniciar</button>
+    <button id="insectsButton"><img src="insects.webp" alt="Insects"></button>
     <canvas id="canvas"></canvas>
 
     <script>
+        let audioContext;
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -90,9 +90,6 @@
         
         let panalImage = new Image();
         panalImage.src = 'panal.png';
-
-        let portadaImage = new Image();
-        portadaImage.src = 'portada.webp';
 
         let backgroundImages = [];
         let currentBackgroundIndex = 0;
@@ -105,7 +102,6 @@
 
         let panalSound = new Audio('panal.mp3');
 
-        let audioContext;
         let panalPositions = [];
         let stage = 0;
 
@@ -130,7 +126,7 @@
         }
 
         function preload() {
-            let backgrounds = ['paisaje.png', 'ciudad.png', 'africa.png', 'centro.png', 'campomorado.png', 'azul.png'];
+            let backgrounds = ['flor.webp', 'ciudad.webp', 'africa.webp', 'centro.webp', 'campomorado.webp', 'fin.webp'];
             for (let i = 0; i < backgrounds.length; i++) {
                 let img = new Image();
                 img.src = backgrounds[i];
@@ -143,8 +139,9 @@
                 narrationTracks.push(narration);
             }
 
-            backgroundImage = portadaImage;
-            currentNarration = new Audio('narration0.mp3');
+            backgroundImage = backgroundImages[0];
+            currentBackgroundSound = backgroundTracks[0];
+            currentNarration = narrationTracks[0];
             currentNarration.loop = true;
             currentNarration.play();
         }
@@ -166,12 +163,27 @@
                     this.osc.connect(this.gainNode);
                     this.gainNode.connect(audioContext.destination);
                     this.osc.start();
+                    this.fadeInOscillator();
+                }
+            }
+
+            fadeInOscillator() {
+                if (this.gainNode) {
+                    this.gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                    this.gainNode.gain.linearRampToValueAtTime(0.01, audioContext.currentTime + 1); // Fade in over 1 second
+                }
+            }
+
+            stopOscillator() {
+                if (this.osc) {
+                    this.osc.stop();
+                    this.osc.disconnect();
                 }
             }
 
             updateOscillator() {
                 if (this.osc) {
-                    let freq = this.map(this.position.x, 0, canvas.width, 200, 800);
+                    let freq = this.map(this.position.x, 0, canvas.width, 237, 200);
                     let amp = this.map(this.position.y, 0, canvas.height, 0.01, 0.05);
                     this.osc.frequency.value = freq;
                     this.gainNode.gain.value = amp;
@@ -206,8 +218,8 @@
                     const mag = Math.hypot(steering.x, steering.y);
                     steering.x = (steering.x / mag) * this.maxSpeed - this.velocity.x;
                     steering.y = (steering.y / mag) * this.maxSpeed - this.velocity.y;
-                    steering.x = Math.min(steering.x, this.maxForce);
-                    steering.y = Math.min(steering.y, this.maxForce);
+                    steering.x = Math.min(Math.max(steering.x, -this.maxForce), this.maxForce);
+                    steering.y = Math.min(Math.max(steering.y, -this.maxForce), this.maxForce);
                 }
                 return steering;
             }
@@ -228,8 +240,8 @@
                     steering.y /= total;
                     steering.x = (steering.x - this.position.x) * this.maxSpeed - this.velocity.x;
                     steering.y = (steering.y - this.position.y) * this.maxSpeed - this.velocity.y;
-                    steering.x = Math.min(steering.x, this.maxForce);
-                    steering.y = Math.min(steering.y, this.maxForce);
+                    steering.x = Math.min(Math.max(steering.x, -this.maxForce), this.maxForce);
+                    steering.y = Math.min(Math.max(steering.y, -this.maxForce), this.maxForce);
                 }
                 return steering;
             }
@@ -253,8 +265,8 @@
                     steering.y /= total;
                     steering.x = (steering.x / Math.hypot(steering.x, steering.y)) * this.maxSpeed - this.velocity.x;
                     steering.y = (steering.y / Math.hypot(steering.x, steering.y)) * this.maxSpeed - this.velocity.y;
-                    steering.x = Math.min(steering.x, this.maxForce);
-                    steering.y = Math.min(steering.y, this.maxForce);
+                    steering.x = Math.min(Math.max(steering.x, -this.maxForce), this.maxForce);
+                    steering.y = Math.min(Math.max(steering.y, -this.maxForce), this.maxForce);
                 }
                 return steering;
             }
@@ -263,10 +275,12 @@
                 let mouse = { x: mouseX, y: mouseY };
                 let steer = { x: mouse.x - this.position.x, y: mouse.y - this.position.y };
                 let mag = Math.hypot(steer.x, steer.y);
-                steer.x = (steer.x / mag) * this.maxSpeed - this.velocity.x;
-                steer.y = (steer.y / mag) * this.maxSpeed - this.velocity.y;
-                steer.x = Math.min(steer.x, this.maxForce);
-                steer.y = Math.min(steer.y, this.maxForce);
+                steer.x = (steer.x / mag) * this.maxSpeed;
+                steer.y = (steer.y / mag) * this.maxSpeed;
+                steer.x -= this.velocity.x;
+                steer.y -= this.velocity.y;
+                steer.x = Math.min(Math.max(steer.x, -this.maxForce), this.maxForce);
+                steer.y = Math.min(Math.max(steer.y, -this.maxForce), this.maxForce);
                 this.acceleration.x += steer.x;
                 this.acceleration.y += steer.y;
             }
@@ -305,14 +319,21 @@
                 ctx.save();
                 ctx.translate(this.position.x, this.position.y);
                 ctx.rotate(Math.atan2(this.velocity.y, this.velocity.x));
-                ctx.drawImage(boidImage, -10, -10, 20, 20);
+                ctx.drawImage(boidImage, 25, 25, 25, 25);
                 ctx.restore();
             }
         }
 
         let flock = [];
-        for (let i = 0; i < 50; i++) {
-            flock.push(new Boid());
+        function initFlock() {
+            // Stop the oscillators for all boids before reinitializing the flock
+            for (let boid of flock) {
+                boid.stopOscillator();
+            }
+            flock = [];
+            for (let i = 0; i < 90; i++) {
+                flock.push(new Boid());
+            }
         }
 
         let mouseX, mouseY;
@@ -367,7 +388,9 @@
                     setupPanales(3 + newStage); // 3 panales in stage 1, 4 in stage 2, etc.
                 } else {
                     panalPositions = [];
+                    document.getElementById('insectsButton').style.display = 'block';
                 }
+                initFlock(); // Reinitialize the flock for each stage
             };
         }
 
@@ -391,11 +414,8 @@
             window.location.href = 'paint.html';
         };
 
-        document.getElementById('startButton').onclick = function() {
-            currentNarration.pause();
-            changeStage(0);
-            document.getElementById('buttonContainer').style.display = 'flex'; // Show buttons after start
-            this.style.display = 'none';
+        document.getElementById('insectsButton').onclick = function() {
+            window.location.href = 'collage.html';
         };
 
         function animate() {
@@ -436,9 +456,11 @@
         });
 
         requestAudioPermission().then(() => {
+            initFlock();
             animate();
         }).catch(err => {
             console.error('Error al solicitar permiso de audio:', err);
+            initFlock();
             animate();
         });
     </script>
