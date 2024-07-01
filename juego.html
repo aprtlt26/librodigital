@@ -20,7 +20,6 @@
             text-align: center;
             padding: 10px 0;
             background-color: #bdedf1;
-            display: none; /* Hide initially */
         }
         button {
             margin: 5px;
@@ -51,21 +50,6 @@
             background: rgba(0,0,0,0.5);
             padding: 10px;
         }
-        #startButton {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px 40px;
-            font-size: 24px;
-            background-color: #93f2ff;
-            color: white;
-            border: none;
-            border-radius: 10px;
-        }
-        #startButton:hover {
-            background-color: #13e0eb;
-        }
         #insectsButton {
             display: none; /* Hide initially */
             position: absolute;
@@ -91,7 +75,6 @@
         <button id="newGameButton">Collage</button>
         <button id="paintButton">Pintar</button>
     </div>
-    <button id="startButton">Iniciar</button>
     <button id="insectsButton"><img src="insects.webp" alt="Insects"></button>
     <canvas id="canvas"></canvas>
 
@@ -107,9 +90,6 @@
         
         let panalImage = new Image();
         panalImage.src = 'panal.png';
-
-        let portadaImage = new Image();
-        portadaImage.src = 'portada.webp';
 
         let backgroundImages = [];
         let currentBackgroundIndex = 0;
@@ -158,11 +138,6 @@
                 let narration = new Audio(`narration${i + 1}.mp3`);
                 narrationTracks.push(narration);
             }
-
-            backgroundImage = portadaImage;
-            currentNarration = new Audio('narration0.mp3');
-            currentNarration.loop = true;
-            currentNarration.play();
         }
 
         preload();
@@ -433,13 +408,6 @@
             window.location.href = 'paint.html';
         };
 
-        document.getElementById('startButton').onclick = function() {
-            currentNarration.pause();
-            changeStage(0);
-            document.getElementById('buttonContainer').style.display = 'flex'; // Show buttons after start
-            this.style.display = 'none';
-        };
-
         document.getElementById('insectsButton').onclick = function() {
             window.location.href = 'collage.html';
         };
@@ -483,14 +451,17 @@
 
         requestAudioPermission().then(() => {
             initFlock();
+            changeStage(0); // Inicia en el primer escenario
             animate();
         }).catch(err => {
             console.error('Error al solicitar permiso de audio:', err);
             initFlock();
+            changeStage(0); // Inicia en el primer escenario
             animate();
         });
     </script>
 </body>
 </html>
+
 
 
