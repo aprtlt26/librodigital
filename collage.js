@@ -228,7 +228,7 @@
         document.addEventListener('DOMContentLoaded', changeBackground);
         document.getElementById('change-background-button').addEventListener('click', changeBackground);
 
-        var storyAudio = new Audio('cuento.wav');
+        var storyAudio = new Audio('cuento.mp3');
         var missionAudio = new Audio('elcollage.wav');
 
         function playSingleAudio(audio) {
