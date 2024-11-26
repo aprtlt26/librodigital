@@ -51,14 +51,14 @@
                 loadFirebaseImage(image).then(url => {
                     const img = document.createElement('img');
                     img.src = url;
-                    img.style.width = '100px';
+                    img.style.width = '70px';
                     img.addEventListener('click', function(e) {
                         e.stopPropagation();
                         const collageImg = img.cloneNode();
                         collageImg.classList.add('draggable');
                         collageImg.style.position = 'absolute';
-                        collageImg.style.left = '0px';
-                        collageImg.style.top = '0px';
+                        collageImg.style.left = '300px';
+                        collageImg.style.top = '300px';
                         document.getElementById('collage-container').appendChild(collageImg);
                         makeImageInteractive(collageImg);
 
