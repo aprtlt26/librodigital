@@ -1,4 +1,5 @@
 
+
        
 body {
     margin-left: 10px;
@@ -81,7 +82,7 @@ background: #fefffe;
     position: fixed;
     left: 0;
     width: 100%;
-    height: 23%; 
+    height: 20%; 
     overflow-x: auto;
 
     white-space: nowrap;
@@ -127,7 +128,7 @@ background-position: center;
     position: relative;
  background-image: url('pasto.png');
 background-size: cover; 
-height: calc(200vh - 250px); /* Altura ajustada para permitir interacción */
+height: calc(200vh - 200px); /* Altura ajustada para permitir interacción */
 padding: 50px; /* Añade un poco de relleno alrededor */
             margin-top: 230px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 50), 0 0px 20px 0 rgba(106, 209, 3, 0.9); /* Standard shadow */
@@ -1473,6 +1474,8 @@ and (max-device-width: 844px) {
 position: fixed;
 top: 15%; /* Ajusta esta distancia según lo que se vea mejor */
 gap: 2px;
+    z-index: 5000;
+
 }
 }
 
@@ -1482,8 +1485,10 @@ gap: 2px;
 position: fixed;
 top: 10%; /* Posición ajustada para la visualización */
 overflow-x: auto; /* Permite desplazamiento horizontal */
-white-space: nowrap; /* Alinea las imágenes horizontalmente */
-padding: 20px; /* Añade un poco de relleno alrededor */
+white-space: nowrap; 
+padding: 20px; 
+z-index: 5000;
+
 }
 
 
@@ -1786,11 +1791,15 @@ position: absolute;
 top: 212px; 
 right:  10px; 
 z-index: 1000;
+box-shadow: 10 4px 20px rgba(rgb(179, 178, 178)); 
+
 }
 
 #print-button:hover {
 
-background-color: rgb(211, 199, 199)
+background-color: rgb(211, 199, 199);
+box-shadow: 0 4px 20px rgba(white); 
+
 
 }
 
@@ -1872,6 +1881,7 @@ height: 100%;
 #gallery-container img {
     position: relative;
     transition: transform 0.3s ease;
+
 }
 
 #gallery-container img:hover::after {
@@ -1879,9 +1889,9 @@ height: 100%;
     position: absolute;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    top: 100px;
+    left: 50;
+    background-color: rgba(255, 255, 255, 0); /* Semi-transparent overlay */
     color: white;
     display: flex;
     justify-content: center;
@@ -1889,8 +1899,10 @@ height: 100%;
     opacity: 0;
     transition: opacity 0.3s ease;
     font-size: 20px; /* Adjust font size as needed */
+    z-index: 6000;
 }
 
 #gallery-container img:hover::after {
     opacity: 1;
 }
+
