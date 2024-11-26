@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Libro Digital -Ideofónica - Collage">
+    <meta name="description" content="Libro Digital - ideofónica - Collage">
     <meta name="keywords" content="collage, alfonsopretelt,tarot,erosion,">
     <meta name="author" content="alfonsopretelt">
-    <meta name="robots" content="collage">
+    <meta name="robots" content="collage libro digital">
     <meta name="google" content="translate">
-   <meta property="og:type" content="https://ideofxnica.netlify.app/>
-    <meta property="og:url" content="https://ideofxnica.netlify.app/">
+   <meta property="og:type" content="www.arteypsique.com">
+    <meta property="og:url" content="https://www.arteypsique.com">
     <meta property="og:title" content="Arte & Psique">
     <meta property="og:description" content="Plataforma de aprendizaje y creación">
     <img src="https://firebasestorage.googleapis.com/v0/b/gs://libro-digital-ccf11.appspot.com/o/abeja.png?alt=media" type="image/x-icon">
@@ -72,6 +72,10 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
             text-align: center;
             padding: 10px 0;
             background-color: #bdedf1;
+            z-index: 6000;
+            box-shadow: 0 4px 20px rgba(rgb(245, 255, 189)); 
+
+
         }
     button {
         margin: 5px;
@@ -79,12 +83,18 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
         font-size: 11px;
         cursor: pointer;
         background-color: #93f2ff;
-        color: white;
+        color: rgb(135, 141, 139);
         border: none;
         border-radius: 5px;
+        z-index: 6000;
+        text-shadow: 0 4px 20px rgba(rgb(241, 255, 177)); 
+
+
     }
     button:hover {
-        background-color: #1ccad3;
+        background-color: #eaeded;
+        box-shadow: 0 9px 20px rgba(white); 
+
     }
 
     #subtitles {
@@ -102,23 +112,22 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
     #startButton {
         display: none; /* Oculta por defecto el botón */
     }
-
     #collage-container {
     color: #ffffff;
     font-size: 70%;
     width: 100%;
-    height: 90%;
+    height: calc(100vh - 100px); /* Ajusta la altura para adaptarse al viewport */
     float: left;
     display: flex;
     background-color: #ffffff;
     position: relative;
     background-image: url('pasto.png');
     background-size: cover;
-    height: calc(200vh - 200px);
-    padding: 50px;
-    margin-top: 230px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 0px 20px 0 rgba(106, 209, 3, 0.9);
+    padding: 20px; /* Reduce el padding interno */
+    margin-top: 0; /* Elimina el margen superior */
+    box-shadow: 0 4px 8px 0 rgb(224, 223, 223), 0 0px 20px 0 rgba(241, 253, 229, 0.9);
 }
+
 
 #collage-container img {
     min-width: 60px;
@@ -129,6 +138,12 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
     transition: transform 0.1s ease;
     transform-origin: center center;
 }
+
+button{
+
+    z-index: 6000;
+}
+
 
 
 </style>
@@ -177,21 +192,21 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
 
    
     
-            <div class="color-picker" style=" display: inline-block;">
+            <div style="z-index: 6000;" class="color-picker" style=" display: inline-block;">
                 <input type="color" id="bg-color-picker" value="#ffffff" class='bx bx-palette' style='color:rgba(0, 0, 0, 0.98)'>
                 <span class="hover-text">Cambia el color de Fondo</span>
             </div>
             
 
-    <button id="print-button" i class='bx bx-save' style='color:rgba(0, 0, 0, 0.98)' 
+    <button style="z-index: 6000;" id="print-button" i class='bx bx-save' style='color:rgba(0, 0, 0, 0.98) ' 
         i class='bx bx-printer' style='color:rgba(0, 0, 0, 0.98)' ></i>  <span class="hover-text">Guarda-Imprime</span></button>
 
-    <button id="change-background-button" i class='bx bx-image-alt' style='color:rgba(0, 0, 0, 0.98)'></i>  <span class="hover-text">Cambia el Fondo</span> </button>
+    <button  style="z-index: 6000;" id="change-background-button" i class='bx bx-image-alt' style='color:rgba(0, 0, 0, 0.98) ;' ></i>   <span class="hover-text">Cambia el Fondo</span> </button>
 
-    <button id="delete-button" i class='bx bx-eraser' style='color:rgba(0, 0, 0, 0.98)' ></i><span class="hover-text">Borrar</span></button></button>
+    <button style="z-index: 6000;" id="delete-button" i class='bx bx-eraser' style='color:rgba(0, 0, 0, 0.98)' ></i><span class="hover-text">Borrar</span></button></button>
 
-    <button id="move-up" i class='bx bx-layer-plus' style='color:rgba(0, 0, 0, 0.98)' ></i> <span class="hover-text">Poner Debajo</span></button>
-    <button id="move-down" i class='bx bxs-layer-minus' style='color:rgba(0, 0, 0, 0.98)' ></i> <span class="hover-text">Poner Encima</span></button>
+    <button style="z-index: 6000;" id="move-up" i class='bx bx-layer-plus' style='color:rgba(0, 0, 0, 0.98)' ></i> <span class="hover-text">Poner Debajo</span></button>
+    <button style="z-index: 6000;" id="move-down" i class='bx bxs-layer-minus' style='color:rgba(0, 0, 0, 0.98)' ></i> <span class="hover-text">Poner Encima</span></button>
 
 
   
@@ -200,9 +215,6 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
 </body>
 
 </html>
-
-
-
 
 
 
