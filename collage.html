@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Libro Digital - ideofónica - Collage">
-    <meta name="keywords" content="collage, alfonsopretelt,tarot,erosion,">
+    <meta name="description" content="libro digital interactivo para niños de 3 a 5 años">
+    <meta name="keywords" content="collage, alfonsopretelt, ideofónica, libro digital interactivo para niños de 3 a 5 años">
     <meta name="author" content="alfonsopretelt">
-    <meta name="robots" content="collage libro digital">
+    <meta name="robots" content="libro digital">
     <meta name="google" content="translate">
-   <meta property="og:type" content="www.arteypsique.com">
-    <meta property="og:url" content="https://www.arteypsique.com">
+   <meta property="og:type" content="https://ideofxnica.netlify.app/">
+    <meta property="og:url" content="https://ideofxnica.netlify.app/">
     <meta property="og:title" content="Arte & Psique">
     <meta property="og:description" content="Plataforma de aprendizaje y creación">
     <img src="https://firebasestorage.googleapis.com/v0/b/gs://libro-digital-ccf11.appspot.com/o/abeja.png?alt=media" type="image/x-icon">
@@ -83,7 +83,7 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
         font-size: 11px;
         cursor: pointer;
         background-color: #93f2ff;
-        color: rgb(135, 141, 139);
+        color: rgb(101, 102, 102);
         border: none;
         border-radius: 5px;
         z-index: 6000;
@@ -116,7 +116,7 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
     color: #ffffff;
     font-size: 70%;
     width: 100%;
-    height: calc(100vh - 100px); /* Ajusta la altura para adaptarse al viewport */
+    height: calc(112vh - 120px); /* Ajusta la altura para adaptarse al viewport */
     float: left;
     display: flex;
     background-color: #ffffff;
@@ -142,8 +142,96 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
 button{
 
     z-index: 6000;
+    top: 300px;
 }
 
+/* Botones Responsivos */
+@media (max-width: 768px) {
+    #buttonContainer {
+        flex-wrap: wrap; /* Permite que los botones se ajusten en varias filas */
+        padding: 5px; /* Reduce el padding general del contenedor */
+    }
+    button {
+        margin: 3px; /* Espacio reducido entre botones */
+        padding: 8px 10px; /* Tamaño reducido para botones */
+        font-size: 10px; /* Fuente más pequeña */
+    }
+}
+
+@media (max-width: 480px) {
+    #buttonContainer {
+        flex-direction: column; /* Los botones se apilan en pantallas muy pequeñas */
+        align-items: stretch; /* Los botones ocuparán el ancho completo */
+    }
+    button {
+        width: 90%; /* Cada botón ocupa casi todo el ancho del contenedor */
+        margin: 5px auto; /* Centra los botones y ajusta el margen */
+        padding: 8px 12px; /* Tamaño cómodo para pantallas táctiles */
+        font-size: 9px; /* Fuente aún más pequeña */
+    }
+}
+
+/* Estilos para el contenedor de los botones */
+#button2-container {
+    display: flex;
+    justify-content: center;
+    margin-top: -15px;
+}
+
+.button2-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+}
+
+/* Estilos para los botones */
+.button2-container button {
+    display: flex;
+    align-items: center;
+    background-color: #93f2ff9f;
+    color: rgb(3, 3, 3);
+    border: none;
+    border-radius: 9px;
+    padding: 10px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: -10px;
+    text-shadow: 0 4px 20px rgb(209, 255, 3);
+    height: 6px;
+    z-index: 6000;
+    position:relative;
+    box-shadow: 0 4px 20px rgb(246, 247, 242);
+
+}
+
+/* Estilos para los iconos */
+.button2-container button i {
+    margin-right: 5px;
+    font-size: 11px;
+    box-shadow: 0 4px 20px rgb(209, 255, 3);
+
+}
+
+/* Estilos para el texto */
+.button2-container button .hover-text {
+    display: inline-block;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .button2-container {
+        flex-direction: column;
+        margin-right: 370px;
+    }
+    .button2-container button {
+        width: 90%;
+        height: 6px;
+        margin-bottom: 1px;
+        font-size: 9px;
+
+    }
+}
 
 
 </style>
@@ -173,48 +261,63 @@ button{
  
 
 
+   
+
+       
+
+
+   
+    
+        <div id="button2-container">
+            <div class="button2-container">
+                <button id="play-button" style="z-index: 6000;">
+                    <i class='bx bx-play-circle' style='color:rgba(0, 0, 0, 0.98);'></i>
+                    <span class="hover-text">Escuchar</span>
+                </button>
+                <button id="print-button" style="z-index: 6000;">
+                    <i class='bx bx-save' style='color:rgba(0, 0, 0, 0.98);'></i>
+                    <span class="hover-text">Guardar/Imprimir</span>
+                </button>
+                <button id="change-background-button" style="z-index: 6000;">
+                    <i class='bx bx-image-alt' style='color:rgba(0, 0, 0, 0.98);'></i>
+                    <span class="hover-text">Cambiar Fondo</span>
+                </button>
+                <button id="delete-button" style="z-index: 6000;">
+                    <i class='bx bx-eraser' style='color:rgba(0, 0, 0, 0.98);'></i>
+                    <span class="hover-text">Borrar</span>
+                </button>
+                <button id="move-up" style="z-index: 6000;">
+                    <i class='bx bx-layer-plus' style='color:rgba(0, 0, 0, 0.98);'></i>
+                    <span class="hover-text">Poner Debajo</span>
+                </button>
+                <button id="move-down" style="z-index: 6000;">
+                    <i class='bx bxs-layer-minus' style='color:rgba(0, 0, 0, 0.98);'></i>
+                    <span class="hover-text">Poner Encima</span>
+                </button>
+            </div>
+        </div>
+  
+
+
     <div id="collage-container" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="return false"
     ondragleave="return false">
 
 
 
 
-   
-    <div class="=icons" > 
-
-        <button id="play-button" i class='bx bx-play-circle' style='color:rgba(0, 0, 0, 0.98)' ></i>
-         <span class="hover-text">Escuchar</span>
-    </button>
-
-       
-
-        <div class="input-container">
-
-   
-    
-            <div style="z-index: 6000;" class="color-picker" style=" display: inline-block;">
-                <input type="color" id="bg-color-picker" value="#ffffff" class='bx bx-palette' style='color:rgba(0, 0, 0, 0.98)'>
-                <span class="hover-text">Cambia el color de Fondo</span>
-            </div>
-            
-
-    <button style="z-index: 6000;" id="print-button" i class='bx bx-save' style='color:rgba(0, 0, 0, 0.98) ' 
-        i class='bx bx-printer' style='color:rgba(0, 0, 0, 0.98)' ></i>  <span class="hover-text">Guarda-Imprime</span></button>
-
-    <button  style="z-index: 6000;" id="change-background-button" i class='bx bx-image-alt' style='color:rgba(0, 0, 0, 0.98) ;' ></i>   <span class="hover-text">Cambia el Fondo</span> </button>
-
-    <button style="z-index: 6000;" id="delete-button" i class='bx bx-eraser' style='color:rgba(0, 0, 0, 0.98)' ></i><span class="hover-text">Borrar</span></button></button>
-
-    <button style="z-index: 6000;" id="move-up" i class='bx bx-layer-plus' style='color:rgba(0, 0, 0, 0.98)' ></i> <span class="hover-text">Poner Debajo</span></button>
-    <button style="z-index: 6000;" id="move-down" i class='bx bxs-layer-minus' style='color:rgba(0, 0, 0, 0.98)' ></i> <span class="hover-text">Poner Encima</span></button>
-
-
-  
-
 <script src="collage.js"></script>
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
 
 
 
