@@ -158,24 +158,23 @@
             audiosImages.push(audio);
         }
 
-        document.getElementById('move-up').addEventListener('click', function() {
+         document.getElementById('move-up').addEventListener('click', function() {
             const selectedImage = document.querySelector('.draggable.selected');
             if (selectedImage) {
-                let zIndex = parseInt(window.getComputedStyle(selectedImage).zIndex, 10);
-                zIndex = isNaN(zIndex) ? 1 : zIndex + 1;
-                selectedImage.style.zIndex = zIndex;
+                let zIndex = parseInt(selectedImage.style.zIndex, 10) || 1;
+                zIndex += 1; // Incrementa el z-index
+                selectedImage.style.zIndex = zIndex.toString();
             }
         });
-
+        
         document.getElementById('move-down').addEventListener('click', function() {
             const selectedImage = document.querySelector('.draggable.selected');
             if (selectedImage) {
-                let zIndex = parseInt(window.getComputedStyle(selectedImage).zIndex, 10);
-                zIndex = isNaN(zIndex) ? 0 : zIndex - 1;
-                selectedImage.style.zIndex = zIndex;
+                let zIndex = parseInt(selectedImage.style.zIndex, 10) || 1;
+                zIndex -= 1; 
+                selectedImage.style.zIndex = zIndex.toString();
             }
         });
-
         document.getElementById('print-button').addEventListener('click', function() {
             window.print();
         });
@@ -261,4 +260,15 @@
                 }
             });
         });
-    
+
+
+        document.getElementById('delete-button').addEventListener('click', function() {
+            const selectedImage = document.querySelector('.draggable.selected');
+            if (selectedImage) {
+                // Eliminar la imagen del contenedor
+                selectedImage.parentNode.removeChild(selectedImage);
+                // Remover cualquier referencia en los mapas o arrays asociados
+                collageImageAudioMap.delete(selectedImage);
+            }
+        });
+        
