@@ -56,11 +56,12 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
   
 <style>
   
+ 
   body, html {
             margin: 0;
             padding: 0;
             overflow: hidden; /* Evita barras de desplazamiento */
-            background-color: #bdedf1;
+            background-color: #ffffff00;
         }
         #buttonContainer {
             position: absolute;
@@ -73,7 +74,7 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
             padding: 10px 0;
             background-color: #bdedf1;
             z-index: 6000;
-            box-shadow: 0 4px 20px rgba(rgb(245, 255, 189)); 
+            box-shadow: 0 4px 8px 0 rgb(224, 223, 223), 0 0px 20px 0 rgba(241, 253, 229, 0.9);
 
 
         }
@@ -96,6 +97,13 @@ storageRef.child('https://libro-digital-ccf11.appspot.com').getDownloadURL().the
         box-shadow: 0 9px 20px rgba(white); 
 
     }
+    
+        @media (max-width: 768px) {
+            button {
+                padding: 8px 10px;
+                font-size: 11px;
+            }
+        }
 
     #subtitles {
         display: none;
