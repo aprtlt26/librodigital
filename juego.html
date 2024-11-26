@@ -20,16 +20,17 @@
             text-align: center;
             padding: 10px 0;
             background-color: #bdedf1;
+            z-index: 1000;
         }
         button {
-             margin: 5px;
-        padding: 10px 15px;
-        font-size: 11px;
-        cursor: pointer;
-        background-color: #93f2ff;
-        color: white;
-        border: none;
-        border-radius: 5px;
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 11px;
+            cursor: pointer;
+            background-color: #93f2ff;
+            color: #333;
+            border: none;
+            border-radius: 5px;
         }
         button:hover {
             background-color: #13e0eb;
@@ -40,18 +41,8 @@
                 font-size: 11px;
             }
         }
-        #subtitles {
-            display: none;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            color: white;
-            background: rgba(0,0,0,0.5);
-            padding: 10px;
-        }
         #insectsButton {
-            display: none; /* Hide initially */
+            display: none;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -59,11 +50,12 @@
             background: none;
             border: none;
             cursor: pointer;
+            z-index: 1000;
         }
         #insectsButton img {
             width: 350px;
             height: auto;
-            border: #0a0a0a;
+            border: none;
         }
     </style>
 </head>
@@ -87,7 +79,7 @@
 
         let boidImage = new Image();
         boidImage.src = 'abeja.png';
-        
+
         let panalImage = new Image();
         panalImage.src = 'panal.png';
 
@@ -105,42 +97,25 @@
         let panalPositions = [];
         let stage = 0;
 
-        function requestAudioPermission() {
-            return new Promise((resolve, reject) => {
-                const permissionAlert = window.confirm('¿Permitir uso de sonido?');
-                if (permissionAlert) {
-                    if (!audioContext) {
-                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    }
-                    audioContext.resume().then(() => {
-                        console.log('Audio activado');
-                        resolve();
-                    }).catch(err => {
-                        console.error('Error al activar el audio:', err);
-                        reject(err);
-                    });
-                } else {
-                    reject('Permiso denegado');
-                }
-            });
-        }
+        let mouseX, mouseY;
 
-        function preload() {
-            let backgrounds = ['flor.webp', 'ciudad.webp', 'africa.webp', 'centro.webp', 'campomorado.webp', 'fin.webp'];
+        // Precargar imágenes y audios
+        function preloadResources() {
+            const backgrounds = ['flor.webp', 'ciudad.webp', 'africa.webp', 'centro.webp', 'campomorado.webp', 'fin.webp'];
             for (let i = 0; i < backgrounds.length; i++) {
                 let img = new Image();
                 img.src = backgrounds[i];
                 backgroundImages.push(img);
 
-                let audio = new Audio(`background${i + 1}.mp3`);
-                backgroundTracks.push(audio);
+                let bgAudio = new Audio(`background${i + 1}.mp3`);
+                backgroundTracks.push(bgAudio);
 
-                let narration = new Audio(`narration${i + 1}.mp3`);
-                narrationTracks.push(narration);
+                let narrationAudio = new Audio(`narration${i + 1}.mp3`);
+                narrationTracks.push(narrationAudio);
             }
         }
 
-        preload();
+        preloadResources();
 
         class Boid {
             constructor() {
@@ -164,9 +139,11 @@
             fadeInOscillator() {
                 if (this.gainNode) {
                     this.gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-                    this.gainNode.gain.linearRampToValueAtTime(0.01, audioContext.currentTime + 1); // Fade in over 1 second
+                    this.gainNode.gain.linearRampToValueAtTime(0.00, audioContext.currentTime + 1);
                 }
             }
+
+            
 
             stopOscillator() {
                 if (this.osc) {
@@ -178,12 +155,32 @@
             updateOscillator() {
                 if (this.osc) {
                     let freq = this.map(this.position.x, 0, canvas.width, 237, 200);
-                    let amp = this.map(this.position.y, 0, canvas.height, 0.01, 0.05);
+                    let amp = this.map(this.position.y, 0, canvas.height, 0.00, 0.03);
+                   
+                
                     this.osc.frequency.value = freq;
                     this.gainNode.gain.value = amp;
                 }
             }
 
+   // En el constructor de Boid
+if (audioContext) {
+    this.osc = audioContext.createOscillator();
+    this.gainNode = audioContext.createGain();
+    this.filter = audioContext.createBiquadFilter();
+    this.filter.type = 'lowpass';
+    this.filter.frequency.value = 500; // Ajusta el valor según necesites
+
+    // Conectar los nodos
+    this.osc.connect(this.gainNode);
+    this.gainNode.connect(this.filter);
+    this.filter.connect(audioContext.destination);
+
+    this.osc.start();
+    this.fadeInOscillator();
+}
+
+            
             map(value, start1, stop1, start2, stop2) {
                 return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
             }
@@ -232,8 +229,11 @@
                 if (total > 0) {
                     steering.x /= total;
                     steering.y /= total;
-                    steering.x = (steering.x - this.position.x) * this.maxSpeed - this.velocity.x;
-                    steering.y = (steering.y - this.position.y) * this.maxSpeed - this.velocity.y;
+                    steering.x = (steering.x - this.position.x);
+                    steering.y = (steering.y - this.position.y);
+                    const mag = Math.hypot(steering.x, steering.y);
+                    steering.x = (steering.x / mag) * this.maxSpeed - this.velocity.x;
+                    steering.y = (steering.y / mag) * this.maxSpeed - this.velocity.y;
                     steering.x = Math.min(Math.max(steering.x, -this.maxForce), this.maxForce);
                     steering.y = Math.min(Math.max(steering.y, -this.maxForce), this.maxForce);
                 }
@@ -257,8 +257,9 @@
                 if (total > 0) {
                     steering.x /= total;
                     steering.y /= total;
-                    steering.x = (steering.x / Math.hypot(steering.x, steering.y)) * this.maxSpeed - this.velocity.x;
-                    steering.y = (steering.y / Math.hypot(steering.x, steering.y)) * this.maxSpeed - this.velocity.y;
+                    const mag = Math.hypot(steering.x, steering.y);
+                    steering.x = (steering.x / mag) * this.maxSpeed - this.velocity.x;
+                    steering.y = (steering.y / mag) * this.maxSpeed - this.velocity.y;
                     steering.x = Math.min(Math.max(steering.x, -this.maxForce), this.maxForce);
                     steering.y = Math.min(Math.max(steering.y, -this.maxForce), this.maxForce);
                 }
@@ -268,7 +269,7 @@
             followMouse(mouseX, mouseY) {
                 let mouse = { x: mouseX, y: mouseY };
                 let steer = { x: mouse.x - this.position.x, y: mouse.y - this.position.y };
-                let mag = Math.hypot(steer.x, steer.y);
+                const mag = Math.hypot(steer.x, steer.y);
                 steer.x = (steer.x / mag) * this.maxSpeed;
                 steer.y = (steer.y / mag) * this.maxSpeed;
                 steer.x -= this.velocity.x;
@@ -302,8 +303,10 @@
                 this.velocity.x += this.acceleration.x;
                 this.velocity.y += this.acceleration.y;
                 const mag = Math.hypot(this.velocity.x, this.velocity.y);
-                this.velocity.x = (this.velocity.x / mag) * this.maxSpeed;
-                this.velocity.y = (this.velocity.y / mag) * this.maxSpeed;
+                if (mag > this.maxSpeed) {
+                    this.velocity.x = (this.velocity.x / mag) * this.maxSpeed;
+                    this.velocity.y = (this.velocity.y / mag) * this.maxSpeed;
+                }
                 this.acceleration.x = 0;
                 this.acceleration.y = 0;
                 this.updateOscillator();
@@ -313,14 +316,13 @@
                 ctx.save();
                 ctx.translate(this.position.x, this.position.y);
                 ctx.rotate(Math.atan2(this.velocity.y, this.velocity.x));
-                ctx.drawImage(boidImage, 25, 25, 25, 25);
+                ctx.drawImage(boidImage, -12.5, -12.5, 25, 25);
                 ctx.restore();
             }
         }
 
         let flock = [];
         function initFlock() {
-            // Stop the oscillators for all boids before reinitializing the flock
             for (let boid of flock) {
                 boid.stopOscillator();
             }
@@ -330,24 +332,16 @@
             }
         }
 
-        let mouseX, mouseY;
-        canvas.addEventListener('mousemove', (event) => {
-            mouseX = event.clientX;
-            mouseY = event.clientY;
-        });
-
-        canvas.addEventListener('touchmove', (event) => {
-            mouseX = event.touches[0].clientX;
-            mouseY = event.touches[0].clientY;
-        });
-
         function setupPanales(count) {
             panalPositions = [];
             let margin = 70;
             for (let i = 0; i < count; i++) {
                 let placed = false, attempts = 0;
                 while (!placed && attempts < 100) {
-                    let candidatePosition = { x: Math.random() * (canvas.width - 2 * margin) + margin, y: Math.random() * (canvas.height - 2 * margin) + margin };
+                    let candidatePosition = {
+                        x: Math.random() * (canvas.width - 2 * margin) + margin,
+                        y: Math.random() * (canvas.height - 2 * margin) + margin
+                    };
                     let tooClose = panalPositions.some(panal => Math.hypot(candidatePosition.x - panal.x, candidatePosition.y - panal.y) < 80);
                     if (!tooClose) {
                         panalPositions.push(candidatePosition);
@@ -356,6 +350,26 @@
                     attempts++;
                 }
             }
+        }
+
+        function requestAudioPermission() {
+            return new Promise((resolve, reject) => {
+                const permissionAlert = window.confirm('¿Permitir uso de sonido?');
+                if (permissionAlert) {
+                    if (!audioContext) {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    audioContext.resume().then(() => {
+                        console.log('Audio activado');
+                        resolve();
+                    }).catch(err => {
+                        console.error('Error al activar el audio:', err);
+                        reject(err);
+                    });
+                } else {
+                    reject('Permiso denegado');
+                }
+            });
         }
 
         function changeStage(newStage) {
@@ -379,27 +393,33 @@
             currentNarration.play();
             currentNarration.onended = () => {
                 if (newStage < backgroundImages.length - 1) {
-                    setupPanales(3 + newStage); // 3 panales in stage 1, 4 in stage 2, etc.
+                    setupPanales(3 + newStage);
                 } else {
                     panalPositions = [];
                     document.getElementById('insectsButton').style.display = 'block';
                 }
-                initFlock(); // Reinitialize the flock for each stage
+                initFlock();
             };
         }
 
         document.getElementById('prevButton').onclick = function() {
             if (currentBackgroundIndex > 0) {
-                changeStage(currentBackgroundIndex - 1);
+                currentBackgroundIndex--;
+                stage = currentBackgroundIndex;
+                changeStage(currentBackgroundIndex);
             }
         };
         document.getElementById('nextButton').onclick = function() {
             if (currentBackgroundIndex < backgroundImages.length - 1) {
-                changeStage(currentBackgroundIndex + 1);
+                currentBackgroundIndex++;
+                stage = currentBackgroundIndex;
+                changeStage(currentBackgroundIndex);
             }
         };
         document.getElementById('restartButton').onclick = function() {
-            changeStage(0);
+            currentBackgroundIndex = 0;
+            stage = 0;
+            changeStage(currentBackgroundIndex);
         };
         document.getElementById('newGameButton').onclick = function() {
             window.location.href = 'collage.html';
@@ -430,6 +450,16 @@
             requestAnimationFrame(animate);
         }
 
+        canvas.addEventListener('mousemove', (event) => {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
+        });
+
+        canvas.addEventListener('touchmove', (event) => {
+            mouseX = event.touches[0].clientX;
+            mouseY = event.touches[0].clientY;
+        });
+
         canvas.addEventListener('click', (event) => {
             const clickX = event.clientX;
             const clickY = event.clientY;
@@ -442,6 +472,7 @@
                     if (panalPositions.length === 0) {
                         stage++;
                         if (stage < backgroundImages.length) {
+                            currentBackgroundIndex = stage;
                             changeStage(stage);
                         }
                     }
@@ -451,12 +482,12 @@
 
         requestAudioPermission().then(() => {
             initFlock();
-            changeStage(0); // Inicia en el primer escenario
+            changeStage(stage);
             animate();
         }).catch(err => {
             console.error('Error al solicitar permiso de audio:', err);
             initFlock();
-            changeStage(0); // Inicia en el primer escenario
+            changeStage(stage);
             animate();
         });
     </script>
