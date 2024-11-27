@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Alfonso Pretelt - Arte y Psique - Collage">
-    <meta name="keywords" content="collage, alfonsopretelt,tarot,erosion,">
+    <meta name="description" content="ideofónica - Habitad Sonoro">
+    <meta name="keywords" content="libro interactivo para niños , sonido,">
     <meta name="author" content="alfonsopretelt">
     <meta name="robots" content="collage">
     <meta name="google" content="translate">
-    <meta property="og:type" content="www.arteypsique.com">
-    <meta property="og:url" content="https://www.arteypsique.com">
+    <meta property="og:type" content="https://ideofxnica.netlify.app/">
+    <meta property="og:url" content="https://ideofxnica.netlify.app/">
     <meta property="og:title" content="Arte & Psique">
     <meta property="og:description" content="Plataforma de aprendizaje y creación">
     <link rel="icon" href="rostro.jpg" type="image/x-icon">
@@ -45,25 +45,31 @@
             z-index: 1000;
         }
 
-        button {
-            margin: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #93f2ff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
+      button {
+        margin: 5px;
+        padding: 10px 15px;
+        font-size: 11px;
+        cursor: pointer;
+        background-color: #5cecff58;
+        color: rgb(101, 102, 102);
+        border: none;
+        border-radius: 5px;
+        z-index: 6000;
+        text-shadow: 0 4px 20px rgba(rgb(4, 4, 4)); 
+        box-shadow: 0 4px 20px rgb(170, 171, 144);
 
-        button:hover {
-            background-color: #13e0eb;
-        }
 
+    }
+    button:hover {
+        background-color: #eaeded;
+        box-shadow: 0 9px 20px rgba(white); 
+
+    }
+    
         @media (max-width: 768px) {
             button {
                 padding: 8px 10px;
-                font-size: 14px;
+                font-size: 11px;
             }
         }
 
@@ -208,6 +214,12 @@
         .color-swatch.selected {
             border: 2px solid #000;
         }
+
+        h4{
+font-size: 21px;
+    color: #bdedf1;
+    text-shadow: 0 4px 20px rgb(10, 123, 95);
+}
     </style>
 </head>
 
@@ -219,6 +231,11 @@
         <button id="misionButton">Misión</button>
         <button id="newGameButton">Viaje de las Abejas</button>
         <button id="collageButton">Collage</button>
+            <img style="width: 7%" src="logo.webp" alt="" class="w-30 h-22 2xl:w-28 2xl:h-29 object-cover">
+<h4>ideofónica</h4>
+        </div>
+
+    
     </div>
 </header>
 
